@@ -15,6 +15,9 @@ Changes in college football offenses and offensive output over time
 
 ### Idea \#3
 
+Analyzing TED Talks by popularity and topic over time
+<https://www.kaggle.com/rounakbanik/ted-talks>
+
 ### Idea \#4
 
 ## Datasets
