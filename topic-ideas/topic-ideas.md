@@ -11,6 +11,8 @@ Analyzing FIFA World Cup Matches throughout time (1930-2014)
 
 ### Idea \#2
 
+Changes in college football offenses and offensive output over time
+
 ### Idea \#3
 
 ### Idea \#4
@@ -24,12 +26,5 @@ WorldCupMatches.csv
 
 This dataset is related to idea \#2 regarding all FIFA World Cup matches
 from every tournament during the period of 1930-2014.
-
-Variables:
-
-Year, Datetime, Stage, Stadium, City, Home Team Name, Home Team Goals,
-Away Team Name, Away Team Goals, Win conditions, Attendance, Half-time
-Home Goals, Half-time Away Goals, Referee, Assistant 1, Assistant 2,
-RoundID, MatchID, Home Team Initials, Away Team Initials
 
 ### Dataset \#2
