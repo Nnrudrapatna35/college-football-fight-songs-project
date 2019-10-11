@@ -20,6 +20,10 @@ Analyzing TED Talks by popularity and topic over time
 
 ### Idea \#4
 
+Analyzing top 100 Spotify songs from 2018 to see what characteristics
+contribute to popularity and what musical features are associated with
+certain genres.
+
 ## Datasets
 
 ### Dataset \#1
@@ -31,3 +35,9 @@ This dataset is related to idea \#2 regarding all FIFA World Cup matches
 from every tournament during the period of 1930-2014.
 
 ### Dataset \#2
+
+top2018.csv
+(<https://www.kaggle.com/nadintamer/top-spotify-tracks-of-2018>)
+
+This dataset is related to idea \#4 regarding the top 100 Spotify songs
+from 2018.
