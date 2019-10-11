@@ -7,13 +7,14 @@ Power Ninja Data Turtles
 
 ### Idea \#1
 
-Determining the most succssful international soccer teams in FIFA World
+Determining the most successful international soccer teams in FIFA World
 Cup Matches throughout time (1930-2014) based on number of goals scored.
 
 ### Idea \#2
 
-Analyzing changes in college football offenses and offensive output over
-time
+Analyzing changes in characteristics of college football offenses over
+time (formations, personnel, play-calling) and how they have contributed
+to increases in offensive output.
 
 ### Idea \#3
 
