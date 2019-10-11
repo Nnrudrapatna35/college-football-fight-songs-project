@@ -7,11 +7,13 @@ Power Ninja Data Turtles
 
 ### Idea \#1
 
-Analyzing FIFA World Cup Matches throughout time (1930-2014)
+Analyzing characteristics of FIFA World Cup Matches throughout time
+(1930-2014)
 
 ### Idea \#2
 
-Changes in college football offenses and offensive output over time
+Analyzing changes in college football offenses and offensive output over
+time
 
 ### Idea \#3
 
