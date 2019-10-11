@@ -18,8 +18,8 @@ to increases in offensive output.
 
 ### Idea \#3
 
-Analyzing TED Talks by popularity and topic over time
-<https://www.kaggle.com/rounakbanik/ted-talks>
+Analyzing TED Talks by topic over time to see which characteristics
+contribute to popularity and how they relate to the culture of the time.
 
 ### Idea \#4
 
@@ -38,6 +38,13 @@ This dataset is related to idea \#2 regarding all FIFA World Cup matches
 from every tournament during the period of 1930-2014.
 
 ### Dataset \#2
+
+ted\_main.csv (<https://www.kaggle.com/rounakbanik/ted-talks>)
+
+This dataset is related to idea \#3 regarding the popularity and
+relatedness of TED Talks throughout the 2000’s.
+
+### Dataset \#3
 
 top2018.csv
 (<https://www.kaggle.com/nadintamer/top-spotify-tracks-of-2018>)
