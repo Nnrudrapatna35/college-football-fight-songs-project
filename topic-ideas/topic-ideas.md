@@ -7,8 +7,8 @@ Power Ninja Data Turtles
 
 ### Idea \#1
 
-Analyzing characteristics of FIFA World Cup Matches throughout time
-(1930-2014)
+Determining the most succssful international soccer teams in FIFA World
+Cup Matches throughout time (1930-2014) based on number of goals scored.
 
 ### Idea \#2
 
