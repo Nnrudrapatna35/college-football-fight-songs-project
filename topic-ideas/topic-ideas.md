@@ -8,24 +8,26 @@ Power Ninja Data Turtles
 ### Idea \#1
 
 Determining the most successful international soccer teams in FIFA World
-Cup Matches throughout time (1930-2014) based on number of goals scored.
+Cup Matches throughout time (1930-2014) based on the number of goals
+scored.
 
 ### Idea \#2
 
-Analyzing changes in characteristics of college football offenses over
-time (formations, personnel, play-calling) and how they have contributed
-to increases in offensive output.
+Analyzing changes in the characteristics of college football offenses
+over time (formations, personnel, play-calling) and how they have
+contributed to increases in offensive output.
 
 ### Idea \#3
 
 Analyzing TED Talks by topic over time to see which characteristics
-contribute to popularity and how they relate to the culture of the time.
+contribute to popularity and how they relate to the prevailing culture
+of the period.
 
 ### Idea \#4
 
-Analyzing top 100 Spotify songs from 2018 to see what characteristics
-contribute to popularity and what musical features are associated with
-certain genres.
+Analyzing the top 100 Spotify songs from 2018 to determine which
+characteristics contribute to popularity and what musical features are
+associated with certain genres.
 
 ## Datasets
 
@@ -34,14 +36,15 @@ certain genres.
 WorldCupMatches.csv
 (<https://www.kaggle.com/abecklas/fifa-world-cup#WorldCupMatches.csv>)
 
-This dataset is related to idea \#2 regarding all FIFA World Cup matches
-from every tournament during the period of 1930-2014.
+This dataset is related to Idea \#1, and it includes information
+concerning all matches from every FIFA World Cup tournament during the
+period of 1930-2014.
 
 ### Dataset \#2
 
 ted\_main.csv (<https://www.kaggle.com/rounakbanik/ted-talks>)
 
-This dataset is related to idea \#3 regarding the popularity and
+This dataset is related to Idea \#3 regarding the popularity and
 relatedness of TED Talks throughout the 2000’s.
 
 ### Dataset \#3
@@ -49,5 +52,5 @@ relatedness of TED Talks throughout the 2000’s.
 top2018.csv
 (<https://www.kaggle.com/nadintamer/top-spotify-tracks-of-2018>)
 
-This dataset is related to idea \#4 regarding the top 100 Spotify songs
+This dataset is related to Idea \#4 regarding the top 100 Spotify songs
 from 2018.
