@@ -8,8 +8,8 @@ Power Ninja Data Turtles
 ### Idea \#1
 
 Determining the most successful international soccer teams in FIFA World
-Cup Matches throughout time (1930-2014) based on the number of goals
-scored.
+Cup Matches throughout time (1930-2014) and the characteristics that
+contributed to their success.
 
 ### Idea \#2
 
@@ -20,8 +20,8 @@ contributed to increases in offensive output.
 ### Idea \#3
 
 Analyzing TED Talks by topic over time to see which characteristics
-contribute to popularity and how they relate to the prevailing culture
-of the period.
+contribute to popularity and how these characteristics relate to the
+prevailing culture of the period.
 
 ### Idea \#4
 
@@ -44,8 +44,8 @@ period of 1930-2014.
 
 ted\_main.csv (<https://www.kaggle.com/rounakbanik/ted-talks>)
 
-This dataset is related to Idea \#3 regarding the popularity and
-relatedness of TED Talks throughout the 2000’s.
+This dataset is related to Idea \#3 regarding the popularity and trends
+of TED Talks throughout the 2000’s.
 
 ### Dataset \#3
 
@@ -53,4 +53,5 @@ top2018.csv
 (<https://www.kaggle.com/nadintamer/top-spotify-tracks-of-2018>)
 
 This dataset is related to Idea \#4 regarding the top 100 Spotify songs
-from 2018.
+from 2018 and includes information about the characteristics of the top
+songs, including their musical features.
