@@ -22,8 +22,21 @@ We are interested in learning whether the number of times that a fight song cont
 ```{r histogram-number_fights}
 ggplot(data = fight_songs, mapping = aes(x = number_fights)) + 
   geom_histogram(binwidth = 1) + 
-  labs(x = "Occurrences of 'Fight'", y = "Number of Fight Songs")
+  labs(x = "Occurrences of 'Fight' in a Song", y = "Number of Songs", title = "Number of Occurrences of 'Fight'")
 ```
+
+Let's also get the summary statistics for this distribution. In particular, we will use the median as a measure of center and IQR as a measure of spread (due to the skewness of the distribution). In addition, we will find Q1, Q3, the maximum, and the minimum.
+
+```{r number_fights_summary_stats}
+fight_songs %>%
+  summarise(median = median(number_fights), 
+            IQR = IQR(number_fights), 
+            Q1 = quantile(number_fights, 0.25), 
+            Q3 = quantile(number_fights, 0.75), 
+            min = min(number_fights), 
+            max = max(number_fights))
+```
+Based on the histogram, the shape of the distribution is clearly skewed to the right, meaning that there are more songs that say "fight" only a few times than songs that say "fight" multiple times. The distribution is clearly unimodal with one distinct peak at 0. The center (median) of the distribution occurs around 2, indicating that at least 50% of the songs contain 2 or less occurrences of the word "fight." The data is fairly spread out, as indicated by an IQR of 5 and a range of 17. There are 6 outliers, which are the songs with number of fights greater than or equal to 8.
 
 ### Section 3. Research questions
 
