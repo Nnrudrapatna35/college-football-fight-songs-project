@@ -1,9 +1,20 @@
 ---
-title: "PROJECT TITLE"
-author: "NAME HERE"
-date: "TODAY'S DATE"
+title: "Analyzing College Fight Songs"
+author: "Power Ninja Data Turtles"
+date: "10/25/19"
 output: github_document
 ---
+
+```{r load-tidyverse-and-data, include=FALSE}
+library(tidyverse)
+
+fight_songs <- read_csv("/cloud/project/data/fight-songs.csv")
+fight_songs <- fight_songs %>%
+  select(-X21)
+```
+```{r}
+nrow(fight_songs)
+```
 
 ### Section 1. Introduction
 
