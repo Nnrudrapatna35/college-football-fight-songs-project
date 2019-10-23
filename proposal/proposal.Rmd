@@ -12,15 +12,25 @@ fight_songs <- read_csv("/cloud/project/data/fight-songs.csv")
 fight_songs <- fight_songs %>%
   select(-X21)
 ```
-```{r}
-nrow(fight_songs)
-```
 
 ### Section 1. Introduction
 
 ### Section 2. Exploratory data analysis
 
+We are interested in learning whether the number of times that a fight song contains the word "fight" varies based on conference, as the more times "fight" is said might predict whether a conference as a whole is more or less aggressive than another conference. First, let's analyze the variable number_fights, which counts the number of times a song says "fight," for all the teams. The histogram of number_fights is below:
+
+```{r histogram-number_fights}
+ggplot(data = fight_songs, mapping = aes(x = number_fights)) + 
+  geom_histogram(binwidth = 1) + 
+  labs(x = "Occurrences of 'Fight'", y = "Number of Fight Songs")
+```
+
 ### Section 3. Research questions
 
 ### Section 4. Data
 
+Below is a glimpse of the data set fight_songs:
+
+```{r glimpse-fight_songs}
+glimpse(fight_songs)
+```
