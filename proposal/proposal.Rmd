@@ -1,9 +1,17 @@
 ---
-title: "PROJECT TITLE"
+title: "Analyzing College Fight Songs"
 author: "Power Ninja Data Turtles"
-date: "October 23, 2019"
+date: "10/25/19"
 output: github_document
 ---
+
+```{r load-tidyverse-and-data, include=FALSE}
+library(tidyverse)
+
+fight_songs <- read_csv("/cloud/project/data/fight-songs.csv")
+fight_songs <- fight_songs %>%
+  select(-X21)
+```
 
 ### Section 1. Introduction
 
@@ -17,7 +25,33 @@ Through our analysis, we hope to see if any characteristics between songs (durat
 
 ### Section 2. Exploratory data analysis
 
+We are interested in learning whether the number of times that a fight song contains the word "fight" varies based on conference, as the more times "fight" is said might predict whether a conference as a whole is more or less aggressive than another conference. First, let's analyze the variable number_fights, which counts the number of times a song says "fight," for all the teams. The histogram of number_fights is below:
+
+```{r histogram-number_fights}
+ggplot(data = fight_songs, mapping = aes(x = number_fights)) + 
+  geom_histogram(binwidth = 1) + 
+  labs(x = "Occurrences of 'Fight' in a Song", y = "Number of Songs", title = "Number of Occurrences of 'Fight'")
+```
+
+Let's also get the summary statistics for this distribution. In particular, we will use the median as a measure of center and IQR as a measure of spread (due to the skewness of the distribution). In addition, we will find Q1, Q3, the maximum, and the minimum.
+
+```{r number_fights_summary_stats}
+fight_songs %>%
+  summarise(median = median(number_fights), 
+            IQR = IQR(number_fights), 
+            Q1 = quantile(number_fights, 0.25), 
+            Q3 = quantile(number_fights, 0.75), 
+            min = min(number_fights), 
+            max = max(number_fights))
+```
+Based on the histogram, the shape of the distribution is clearly skewed to the right, meaning that there are more songs that say "fight" only a few times than songs that say "fight" multiple times. The distribution is clearly unimodal with one distinct peak at 0. The center (median) of the distribution occurs around 2, indicating that at least 50% of the songs contain 2 or less occurrences of the word "fight." The data is fairly spread out, as indicated by an IQR of 5 and a range of 17. There are 6 outliers, which are the songs with number of fights greater than or equal to 8.
+
 ### Section 3. Research questions
 
 ### Section 4. Data
 
+Below is a glimpse of the data set fight_songs:
+
+```{r glimpse-fight_songs}
+glimpse(fight_songs)
+```
