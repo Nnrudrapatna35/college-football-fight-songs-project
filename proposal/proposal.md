@@ -61,7 +61,7 @@ ggplot(data = fight_songs, mapping = aes(x = number_fights)) +
   labs(x = "Occurrences of 'fight' in Fight Songs", y = "Number of Songs", title = "Number of Occurrences of 'fight'")
 ```
 
-![](proposal_files/figure-gfm/histogram-number_fights-1.png)<!-- -->
+![](proposal_files/figure-gfm/histogram_number_fights-1.png)<!-- -->
 
 Let’s also calculate the summary statistics for this distribution.
 Specifically, we will use the median as a measure of center and the
@@ -87,8 +87,8 @@ fight_songs %>%
 Based on the histogram, the shape of the distribution is clearly skewed
 to the right, implying that there are more songs that say “fight” only a
 few times compared to those that say “fight” multiple times. The
-distribution is clearly unimodal with one distinct peak located at x = 0
-(zero occurrences of ‘fight’). The center (median) of the distribution
+distribution is clearly unimodal with one distinct peak located near x =
+0 (zero occurrences of ‘fight’). The center (median) of the distribution
 occurs x = 2 (‘fight’ appears twice), indicating that at least 50% of
 the songs contain 2 or less occurrences of this word. The data is fairly
 spread out, as indicated by an IQR of 5 and a range (maximum value minus
@@ -97,25 +97,24 @@ minimum value) of 17. There are 2 outliers, which are the songs in which
 half-integer frequencies, so the songs must contain this word at least
 13 times to move beyond Q3 + 1.5 \* IQR).
 
-Next, let’s analyze the distribution of the number of times a song says
-“fight,” for each conference. The box plot of `number_fights` by
-`conference` is
+Now, let’s analyze the distribution of the number of times a song
+includes “fight,” amongst the Power Five college football conferences
+(ACC, Big Ten, Pac-12, SEC, and Big 12) and Independent teams. The box
+plot of `number_fights` by `conference` is
 below:
 
 ``` r
   ggplot(data = fight_songs, mapping = aes(y = number_fights, x = fct_reorder(factor(conference), number_fights))) +
   geom_boxplot() +
-  #geom_jitter(position=position_jitter(0.2)) +
-  labs(x = "College Football Conference", y = "Occurrences of 'fight' in Fight Songs",
-       title = "Distribution of Occurrences of 'fight' in Fight Songs by College Conferences")
+  labs(x = "College Football Conference", y = "Occurrences of 'fight' in Fight Songs", title = "Distribution of Occurrences of 'fight' in Fight Songs by College Conferences")
 ```
 
 ![](proposal_files/figure-gfm/box_plot_fights_by_conference-1.png)<!-- -->
 
-Let’s also get the summary statistics for each distribution. In
-particular, we will use the median as a measure of center and IQR as a
-measure of spread. In addition, we will find the maximum and the
-minimum.
+Let’s also calculate the summary statistics for each boxplot.
+Specifically, we will use the median as a measure of center and IQR as a
+measure of spread. In addition, we will find the maximum and minimum
+values:
 
 ``` r
 fight_songs %>%
@@ -137,13 +136,25 @@ fight_songs %>%
     ## 5 SEC                     3    3        0     6
     ## 6 Big 12                  4.5  5.25     0    17
 
-Based on the boxplots, the number of times that a fight song contains
-the word “fight” varies based on conference. The conferences with the
-highest median occurences of “fight” are Big 12 and then SEC while the
-conferences with the lowest median occurences of “fight” are the ACC and
-then Big Ten.
+Based on the boxplots, we can see that the number of times that a fight
+song contains the word “fight” varies based on conference. The
+conferences with the highest median occurrences of “fight” are Big 12
+and then SEC, while the conferences with the lowest median occurrences
+of “fight” are the ACC and then Big Ten.
 
 ### Section 3: Research Questions
+
+From the univariate summary statistics and visualization (histogram) in
+the exploratory data analysis section, we learned, in the majority of
+college fight songs, the word “fight” appears only a few times.
+Moreover, the bivariate summary statistics and visualization (boxplots)
+revealed that the frequency of “fight” in fight songs is dependent on
+the particular conference a college belongs to. For instance, Louisiana
+State University, or LSU as it appears in the `fight_songs` dataset, is
+a member of the SEC conference. Thus, LSU is predicted to have a
+relatively large number of occurrences of “fight” in its fight song
+since SEC has the second highest median occurrences of this word amongst
+the conferences considered.
 
 ### Section 4: Data
 
