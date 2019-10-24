@@ -44,7 +44,34 @@ fight_songs %>%
             min = min(number_fights), 
             max = max(number_fights))
 ```
-Based on the histogram, the shape of the distribution is clearly skewed to the right, meaning that there are more songs that say "fight" only a few times than songs that say "fight" multiple times. The distribution is clearly unimodal with one distinct peak at 0. The center (median) of the distribution occurs around 2, indicating that at least 50% of the songs contain 2 or less occurrences of the word "fight." The data is fairly spread out, as indicated by an IQR of 5 and a range of 17. There are 6 outliers, which are the songs with number of fights greater than or equal to 8.
+
+Based on the histogram, the shape of the distribution is clearly skewed to the right, meaning that there are more songs that say "fight" only a few times than songs that say "fight" multiple times. The distribution is clearly unimodal with one distinct peak at 0. The center (median) of the distribution occurs around 2, indicating that at least 50% of the songs contain 2 or less occurrences of the word "fight." The data is fairly spread out, as indicated by an IQR of 5 and a range of 17. There are 2 outliers, which are the songs with number of fights greater than or equal to 12.5.
+
+Next, let's analyze the distribution of the number of times a song says "fight," for each conference. The box plot of number_fights by conference is below:
+
+```{r box_plot_fights_by_conference}
+  ggplot(data = fight_songs, mapping = aes(y = number_fights,
+                                           x = fct_reorder(factor(conference), 
+                                                           number_fights))) +
+  geom_boxplot() +
+  #geom_jitter(position=position_jitter(0.2)) +
+  labs(x = "Conference", y = "Occurrences of 'Fight' in a Song",
+       title = "Distribution of Occurrences of 'Fight' by Conference")
+```
+
+Let's also get the summary statistics for each distribution. In particular, we will use the median as a measure of center and IQR as a measure of spread. In addition, we will find the maximum and the minimum.
+
+```{r fights_by_conference_summary_stats}
+fight_songs %>%
+  group_by(factor(conference)) %>%
+  summarise(median = median(number_fights), 
+            iqr = IQR(number_fights), 
+            min = min(number_fights), 
+            max = max(number_fights)) %>%
+  arrange(median)
+```
+
+Based on the boxplots, the number of times that a fight song contains the word "fight" varies based on conference. The conferences with the highest median occurences of "fight" are Big 12 and then SEC while the conferences with the lowest median occurences of "fight" are the ACC and then Big Ten.
 
 ### Section 3. Research questions
 
