@@ -3,7 +3,7 @@ Analyzing College Fight Songs
 Power Ninja Data Turtles
 10/25/19
 
-### Section 1. Introduction
+### Section 1: Introduction
 
 For our research project, we will be analyzing the fight songs of
 various college football teams in order to discover the patterns and
@@ -48,7 +48,7 @@ variable because we were interested in seeing if higher-ranked (more
 successful) teams had any commonalities between their respective fight
 songs, as well.
 
-### Section 2. Exploratory data analysis
+### Section 2: Exploratory data analysis
 
 We are interested in learning whether the number of times that a fight
 song contains the word “fight” varies based on conference, as the more
@@ -143,11 +143,12 @@ highest median occurences of “fight” are Big 12 and then SEC while the
 conferences with the lowest median occurences of “fight” are the ACC and
 then Big Ten.
 
-### Section 3. Research questions
+### Section 3: Research questions
 
-### Section 4. Data
+### Section 4: Data
 
-Below is a glimpse of the data set fight\_songs:
+Below, we use the glimpse() function to display a preview of the dataset
+`fight_songs`:
 
 ``` r
 glimpse(fight_songs)

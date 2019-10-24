@@ -13,7 +13,7 @@ fight_songs <- fight_songs %>%
   select(-X21)
 ```
 
-### Section 1. Introduction
+### Section 1: Introduction
 
 For our research project, we will be analyzing the fight songs of various college football teams in order to discover the patterns and similar characteristics between them. To be more specific, we will be looking at the fight songs of all 67 teams located across the Power 5 sports conferences (Big 10, Big 12, ACC, Pac-12 and SEC). Our dataset, which is fittingly titled “fight-songs”, is a part of the fivethirtyeight package in R. Each observation in the set represents a distinct Power 5 college football team. For each team (observation), the dataset features 23 observations (of which we are using 19, plus one of our own) which contain a wide range of information, mostly about the school’s fight song. 
   
@@ -23,7 +23,7 @@ The data was collected by looking at the lyrics of each song (as published by th
   
 Through our analysis, we hope to see if any characteristics between songs (duration, number of tropes, etc) are common within the conferences and across the entire set of observations. We added the rank variable because we were interested in seeing if higher-ranked (more successful) teams had any commonalities between their respective fight songs, as well.
 
-### Section 2. Exploratory data analysis
+### Section 2: Exploratory data analysis
 
 We are interested in learning whether the number of times that a fight song contains the word "fight" varies based on conference, as the more times "fight" is said might predict whether a conference as a whole is more or less aggressive than another conference. First, let's analyze the variable number_fights, which counts the number of times a song says "fight," for all the teams. The histogram of number_fights is below:
 
@@ -73,11 +73,11 @@ fight_songs %>%
 
 Based on the boxplots, the number of times that a fight song contains the word "fight" varies based on conference. The conferences with the highest median occurences of "fight" are Big 12 and then SEC while the conferences with the lowest median occurences of "fight" are the ACC and then Big Ten.
 
-### Section 3. Research questions
+### Section 3: Research questions
 
-### Section 4. Data
+### Section 4: Data
 
-Below is a glimpse of the data set fight_songs:
+Below, we use the glimpse() function to display a preview of the dataset `fight_songs`:
 
 ```{r glimpse-fight_songs}
 glimpse(fight_songs)
