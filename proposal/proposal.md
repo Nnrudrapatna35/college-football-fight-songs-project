@@ -33,8 +33,10 @@ during the song, anything is spelled out), trope\_count (total number of
 tropes –\> fight, rah, nonsense, colors, men, opponents and spelling),
 and finally, rank (the historic AP rank of the school’s football team).
 
-The data was collected by looking at the lyrics of each song, history
-about each song, and information about each school’s conference. We
+The data was collected by looking at the lyrics of each song (as
+published by the school), metadata found about each song on Spotify,
+history about each song (as stated by the school) and information about
+each school’s conference, which can be easily found on the internet. We
 added the rank variable to the dataset in Excel, and we found the data
 from the Associated Press’ historic rankings of every single college
 football team in the country, which was released last year.
