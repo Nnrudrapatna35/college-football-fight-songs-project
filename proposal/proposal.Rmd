@@ -23,17 +23,17 @@ The data was collected by looking at the lyrics of each song (as published by th
   
 By means of our analysis, we hope to determine if any characteristics of fight songs (duration, number of tropes, etc.) are exclusive to particular college football conferences, or rather if songs have universal traits across the entire set of observations (all 65 colleges considered). We will utilize the `rank` variable to form connections between the performances of certain college football teams and their respective fight songs. For example, we may be better equipped to formulate conclusions about the similarities in the fight songs of higher-ranked (more successful) teams due to the addition of this new variable.
 
-### Section 2: Exploratory data analysis
+### Section 2: Exploratory Data Analysis
 
-We are interested in learning whether the number of times that a fight song contains the word "fight" varies based on conference, as the more times "fight" is said might predict whether a conference as a whole is more or less aggressive than another conference. First, let's analyze the variable number_fights, which counts the number of times a song says "fight," for all the teams. The histogram of number_fights is below:
+We are interested in determining whether the number of times a fight song contains the word "fight" varies based on conference. Depending on the number of times this word appears, we can predict whether a particular conference is more or less aggressive than another conference. First, let's analyze the variable `number_fights`, which counts the number of times "fight" appears in the fight song for each team. A histogram displaying the number of occurrences of this word is shown below:
 
 ```{r histogram-number_fights}
 ggplot(data = fight_songs, mapping = aes(x = number_fights)) + 
   geom_histogram(binwidth = 1) + 
-  labs(x = "Occurrences of 'Fight' in a Song", y = "Number of Songs", title = "Number of Occurrences of 'Fight'")
+  labs(x = "Occurrences of 'fight' in Fight Songs", y = "Number of Songs", title = "Number of Occurrences of 'fight'")
 ```
 
-Let's also get the summary statistics for this distribution. In particular, we will use the median as a measure of center and IQR as a measure of spread (due to the skewness of the distribution). In addition, we will find Q1, Q3, the maximum, and the minimum.
+Let's also calculate the summary statistics for this distribution. Specifically, we will use the median as a measure of center and the interquartile range as a measure of spread (due to the skewness of the distribution). In addition, we will find the upper and lower quartiles (Q3 and Q1 respectively), and the maximum and minimum values:
 
 ```{r number_fights_summary_stats}
 fight_songs %>%
@@ -45,18 +45,16 @@ fight_songs %>%
             max = max(number_fights))
 ```
 
-Based on the histogram, the shape of the distribution is clearly skewed to the right, meaning that there are more songs that say "fight" only a few times than songs that say "fight" multiple times. The distribution is clearly unimodal with one distinct peak at 0. The center (median) of the distribution occurs around 2, indicating that at least 50% of the songs contain 2 or less occurrences of the word "fight." The data is fairly spread out, as indicated by an IQR of 5 and a range of 17. There are 2 outliers, which are the songs with number of fights greater than or equal to 12.5.
+Based on the histogram, the shape of the distribution is clearly skewed to the right, implying that there are more songs that say "fight" only a few times compared to those that say "fight" multiple times. The distribution is clearly unimodal with one distinct peak located at x = 0 (zero occurrences of 'fight'). The center (median) of the distribution occurs x = 2 ('fight' appears twice), indicating that at least 50% of the songs contain 2 or less occurrences of this word. The data is fairly spread out, as indicated by an IQR of 5 and a range (maximum value minus minimum value) of 17. There are 2 outliers, which are the songs in which 'fight' appears at least 12.5 times (obviously, a word cannot occur at half-integer frequencies, so the songs must contain this word at least 13 times to move beyond Q3 + 1.5 * IQR).
 
-Next, let's analyze the distribution of the number of times a song says "fight," for each conference. The box plot of number_fights by conference is below:
+Next, let's analyze the distribution of the number of times a song says "fight," for each conference. The box plot of `number_fights` by `conference` is below:
 
 ```{r box_plot_fights_by_conference}
-  ggplot(data = fight_songs, mapping = aes(y = number_fights,
-                                           x = fct_reorder(factor(conference), 
-                                                           number_fights))) +
+  ggplot(data = fight_songs, mapping = aes(y = number_fights, x = fct_reorder(factor(conference), number_fights))) +
   geom_boxplot() +
   #geom_jitter(position=position_jitter(0.2)) +
-  labs(x = "Conference", y = "Occurrences of 'Fight' in a Song",
-       title = "Distribution of Occurrences of 'Fight' by Conference")
+  labs(x = "College Football Conference", y = "Occurrences of 'fight' in Fight Songs",
+       title = "Distribution of Occurrences of 'fight' in Fight Songs by College Conferences")
 ```
 
 Let's also get the summary statistics for each distribution. In particular, we will use the median as a measure of center and IQR as a measure of spread. In addition, we will find the maximum and the minimum.
@@ -73,7 +71,7 @@ fight_songs %>%
 
 Based on the boxplots, the number of times that a fight song contains the word "fight" varies based on conference. The conferences with the highest median occurences of "fight" are Big 12 and then SEC while the conferences with the lowest median occurences of "fight" are the ACC and then Big Ten.
 
-### Section 3: Research questions
+### Section 3: Research Questions
 
 ### Section 4: Data
 
