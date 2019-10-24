@@ -5,48 +5,44 @@ Power Ninja Data Turtles
 
 ### Section 1: Introduction
 
-For our research project, we will be analyzing the fight songs of
-various college football teams in order to discover the patterns and
-similar characteristics between them. To be more specific, we will be
-looking at the fight songs of all 67 teams located across the Power 5
+In our research project, we will be analyzing the fight songs of various
+college football teams to discover the patterns
+(similarities/differences) between them. More specifically, we will be
+examining the fight songs of all 65 teams located across the Power 5
 sports conferences (Big 10, Big 12, ACC, Pac-12 and SEC). Our dataset,
-which is fittingly titled “fight-songs”, is a part of the
+which is fittingly titled `fight-songs`, is a part of the
 fivethirtyeight package in R. Each observation in the set represents a
 distinct Power 5 college football team. For each team (observation), the
-dataset features 23 observations (of which we are using 19, plus one of
-our own) which contain a wide range of information, mostly about the
-school’s fight song.
+dataset features 23 variables (of which we are using 19, plus one of our
+own, for a total of 20), which contain a wide range of information,
+primarily concerning the school’s fight song.
 
-The variables are as follows: school (school name), conference (the
-school’s conference), song\_name (the song’s title), writers (the song’s
-author(s)), year (the year the song was written), student\_writer
-(whether or not the author was a student), official\_song (if the school
-counts the song as their official fight song), bpm (beats per minute),
-sec\_duration (duration of the song in seconds), fight (if the song
-mentions the word “fight”), number\_fights (number of times “fight” is
-mentioned), victory\_win\_won (if the song mentions any of the words
-“victory”, “win” or “won”), rah (if the song mentions the word “rah”),
-nonsense (if the song includes any non-word sounds), colors (if the song
-mentions the school’s colors), men (if the song mentions a group of
-men/boys), opponents (if the song mentions any opponents), spelling (if,
-during the song, anything is spelled out), trope\_count (total number of
-tropes –\> fight, rah, nonsense, colors, men, opponents and spelling),
-and finally, rank (the historic AP rank of the school’s football team).
+The variables are as follows: `school`, `conference`, `song_name`,
+`writers`, `year`, `student_writer`, `official_song`, `bpm`,
+`sec_duration`, `fight`, `number_fights`, `victory_win_won`, `rah`,
+`nonsense`, `colors`, `men`, `opponents`, `spelling`, `trope_count`, and
+finally, `rank`. Detailed explanations of each variable are located in
+the codebook.
 
 The data was collected by looking at the lyrics of each song (as
-published by the school), metadata found about each song on Spotify,
-history about each song (as stated by the school) and information about
-each school’s conference, which can be easily found on the internet. We
-added the rank variable to the dataset in Excel, and we found the data
-from the Associated Press’ historic rankings of every single college
-football team in the country, which was released last year.
+published by the school), metadata about each fight song on Spotify,
+history about each song (as stated by the school), and information about
+each school’s conference, which is easily accessible on the Internet. We
+added the `rank` variable to the dataset using Microsoft Excel, and we
+found this information from the Associated Press’s historic rankings of
+every college football team in the country, which was released last
+year.
 
-Through our analysis, we hope to see if any characteristics between
-songs (duration, number of tropes, etc) are common within the
-conferences and across the entire set of observations. We added the rank
-variable because we were interested in seeing if higher-ranked (more
-successful) teams had any commonalities between their respective fight
-songs, as well.
+By means of our analysis, we hope to determine if any characteristics of
+fight songs (duration, number of tropes, etc.) are exclusive to
+particular college football conferences, or rather if songs have
+universal traits across the entire set of observations (all 65 colleges
+considered). We will utilize the `rank` variable to form connections
+between the performances of certain college football teams and their
+respective fight songs. For example, we may be better equipped to
+formulate conclusions about the similarities in the fight songs of
+higher-ranked (more successful) teams due to the addition of this new
+variable.
 
 ### Section 2: Exploratory data analysis
 
