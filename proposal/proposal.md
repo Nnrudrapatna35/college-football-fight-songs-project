@@ -93,8 +93,55 @@ is clearly unimodal with one distinct peak at 0. The center (median) of
 the distribution occurs around 2, indicating that at least 50% of the
 songs contain 2 or less occurrences of the word “fight.” The data is
 fairly spread out, as indicated by an IQR of 5 and a range of 17. There
-are 6 outliers, which are the songs with number of fights greater than
-or equal to 8.
+are 2 outliers, which are the songs with number of fights greater than
+or equal to 12.5.
+
+Next, let’s analyze the distribution of the number of times a song says
+“fight,” for each conference. The box plot of number\_fights by
+conference is below:
+
+``` r
+  ggplot(data = fight_songs, mapping = aes(y = number_fights,
+                                           x = fct_reorder(factor(conference), 
+                                                           number_fights))) +
+  geom_boxplot() +
+  #geom_jitter(position=position_jitter(0.2)) +
+  labs(x = "Conference", y = "Occurrences of 'Fight' in a Song",
+       title = "Distribution of Occurrences of 'Fight' by Conference")
+```
+
+![](proposal_files/figure-gfm/box_plot_fights_by_conference-1.png)<!-- -->
+
+Let’s also get the summary statistics for each distribution. In
+particular, we will use the median as a measure of center and IQR as a
+measure of spread. In addition, we will find the maximum and the
+minimum.
+
+``` r
+fight_songs %>%
+  group_by(factor(conference)) %>%
+  summarise(median = median(number_fights), 
+            iqr = IQR(number_fights), 
+            min = min(number_fights), 
+            max = max(number_fights)) %>%
+  arrange(median)
+```
+
+    ## # A tibble: 6 x 5
+    ##   `factor(conference)` median   iqr   min   max
+    ##   <fct>                 <dbl> <dbl> <dbl> <dbl>
+    ## 1 ACC                     0    3        0     6
+    ## 2 Big Ten                 1    5.75     0    10
+    ## 3 Independent             1    0        1     1
+    ## 4 Pac-12                  2    2.5      0     8
+    ## 5 SEC                     3    3        0     6
+    ## 6 Big 12                  4.5  5.25     0    17
+
+Based on the boxplots, the number of times that a fight song contains
+the word “fight” varies based on conference. The conferences with the
+highest median occurences of “fight” are Big 12 and then SEC while the
+conferences with the lowest median occurences of “fight” are the ACC and
+then Big Ten.
 
 ### Section 3. Research questions
 
