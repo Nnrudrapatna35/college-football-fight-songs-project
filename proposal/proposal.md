@@ -51,15 +51,15 @@ We are interested in figuring out whether a team’s tempo (measured in
 bpm, or beats per minute) has anything to do with the number of clichés
 that a song has. First, we will create a histogram and calculate the
 summary statistics to visualize the distribution of tempos across fight
-songs for all teams.
+songs for all teams in our dataset:
 
 ``` r
 ggplot(data = fight_songs, mapping = aes(x = bpm)) + 
   geom_histogram(binwidth = 10) + 
-  labs(x = "Tempo (bpm)", y = "Number of Songs", title = "Tempos of Fight Songs")
+  labs(x = "Tempo (bpm)", y = "Number of Songs", title = "Tempos of Fight Songs of College Football Teams")
 ```
 
-![](proposal_files/figure-gfm/histogram_bpm-1.png)<!-- -->
+![](proposal_files/figure-gfm/histogram-bpm-1.png)<!-- -->
 
 Let’s also calculate the summary statistics for this distribution.
 Specifically, we will use the median as a measure of center and the
@@ -85,13 +85,14 @@ fight_songs %>%
 Based on the histogram, it is clear that the shape of the data is
 clearly bimodal, with two distinct peaks occurring around 40 bpm and
 around 150 bpm. There are more songs that are clustered around the
-higher bpm mode. The center (median) occurs at around 140 bpm, and the
-spread (IQR) is 61 bpm, indicating that there is a moderate amount of
-variability in tempos. There are no outliers.
+higher bpm mode. The center (median) occurs at 140 bpm, and the spread
+(IQR) is 61 bpm, indicating that there is a moderate amount of
+variability in tempos. There are no outliers in this distribution.
 
 Now, let’s see whether there appears to be a relationship between a
-song’s tempo (bpm) and the number of clichés (tropes) that a song has.
-We will do this by creating a scatterplot and fitting a linear model.
+fight song’s tempo (bpm) and the number of clichés (tropes) that a song
+has. We will do this by creating a scatterplot and fitting a linear
+model:
 
 ``` r
 ggplot(data = fight_songs, mapping = aes(x = bpm, y = trope_count)) +
@@ -107,65 +108,68 @@ number of clichés. Let’s find the linear model associated with this
 scatterplot:
 
 ``` r
-(m_bpm <- lm(data = fight_songs, trope_count ~ bpm))
+(m_bpm <- lm(data = fight_songs, trope_count ~ bpm)) %>%
+  tidy() %>%
+  select(term, estimate)
 ```
 
-    ## 
-    ## Call:
-    ## lm(formula = trope_count ~ bpm, data = fight_songs)
-    ## 
-    ## Coefficients:
-    ## (Intercept)          bpm  
-    ##    4.593162    -0.007591
+    ## # A tibble: 2 x 2
+    ##   term        estimate
+    ##   <chr>          <dbl>
+    ## 1 (Intercept)  4.59   
+    ## 2 bpm         -0.00759
 
 Based on the output, the linear model that predicts number of tropes
-based on tempo is: trope\_count-hat = 4.593162 - 0.007591 \* bpm. The
-intercept of 4.593162 tells us that if a song has 0 bpm (nonsensical),
-it is expected to have 4.593162 clichés (tropes), on average. The slope
-of -0.007591 tells us that for an increase in 1 bpm, the expected number
-of clichés is predicted to decrease by 0.007591. The R-squared value of
+based on tempo is: trope\_count-hat = 4.59 - 0.00759 \* bpm. The
+intercept tells us that if a song has 0 bpm (nonsensical), it is
+expected to have 4.59 clichés (tropes), on average. The slope tells us
+that for an increase in 1 bpm, the expected number of clichés is
+predicted, on average, to decrease by 0.00759. The R-squared value of
 this model is 0.0225985, meaning that approximately 2.2598527 percent of
 the variability in clichés is accounted for by the linear model. This
-means that the linear model is relatively weak.
+means that the linear model is relatively weak since, the closer the R
+squared value is to 1 (or 100% variability), the more accurate the model
+is.
 
-Now, let’s see whether trope count is any indicator as to the rank
+Now, let’s see whether `trope_count` is related as to the `rank`
 (success) of a team. We will do this by creating another scatterplot and
-fitting a model.
+fitting a model:
 
 ``` r
 ggplot(data = fight_songs, mapping = aes(x = trope_count, y = rank)) +
   geom_jitter() +
   geom_smooth(method = "lm", se = FALSE) +
-  labs(x = "Number of Clichés in Fight Song", y = "Team Rank", title = "Team Rank vs. Number of Clichés")
+  labs(x = "Number of Clichés in Fight Song", y = "Historical College Football Team Ranking", title = "Historical College Football Team Ranking vs. Number of Clichés")
 ```
 
 ![](proposal_files/figure-gfm/scatterplot-tropes-rank-1.png)<!-- -->
 
 There seems to be a weak positive linear relationship between number of
-clichés in a fight song and team rank. Let’s find the linear model
-associated with this scatterplot:
+clichés in a fight song and the historical ranking of a college football
+team. Let’s find the linear model associated with this scatterplot:
 
 ``` r
-(m_tropes_rank <- lm(data = fight_songs, rank ~ trope_count))
+(m_tropes_rank <- lm(data = fight_songs, rank ~ trope_count)) %>%
+  tidy() %>%
+  select(term, estimate)
 ```
 
-    ## 
-    ## Call:
-    ## lm(formula = rank ~ trope_count, data = fight_songs)
-    ## 
-    ## Coefficients:
-    ## (Intercept)  trope_count  
-    ##     35.5818       0.5455
+    ## # A tibble: 2 x 2
+    ##   term        estimate
+    ##   <chr>          <dbl>
+    ## 1 (Intercept)   35.6  
+    ## 2 trope_count    0.545
 
 Based on the output, the linear model that predicts rank based on number
-of clichés is: rank-hat = 35.5818 + 0.5455 \* trope\_count. The
-intercept of 35.5818 tells us that if a song has 0 clichés, it is
-expected to have a ranking of 35.5818, on average. The slope of 0.5455
-tells us that for an increase in 1 cliché, the expected team ranking is
-predicted to increase by 0.5455 points. The R-squared value of this
-model is 0.0012119, meaning that approximately 0.1211865 percent of the
+of clichés is: rank-hat = 35.6 + 0.545 \* trope\_count. The intercept
+tells us that if a song has 0 clichés, it is expected to have a ranking
+of 35.6, on average. The slope tells us that for an increase in 1
+cliché, the historical college football team ranking is predicted, on
+average, to increase by 0.545 points. The R-squared value of this model
+is 0.0012119, meaning that approximately 0.1211865 percent of the
 variability in ranks is accounted for by the linear model. This means
-that the linear model is relatively weak.
+that the linear model is extremely weak since, the closer the R squared
+value is to 1 (or 100% variability), the more accurate the model is.
 
 ### Section 3: Research Questions
 
