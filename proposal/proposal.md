@@ -8,15 +8,18 @@ Power Ninja Data Turtles
 In our research project, we will be analyzing the fight songs of various
 college football teams to discover whether a song’s tempo or duration
 can tell us anything about the content of the song and whether a team’s
-fight song is any indicator of the team’s success. More specifically, we
-will be examining the fight songs of all 65 teams located across the
-Power 5 sports conferences (Big 10, Big 12, ACC, Pac-12 and SEC) plus
-Notre Dame (Independent conference). Our dataset, which is fittingly
-titled `fight-songs`. Each observation in the set represents a distinct
-Power 5 college football team. For each team (observation), the dataset
-features 23 variables (of which we are using 19, plus one of our own,
-for a total of 20), which contain a wide range of information, primarily
-concerning the school’s fight song.
+fight song is indicative of their college football program’s success.
+More specifically, we will be examining the fight songs of all 65 teams
+located across the Power 5 sports conferences (Big 10, Big 12, ACC,
+Pac-12 and SEC) plus Notre Dame (Independent conference). Hence, our
+dataset, which is fittingly titled `fight-songs`, includes 65
+observations. Each observation in the set represents a distinct Power 5
+college football team (or Notre Dame). For each team (observation), the
+original dataset featured 23 variables. However, we plan to use 19 of
+these variables, plus one of our own, for a total of 20. The variables
+primarily contain information regarding the school’s fight song, as well
+as a couple of characteristics of the college football teams themselves
+(i.e. which conference they belong to).
 
 The variables are as follows: `school`, `conference`, `song_name`,
 `writers`, `year`, `student_writer`, `official_song`, `bpm`,
@@ -26,20 +29,21 @@ finally, `rank`. Detailed explanations of each variable are located in
 the codebook.
 
 The data was collected by looking at the lyrics of each song (as
-published by the school), metadata about each fight song on Spotify,
-history about each song (as stated by the school), and information about
-each school’s conference, which is easily accessible on the Internet. We
-added the `rank` variable to the dataset using Microsoft Excel, and we
-found this information from the Associated Press’s historic rankings of
-every college football team in the country, which was released last
-year.
+published by each individual college), metadata about each fight song on
+Spotify, history about each song (as stated by the college), and
+information about each school’s conference, which is easily accessible
+on the Internet. We added the `rank` variable to the dataset using
+Microsoft Excel, and we found this information from the Associated
+Press’s historic rankings of every college football team in the
+country, which was released last year.
 
 As as note, some schools may have more than one fight song, and some of
-the songs sanctioned as “official” by their schools aren’t the ones that
-fans most commonly sing out. The songs that seemed best-known and
+the songs sanctioned as “official” by their schools are not the ones
+that fans most commonly chant. The songs that seemed best-known and
 best-loved were chosen as the “official” fight song. Additionally,
-fivethirtyeight has chosen their lyrics to those sung most regularly and
-published by the school, so some verses won’t appear.
+fivethirtyeight has tailored the lyrics of certain fight songs to those
+sung most regularly and published by the school. Thus, some verses will
+not appear (and hence will not be considered in our analysis).
 
 ### Section 2: Exploratory Data Analysis
 
