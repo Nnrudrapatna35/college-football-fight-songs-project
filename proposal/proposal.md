@@ -164,24 +164,23 @@ rival teams. We hypothesize that there is no statistically significant
 relationship between `victory_win_won` and `conference` since different
 conferences have dominated college football over the years. If we make
 the assumption that many different teams within these conferences have
-been successful, then it is reasonable to believe the most fight songs
-will include at least one of the following words: “victory”, “win”, or
-“won”. We hypothesize that a statistically significant relationship
-does not exist between `colors` and `conference` since mentioning a
-school’s colors in a college football fight song seems like a common
-occurrence, regardless of which conference the teams belong to. We
-hypothesize that a statistically significant relationship exists between
-`nonsense` and `conference` because, since each conference corresponds
-to a different geographic region within the United States, teams from
-different conferences may have different cultural norms (and regional
-slang). Consequently, certain conferences may include teams with fight
-songs incorporating nonsense words while others do not at the same
-frequency.
+been successful, then it is reasonable to believe most fight songs will
+include at least one of the following words: “victory”, “win”, or “won”.
+We hypothesize that a statistically significant relationship does not
+exist between `colors` and `conference` since mentioning a school’s
+colors in a college football fight song seems like a common occurrence,
+regardless of which conference the team belongs to. We hypothesize that
+a statistically significant relationship exists between `nonsense` and
+`conference` because, since each conference corresponds to a different
+geographic region within the United States, teams from different
+conferences may have different cultural norms (and regional slang).
+Consequently, certain conferences may include teams with fight songs
+incorporating nonsense words while others do not at the same frequency.
 
 Our second research question is: how do characteristics of fight songs
 of higher-ranked (more successful) college football teams compare to
 those of their less successful counterparts? We will utilize the `rank`
-variable to form connections between the performances of certain college
+variable to form connections between the performances of college
 football teams and their respective fight songs. As a result, we will be
 better equipped to formulate conclusions about the similarities in the
 fight songs of higher-ranked (more successful) teams. The predictor
