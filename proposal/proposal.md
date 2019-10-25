@@ -140,10 +140,9 @@ statistics and visualization (boxplots) revealed that the frequency of
 “fight” in fight songs is dependent on the particular conference a
 college belongs to. For instance, Louisiana State University, or LSU as
 it appears in the `fight_songs` dataset, is a member of the SEC
-conference. Thus, LSU is predicted to have a relatively large number of
-occurrences of “fight” in its fight song, since SEC has the second
-highest median occurrences of this word amongst the conferences
-considered.
+conference. Thus, LSU’s fight song is predicted to have a relatively
+large number of occurrences of “fight”, since SEC has the second highest
+median occurrences of this word amongst the conferences considered.
 
 We would like to investigate the research question: which
 characteristics, if any, of fight songs are exclusive to particular
@@ -179,11 +178,29 @@ slang). Consequently, certain conferences may include teams with fight
 songs incorporating nonsense words while others do not at the same
 frequency.
 
-We will utilize the `rank` variable to form connections between the
-performances of certain college football teams and their respective
-fight songs. For example, we may be better equipped to formulate
-conclusions about the similarities in the fight songs of higher-ranked
-(more successful) teams due to the addition of this new variable.
+Our second research question is: how do characteristics of fight songs
+of higher-ranked (more successful) college football teams compare to
+those of their less successful counterparts? We will utilize the `rank`
+variable to form connections between the performances of certain college
+football teams and their respective fight songs. As a result, we will be
+better equipped to formulate conclusions about the similarities in the
+fight songs of higher-ranked (more successful) teams. The predictor
+variables we are interested in are: `victory_win_won` and `opponents`.
+We aim to describe the relationship, if any exists, between these two
+predictor (X) variables and the response (Y) variable, `rank`. We
+hypothesize that a statistically significant relationship exists between
+`victory_win_won` and `rank` because it is reasonable to asssume
+historically successful college football teams would incorporate
+symbolic elements of their dominance into their iconic fight songs. In
+this case, we believe the words “victory”, “win”, and “won” are symbolic
+elements of dominance, giving us reason to believe higher-ranked teams
+are more likely to have their fights songs include these words. We
+hypothesize that a statistically significant relationship exists between
+`opponents` and `rank` since higher-ranked college football teams are
+likely to have developed more emotionally-charged rivalries with their
+highly successful peers. With such long-standing, emotional rivalries,
+it is reasonable to believe fight songs associated with these
+highly-ranked college football programs allude to these rivals by name.
 
 ### Section 4: Data
 
