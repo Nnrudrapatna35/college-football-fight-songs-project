@@ -9,13 +9,13 @@ In our research project, we will be analyzing the fight songs of various
 college football teams to discover the patterns
 (similarities/differences) between them. More specifically, we will be
 examining the fight songs of all 65 teams located across the Power 5
-sports conferences (Big 10, Big 12, ACC, Pac-12 and SEC). Our dataset,
-which is fittingly titled `fight-songs`, is a part of the
-fivethirtyeight package in R. Each observation in the set represents a
-distinct Power 5 college football team. For each team (observation), the
-dataset features 23 variables (of which we are using 19, plus one of our
-own, for a total of 20), which contain a wide range of information,
-primarily concerning the school’s fight song.
+sports conferences (Big 10, Big 12, ACC, Pac-12 and SEC) plus Notre Dame
+(Independent conference). Our dataset, which is fittingly titled
+`fight-songs`. Each observation in the set represents a distinct Power 5
+college football team. For each team (observation), the dataset features
+23 variables (of which we are using 19, plus one of our own, for a total
+of 20), which contain a wide range of information, primarily concerning
+the school’s fight song.
 
 The variables are as follows: `school`, `conference`, `song_name`,
 `writers`, `year`, `student_writer`, `official_song`, `bpm`,
@@ -32,6 +32,13 @@ added the `rank` variable to the dataset using Microsoft Excel, and we
 found this information from the Associated Press’s historic rankings of
 every college football team in the country, which was released last
 year.
+
+As as note, some schools may have more than one fight song, and some of
+the songs sanctioned as “official” by their schools aren’t the ones that
+fans most commonly sing out. The songs that seemed best-known and
+best-loved were chosen as the “official” fight song. Additionally,
+fivethirtyeight has chosen their lyrics to those sung most regularly and
+published by the school, so some verses won’t appear.
 
 ### Section 2: Exploratory Data Analysis
 
@@ -151,20 +158,21 @@ correlate to universal attributes of fights songs across the entire set
 of observations (all 65 colleges considered)? As explained previously,
 we have shown the number of occurrences of the word “fight” in fight
 songs is indeed associated with specific conferences. The predictor
-variables we anticipate using are: `nonsense`, `victory_win_won`,
-`colors`, and `opponents`. We will describe the relationship, if any
-exists, between these four predictor (X) variables and the response (Y)
-variable, `conference`. We hypothesize that a statistically significant
-relationship exists between `opponents` and `conference` since college
-football teams within the same conference often compete against one
-another, naturally leading to intense rivalries. Since conferences and
-iconic fight songs have both existed for decades, as evidenced by the
-`year` variable, it is reasonable to assume fight songs might reference
-rival teams. We hypothesize that there is no statistically significant
-relationship between `victory_win_won` and `conference` since different
-conferences have dominated college football over the years. If we make
-the assumption that many different teams within these conferences have
-been successful, then it is reasonable to believe most fight songs will
+variables we anticipate using are: `nonsense`, `victory_win_won`, `men`,
+`opponents`, and `number_fights`, which we explored above. We will
+describe the relationship, if any exists, between these five predictor
+(X) variables and the response (Y) variable, `conference`. We
+hypothesize that a statistically significant relationship exists between
+`opponents` and `conference` since college football teams within the
+same conference often compete against one another, naturally leading to
+intense rivalries. Since conferences and iconic fight songs have both
+existed for decades, as evidenced by the `year` variable, it is
+reasonable to assume fight songs might reference rival teams. We
+hypothesize that there is no statistically significant relationship
+between `victory_win_won` and `conference` since different conferences
+have dominated college football over the years. If we make the
+assumption that many different teams within these conferences have been
+successful, then it is reasonable to believe most fight songs will
 include at least one of the following words: “victory”, “win”, or “won”.
 We hypothesize that a statistically significant relationship does not
 exist between `colors` and `conference` since mentioning a school’s
