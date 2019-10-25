@@ -6,16 +6,17 @@ Power Ninja Data Turtles
 ### Section 1: Introduction
 
 In our research project, we will be analyzing the fight songs of various
-college football teams to discover the patterns
-(similarities/differences) between them. More specifically, we will be
-examining the fight songs of all 65 teams located across the Power 5
-sports conferences (Big 10, Big 12, ACC, Pac-12 and SEC) plus Notre Dame
-(Independent conference). Our dataset, which is fittingly titled
-`fight-songs`. Each observation in the set represents a distinct Power 5
-college football team. For each team (observation), the dataset features
-23 variables (of which we are using 19, plus one of our own, for a total
-of 20), which contain a wide range of information, primarily concerning
-the school’s fight song.
+college football teams to discover whether a song’s tempo or duration
+can tell us anything about the content of the song and whether a team’s
+fight song is any indicator of the team’s success. More specifically, we
+will be examining the fight songs of all 65 teams located across the
+Power 5 sports conferences (Big 10, Big 12, ACC, Pac-12 and SEC) plus
+Notre Dame (Independent conference). Our dataset, which is fittingly
+titled `fight-songs`. Each observation in the set represents a distinct
+Power 5 college football team. For each team (observation), the dataset
+features 23 variables (of which we are using 19, plus one of our own,
+for a total of 20), which contain a wide range of information, primarily
+concerning the school’s fight song.
 
 The variables are as follows: `school`, `conference`, `song_name`,
 `writers`, `year`, `student_writer`, `official_song`, `bpm`,
@@ -42,116 +43,147 @@ published by the school, so some verses won’t appear.
 
 ### Section 2: Exploratory Data Analysis
 
-We are interested in determining whether the number of times a fight
-song contains the word “fight” varies based on conference. Depending on
-the number of times this word appears, we can predict whether a
-particular conference is more or less aggressive than another
-conference. First, let’s analyze the variable `number_fights`, which
-counts the number of times “fight” appears in the fight song for each
-team. A histogram displaying the number of occurrences of this word is
-shown below:
+We are interested in figuring out whether a team’s tempo (measured in
+bpm, or beats per minute) has anything to do with the number of clichés
+that a song has. First, we will create a histogram and calculate the
+summary statistics to visualize the distribution of tempos across fight
+songs for all teams.
 
 ``` r
-ggplot(data = fight_songs, mapping = aes(x = number_fights)) + 
-  geom_histogram(binwidth = 1) + 
-  labs(x = "Occurrences of 'fight' in Fight Songs", y = "Number of Songs", title = "Number of Occurrences of 'fight'")
+ggplot(data = fight_songs, mapping = aes(x = bpm)) + 
+  geom_histogram(binwidth = 10) + 
+  labs(x = "Tempo (bpm)", y = "Number of Songs", title = "Tempos of Fight Songs")
 ```
 
-![](proposal_files/figure-gfm/histogram_number_fights-1.png)<!-- -->
+![](proposal_files/figure-gfm/histogram_bpm-1.png)<!-- -->
 
 Let’s also calculate the summary statistics for this distribution.
 Specifically, we will use the median as a measure of center and the
-interquartile range as a measure of spread (due to the skewness of the
-distribution). In addition, we will find the upper and lower quartiles
-(Q3 and Q1 respectively), and the maximum and minimum values:
+interquartile range as a measure of spread (due to the bimodal nature of
+the distribution). In addition, we will find the upper and lower
+quartiles (Q3 and Q1 respectively), and the maximum and minimum values:
 
 ``` r
 fight_songs %>%
-  summarise(median = median(number_fights), 
-            IQR = IQR(number_fights), 
-            Q1 = quantile(number_fights, 0.25), 
-            Q3 = quantile(number_fights, 0.75), 
-            min = min(number_fights), 
-            max = max(number_fights))
+  summarise(median = median(bpm), 
+            IQR = IQR(bpm), 
+            Q1 = quantile(bpm, 0.25), 
+            Q3 = quantile(bpm, 0.75), 
+            min = min(bpm), 
+            max = max(bpm))
 ```
 
     ## # A tibble: 1 x 6
     ##   median   IQR    Q1    Q3   min   max
     ##    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-    ## 1      2     5     0     5     0    17
+    ## 1    140    61    90   151    65   180
 
-Based on the histogram, the shape of the distribution is clearly skewed
-to the right, implying that there are more songs that say “fight” only a
-few times compared to those that say “fight” multiple times. The
-distribution is clearly unimodal with one distinct peak located near x =
-0 (zero occurrences of ‘fight’). The center (median) of the distribution
-occurs x = 2 (‘fight’ appears twice), indicating that at least 50% of
-the songs contain 2 or less occurrences of this word. The data is fairly
-spread out, as indicated by an IQR of 5 and a range (maximum value minus
-minimum value) of 17. There are 2 outliers, which are the songs in which
-‘fight’ appears at least 12.5 times (obviously, a word cannot occur at
-half-integer frequencies, so the songs must contain this word at least
-13 times to move beyond Q3 + 1.5 \* IQR).
+Based on the histogram, it is clear that the shape of the data is
+clearly bimodal, with two distinct peaks occurring around 40 bpm and
+around 150 bpm. There are more songs that are clustered around the
+higher bpm mode. The center (median) occurs at around 140 bpm, and the
+spread (IQR) is 61 bpm, indicating that there is a moderate amount of
+variability in tempos. There are no outliers.
 
-Now, let’s analyze the distribution of the number of times a song
-includes “fight,” amongst the Power Five college football conferences
-(ACC, Big Ten, Pac-12, SEC, and Big 12) and Independent teams. The box
-plot of `number_fights` by `conference` is
-below:
+Now, let’s see whether there appears to be a relationship between a
+song’s tempo (bpm) and the number of clichés (tropes) that a song has.
+We will do this by creating a scatterplot and fitting a linear model.
 
 ``` r
-  ggplot(data = fight_songs, mapping = aes(y = number_fights, x = fct_reorder(factor(conference), number_fights))) +
-  geom_boxplot() +
-  labs(x = "College Football Conference", y = "Occurrences of 'fight' in Fight Songs", title = "Distribution of Occurrences of 'fight' in Fight Songs by College Conferences")
+ggplot(data = fight_songs, mapping = aes(x = bpm, y = trope_count)) +
+  geom_jitter() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "Tempo (bpm)", y = "Number of Clichés", title = "Number of Clichés vs. Tempo")
 ```
 
-![](proposal_files/figure-gfm/box_plot_fights_by_conference-1.png)<!-- -->
+![](proposal_files/figure-gfm/scatterplot-bpm-tropes-1.png)<!-- -->
 
-Let’s also calculate the summary statistics for each boxplot.
-Specifically, we will use the median as a measure of center and IQR as a
-measure of spread. In addition, we will find the maximum and minimum
-values:
+There seems to be a weak, negative linear relationship between tempo and
+number of clichés. Let’s find the linear model associated with this
+scatterplot:
 
 ``` r
-fight_songs %>%
-  group_by(factor(conference)) %>%
-  summarise(median = median(number_fights), 
-            iqr = IQR(number_fights), 
-            min = min(number_fights), 
-            max = max(number_fights)) %>%
-  arrange(median)
+(m_bpm <- lm(data = fight_songs, trope_count ~ bpm))
 ```
 
-    ## # A tibble: 6 x 5
-    ##   `factor(conference)` median   iqr   min   max
-    ##   <fct>                 <dbl> <dbl> <dbl> <dbl>
-    ## 1 ACC                     0    3        0     6
-    ## 2 Big Ten                 1    5.75     0    10
-    ## 3 Independent             1    0        1     1
-    ## 4 Pac-12                  2    2.5      0     8
-    ## 5 SEC                     3    3        0     6
-    ## 6 Big 12                  4.5  5.25     0    17
+    ## 
+    ## Call:
+    ## lm(formula = trope_count ~ bpm, data = fight_songs)
+    ## 
+    ## Coefficients:
+    ## (Intercept)          bpm  
+    ##    4.593162    -0.007591
 
-Based on the boxplots, we can see that the number of times that a fight
-song contains the word “fight” varies based on conference. The
-conferences with the highest median occurrences of “fight” are Big 12
-and then SEC, while the conferences with the lowest median occurrences
-of “fight” are the ACC and then Big Ten.
+Based on the output, the linear model that predicts number of tropes
+based on tempo is: trope\_count-hat = 4.593162 - 0.007591 \* bpm. The
+intercept of 4.593162 tells us that if a song has 0 bpm (nonsensical),
+it is expected to have 4.593162 clichés (tropes), on average. The slope
+of -0.007591 tells us that for an increase in 1 bpm, the expected number
+of clichés is predicted to decrease by 0.007591. The R-squared value of
+this model is 0.0225985, meaning that approximately 2.2598527 percent of
+the variability in clichés is accounted for by the linear model. This
+means that the linear model is relatively weak.
+
+Now, let’s see whether trope count is any indicator as to the rank
+(success) of a team. We will do this by creating another scatterplot and
+fitting a model.
+
+``` r
+ggplot(data = fight_songs, mapping = aes(x = trope_count, y = rank)) +
+  geom_jitter() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "Number of Clichés in Fight Song", y = "Team Rank", title = "Team Rank vs. Number of Clichés")
+```
+
+![](proposal_files/figure-gfm/scatterplot-tropes-rank-1.png)<!-- -->
+
+There seems to be a weak positive linear relationship between number of
+clichés in a fight song and team rank. Let’s find the linear model
+associated with this scatterplot:
+
+``` r
+(m_tropes_rank <- lm(data = fight_songs, rank ~ trope_count))
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = rank ~ trope_count, data = fight_songs)
+    ## 
+    ## Coefficients:
+    ## (Intercept)  trope_count  
+    ##     35.5818       0.5455
+
+Based on the output, the linear model that predicts rank based on number
+of clichés is: rank-hat = 35.5818 + 0.5455 \* trope\_count. The
+intercept of 35.5818 tells us that if a song has 0 clichés, it is
+expected to have a ranking of 35.5818, on average. The slope of 0.5455
+tells us that for an increase in 1 cliché, the expected team ranking is
+predicted to increase by 0.5455 points. The R-squared value of this
+model is 0.0012119, meaning that approximately 0.1211865 percent of the
+variability in ranks is accounted for by the linear model. This means
+that the linear model is relatively weak.
 
 ### Section 3: Research Questions
 
-From the univariate summary statistics and visualization (histogram) in
-Section 2, we learned, in the majority of college fight songs, the word
-“fight” appears only a few times. Moreover, the bivariate summary
-statistics and visualization (boxplots) revealed that the frequency of
-“fight” in fight songs is dependent on the particular conference a
-college belongs to. For instance, Louisiana State University, or LSU as
-it appears in the `fight_songs` dataset, is a member of the SEC
-conference. Thus, LSU’s fight song is predicted to have a relatively
-large number of occurrences of “fight”, since SEC has the second highest
-median occurrences of this word amongst the conferences considered.
-
-We would like to investigate the research question:
+Our first research question is: how does the tempo and duration of a
+college football team’s fight song predict the content of the song
+(i.e. the number of clichés/tropes)? We will utilize the `trope_count`
+variable, which counts the number of clichés in a fight song (a cliché
+is whether a song contains the word “fight”, the word “victory”, the
+word “won”, the word “rah”, nonsense syllables, school colors, a
+reference to “men”/“boys”/sons“, opponent name, or spells something out)
+to form connections between the a song’s duration and tempo and its
+content. The predictor variables we are interested in are `bpm`, which
+we started to explore in Section 2, and `sec_duration`. We aim to
+describe the relationship, if any exists, between the two numerical
+predictor (X) variables and the numerical response (Y) variable,
+`trope_count`. Based on the exploratory data analysis from Section 2, we
+hypothesize that the number of clichés will be less for songs with
+slower tempos (`bpm`) and probably shorter durations (`sec_duration`).
+Combining tempo and duration, we hope to separate songs into 4
+categories,”short and fast," “short and slow”, “long and fast,” and
+“long and slow”, and thus compare the number of tropes across these
+four categories.
 
 Our second research question is: how do characteristics of fight songs
 of college football teams correspond to their respective historical
