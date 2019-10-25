@@ -33,17 +33,6 @@ found this information from the Associated Press’s historic rankings of
 every college football team in the country, which was released last
 year.
 
-By means of our analysis, we hope to determine if any characteristics of
-fight songs (duration, number of tropes, etc.) are exclusive to
-particular college football conferences, or rather if songs have
-universal traits across the entire set of observations (all 65 colleges
-considered). We will utilize the `rank` variable to form connections
-between the performances of certain college football teams and their
-respective fight songs. For example, we may be better equipped to
-formulate conclusions about the similarities in the fight songs of
-higher-ranked (more successful) teams due to the addition of this new
-variable.
-
 ### Section 2: Exploratory Data Analysis
 
 We are interested in determining whether the number of times a fight
@@ -145,16 +134,56 @@ of “fight” are the ACC and then Big Ten.
 ### Section 3: Research Questions
 
 From the univariate summary statistics and visualization (histogram) in
-the exploratory data analysis section, we learned, in the majority of
-college fight songs, the word “fight” appears only a few times.
-Moreover, the bivariate summary statistics and visualization (boxplots)
-revealed that the frequency of “fight” in fight songs is dependent on
-the particular conference a college belongs to. For instance, Louisiana
-State University, or LSU as it appears in the `fight_songs` dataset, is
-a member of the SEC conference. Thus, LSU is predicted to have a
-relatively large number of occurrences of “fight” in its fight song
-since SEC has the second highest median occurrences of this word amongst
-the conferences considered.
+Section 2, we learned, in the majority of college fight songs, the word
+“fight” appears only a few times. Moreover, the bivariate summary
+statistics and visualization (boxplots) revealed that the frequency of
+“fight” in fight songs is dependent on the particular conference a
+college belongs to. For instance, Louisiana State University, or LSU as
+it appears in the `fight_songs` dataset, is a member of the SEC
+conference. Thus, LSU is predicted to have a relatively large number of
+occurrences of “fight” in its fight song, since SEC has the second
+highest median occurrences of this word amongst the conferences
+considered.
+
+We would like to investigate the research question: which
+characteristics, if any, of fight songs are exclusive to particular
+college football conferences, and which characteristics, if any,
+correlate to universal attributes of fights songs across the entire set
+of observations (all 65 colleges considered)? As explained previously,
+we have shown the number of occurrences of the word “fight” in fight
+songs is indeed associated with specific conferences. The predictor
+variables we anticipate using are: `nonsense`, `victory_win_won`,
+`colors`, and `opponents`. We will describe the relationship, if any
+exists, between these four predictor (X) variables and the response (Y)
+variable, `conference`. We hypothesize that a statistically significant
+relationship exists between `opponents` and `conference` since college
+football teams within the same conference often compete against one
+another, naturally leading to intense rivalries. Since conferences and
+iconic fight songs have both existed for decades, as evidenced by the
+`year` variable, it is reasonable to assume fight songs might reference
+rival teams. We hypothesize that there is no statistically significant
+relationship between `victory_win_won` and `conference` since different
+conferences have dominated college football over the years. If we make
+the assumption that many different teams within these conferences have
+been successful, then it is reasonable to believe the most fight songs
+will include at least one of the following words: “victory”, “win”, or
+“won”. We hypothesize that a statistically significant relationship
+does not exist between `colors` and `conference` since mentioning a
+school’s colors in a college football fight song seems like a common
+occurrence, regardless of which conference the teams belong to. We
+hypothesize that a statistically significant relationship exists between
+`nonsense` and `conference` because, since each conference corresponds
+to a different geographic region within the United States, teams from
+different conferences may have different cultural norms (and regional
+slang). Consequently, certain conferences may include teams with fight
+songs incorporating nonsense words while others do not at the same
+frequency.
+
+We will utilize the `rank` variable to form connections between the
+performances of certain college football teams and their respective
+fight songs. For example, we may be better equipped to formulate
+conclusions about the similarities in the fight songs of higher-ranked
+(more successful) teams due to the addition of this new variable.
 
 ### Section 4: Data
 
