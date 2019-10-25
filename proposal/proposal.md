@@ -151,63 +151,41 @@ conference. Thus, LSU’s fight song is predicted to have a relatively
 large number of occurrences of “fight”, since SEC has the second highest
 median occurrences of this word amongst the conferences considered.
 
-We would like to investigate the research question: which
-characteristics, if any, of fight songs are exclusive to particular
-college football conferences, and which characteristics, if any,
-correlate to universal attributes of fights songs across the entire set
-of observations (all 65 colleges considered)? As explained previously,
-we have shown the number of occurrences of the word “fight” in fight
-songs is indeed associated with specific conferences. The predictor
-variables we anticipate using are: `nonsense`, `victory_win_won`, `men`,
-`opponents`, and `number_fights`, which we explored above. We will
-describe the relationship, if any exists, between these five predictor
-(X) variables and the response (Y) variable, `conference`. We
-hypothesize that a statistically significant relationship exists between
-`opponents` and `conference` since college football teams within the
-same conference often compete against one another, naturally leading to
-intense rivalries. Since conferences and iconic fight songs have both
-existed for decades, as evidenced by the `year` variable, it is
-reasonable to assume fight songs might reference rival teams. We
-hypothesize that there is no statistically significant relationship
-between `victory_win_won` and `conference` since different conferences
-have dominated college football over the years. If we make the
-assumption that many different teams within these conferences have been
-successful, then it is reasonable to believe most fight songs will
-include at least one of the following words: “victory”, “win”, or “won”.
-We hypothesize that a statistically significant relationship does not
-exist between `colors` and `conference` since mentioning a school’s
-colors in a college football fight song seems like a common occurrence,
-regardless of which conference the team belongs to. We hypothesize that
-a statistically significant relationship exists between `nonsense` and
-`conference` because, since each conference corresponds to a different
-geographic region within the United States, teams from different
-conferences may have different cultural norms (and regional slang).
-Consequently, certain conferences may include teams with fight songs
-incorporating nonsense words while others do not at the same frequency.
+We would like to investigate the research question:
 
 Our second research question is: how do characteristics of fight songs
-of higher-ranked (more successful) college football teams compare to
-those of their less successful counterparts? We will utilize the `rank`
-variable to form connections between the performances of college
-football teams and their respective fight songs. As a result, we will be
-better equipped to formulate conclusions about the similarities in the
-fight songs of higher-ranked (more successful) teams. The predictor
-variables we are interested in are: `victory_win_won` and `opponents`.
-We aim to describe the relationship, if any exists, between these two
-predictor (X) variables and the response (Y) variable, `rank`. We
-hypothesize that a statistically significant relationship exists between
-`victory_win_won` and `rank` because it is reasonable to asssume
+of college football teams correspond to their respective historical
+levels of success? We will utilize the `rank` variable to form
+connections between the performances of college football teams and their
+respective fight songs. The predictor variables we are interested in
+are: `victory_win_won`, `opponents`, `nonsense`, and `rah`. We aim to
+describe the relationship, if any exists, between these four categorical
+predictor (X) variables and the numerical response (Y) variable, `rank`.
+We hypothesize that a statistically significant relationship exists
+between `victory_win_won` and `rank` because it is reasonable to asssume
 historically successful college football teams would incorporate
 symbolic elements of their dominance into their iconic fight songs. In
 this case, we believe the words “victory”, “win”, and “won” are symbolic
 elements of dominance, giving us reason to believe higher-ranked teams
-are more likely to have their fights songs include these words. We
+are more likely to have their fights songs include these words. We also
 hypothesize that a statistically significant relationship exists between
 `opponents` and `rank` since higher-ranked college football teams are
 likely to have developed more emotionally-charged rivalries with their
 highly successful peers. With such long-standing, emotional rivalries,
 it is reasonable to believe fight songs associated with these
 highly-ranked college football programs allude to these rivals by name.
+Moreover, we hypothesize that a statistically significant relationship
+exists between `nonsense` and `rank` because there have been a plethora
+of articles written about how, in the past, highly successful teams
+included nonsensical phrases in their fight songs to distract the
+players on the opposing college football teams. Since the fight songs
+included in our dataset were written decades ago (as evidenced by the
+`year` variable), it is reasonable to assume the songs associated with
+the historically-best college teams will have a higher likelihood of
+including nonsense (e.g “Hooperay”). Finally, we hypothesize there is no
+statistically significant relationship between `rah` and `rank` since
+“rah” seems like it would be a common word in a fight song,
+irrespective of the quality (how successful) of a college football team.
 
 ### Section 4: Data
 
