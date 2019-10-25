@@ -176,22 +176,22 @@ value is to 1 (or 100% variability), the more accurate the model is.
 Our first research question is: how does the tempo and duration of a
 college football team’s fight song predict the content of the song
 (i.e. the number of clichés/tropes)? We will utilize the `trope_count`
-variable, which counts the number of clichés in a fight song (a cliché
-is whether a song contains the word “fight”, the word “victory”, the
-word “won”, the word “rah”, nonsense syllables, school colors, a
-reference to “men”/“boys”/sons“, opponent name, or spells something out)
-to form connections between the a song’s duration and tempo and its
-content. The predictor variables we are interested in are `bpm`, which
-we started to explore in Section 2, and `sec_duration`. We aim to
-describe the relationship, if any exists, between the two numerical
-predictor (X) variables and the numerical response (Y) variable,
-`trope_count`. Based on the exploratory data analysis from Section 2, we
-hypothesize that the number of clichés will be less for songs with
-slower tempos (`bpm`) and probably shorter durations (`sec_duration`).
-Combining tempo and duration, we hope to separate songs into 4
-categories,”short and fast," “short and slow”, “long and fast,” and
-“long and slow”, and thus compare the number of tropes across these
-four categories.
+variable, which counts the number of clichés in a fight song (since we
+define a cliché as whether a song contains the word “fight”, the word
+“victory”, the word “won”, the word “win”, the word “rah”, nonsense
+syllables, school colors, a reference to “men”/“boys”/“sons”, an
+opponent name, or spells something out), to form connections between a
+song’s duration and tempo and its content. The predictor variables we
+are interested in are: `bpm`, which we started to explore in Section 2,
+and `sec_duration`. We aim to describe the relationship, if any exists,
+between the two numerical predictor (X) variables and the numerical
+response (Y) variable, `trope_count`. Based on the exploratory data
+analysis from Section 2, we hypothesize that the number of clichés will
+be less for songs with slower tempos (smaller `bpm`) and probably
+shorter durations (smaller `sec_duration`). Combining tempo and
+duration, we hope to separate songs into 4 categories, “short and fast,”
+“short and slow”, “long and fast,” and “long and slow”, and thus compare
+the number of tropes across these four categories.
 
 Our second research question is: how do characteristics of fight songs
 of college football teams correspond to their respective historical
