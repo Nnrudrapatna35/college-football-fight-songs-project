@@ -1,4 +1,4 @@
-Analyzing College Fight Songs
+Proposal: Analyzing College Fight Songs
 ================
 Power Ninja Data Turtles
 10/25/19
@@ -199,7 +199,10 @@ higher energies. We think that there may be confounding variables, so we
 want to look at tempo and duration together. Combining tempo and
 duration, we hope to separate songs into 4 categories, “short and fast,”
 “short and slow”, “long and fast,” and “long and slow”, and thus compare
-the number of tropes across these four categories.
+the number of tropes across these four categories. More concretely, we
+plan to examine a linear model with an interaction variable (`bpm` \*
+`sec_duration`) to better understand the combined effects of `bpm` and
+`sec_duration` in our comprehensive data analysis.
 
 Our second research question is: how do characteristics of fight songs
 of college football teams correspond to their respective historical
