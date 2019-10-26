@@ -65,7 +65,7 @@ Let’s also calculate the summary statistics for this distribution.
 Specifically, we will use the median as a measure of center and the
 interquartile range as a measure of spread (due to the bimodal nature of
 the distribution). In addition, we will find the upper and lower
-quartiles (Q3 and Q1 respectively), and the maximum and minimum values:
+quartiles (Q3 and Q1, respectively), and the maximum and minimum values:
 
 ``` r
 fight_songs %>%
@@ -87,7 +87,9 @@ clearly bimodal, with two distinct peaks occurring around 40 bpm and
 around 150 bpm. There are more songs that are clustered around the
 higher bpm mode. The center (median) occurs at 140 bpm, and the spread
 (IQR) is 61 bpm, indicating that there is a moderate amount of
-variability in tempos. There are no outliers in this distribution.
+variability in tempos. There are no outliers in this distribution. Due
+to the bimodal result, it seems like there is a natural grouping between
+“slow” songs and “fast” songs, which we will exploit in future analyses.
 
 Now, let’s see whether there appears to be a relationship between a
 fight song’s tempo (bpm) and the number of clichés (tropes) that a song
@@ -188,7 +190,13 @@ between the two numerical predictor (X) variables and the numerical
 response (Y) variable, `trope_count`. Based on the exploratory data
 analysis from Section 2, we hypothesize that the number of clichés will
 be less for songs with slower tempos (smaller `bpm`) and probably
-shorter durations (smaller `sec_duration`). Combining tempo and
+shorter durations (smaller `sec_duration`). We think that longer songs
+will contain more clichés because there is more time to fill the lyrics
+with clichés. Without completing the data analysis in Section 2, we
+would have thought that faster tempos would lead to more clichés, like
+“fight” or “rah,” because faster tempos are generally related to
+higher energies. We think that there may be confounding variables, so we
+want to look at tempo and duration together. Combining tempo and
 duration, we hope to separate songs into 4 categories, “short and fast,”
 “short and slow”, “long and fast,” and “long and slow”, and thus compare
 the number of tropes across these four categories.
