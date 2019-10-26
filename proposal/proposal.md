@@ -221,7 +221,7 @@ hypothesize that a statistically significant relationship exists between
 likely to have developed more emotionally-charged rivalries with their
 highly successful peers. With such long-standing, emotional rivalries,
 it is reasonable to believe fight songs associated with these
-highly-ranked college football programs allude to these rivals by name.
+highly-ranked college football programs allude to their rivals by name.
 Moreover, we hypothesize that a statistically significant relationship
 exists between `nonsense` and `rank` because there have been a plethora
 of articles written about how, in the past, highly successful teams
