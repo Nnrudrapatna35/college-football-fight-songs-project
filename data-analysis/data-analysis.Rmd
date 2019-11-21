@@ -153,9 +153,7 @@ Based on the output, the full linear model is `trope_count`-hat = 4.58 - 0.00757
 In order to make sure that there is no better model, we will use the `step()` function and use backwards selection with AIC as the selection criterion.
 
 ```{r backwards_selection_trope_count}
-m_trope_count <- step(m_full, direction = "backward")
-
-m_trope_count %>%
+(m_trope_count <- step(m_full, direction = "backward")) %>%
   tidy() %>%
   select(term, estimate)
 

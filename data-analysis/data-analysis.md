@@ -291,7 +291,9 @@ In order to make sure that there is no better model, we will use the
 criterion.
 
 ``` r
-m_trope_count <- step(m_full, direction = "backward")
+(m_trope_count <- step(m_full, direction = "backward")) %>%
+  tidy() %>%
+  select(term, estimate)
 ```
 
     ## Start:  AIC=70.5
@@ -311,12 +313,6 @@ m_trope_count <- step(m_full, direction = "backward")
     ## 
     ## Step:  AIC=67.98
     ## trope_count ~ 1
-
-``` r
-m_trope_count %>%
-  tidy() %>%
-  select(term, estimate)
-```
 
     ## # A tibble: 1 x 2
     ##   term        estimate
