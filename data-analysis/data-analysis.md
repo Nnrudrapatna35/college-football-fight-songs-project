@@ -252,20 +252,26 @@ population average of 4. However, our sample size is very small (9
 observations), so we must be wary of our results.
 
 Now, let’s find the full linear model that predicts number of tropes
-(`trope_count`) from tempo (`bpm`) and duration (`sec_duration`).
+(`trope_count`) from tempo (`bpm`) and duration (`sec_duration`). We can
+also check whether there the coefficients for `bpm` and `sec_duration`
+are statistically significant by finding their respective p-values and
+using an alpha level of 0.05. Let our null hypotheses be that the slopes
+associated with both variables are 0, H0: beta(`bpm`) = 0 and
+beta(`sec_duration`) = 0. Let our alternative hypotheses be that the
+slopes associated with both variables are significantly different than
+0, Ha: beta(`bpm`) ≠ 0 and beta(\`sec\_duration) ≠ 0.
 
 ``` r
 (m_full <- lm(trope_count ~ bpm + sec_duration, fight_songs)) %>%
-  tidy() %>%
-  select(term, estimate)
+  tidy()
 ```
 
-    ## # A tibble: 3 x 2
-    ##   term          estimate
-    ##   <chr>            <dbl>
-    ## 1 (Intercept)   4.58    
-    ## 2 bpm          -0.00757 
-    ## 3 sec_duration  0.000208
+    ## # A tibble: 3 x 5
+    ##   term          estimate std.error statistic  p.value
+    ##   <chr>            <dbl>     <dbl>     <dbl>    <dbl>
+    ## 1 (Intercept)   4.58       1.11       4.13   0.000109
+    ## 2 bpm          -0.00757    0.00640   -1.18   0.241   
+    ## 3 sec_duration  0.000208   0.00846    0.0246 0.980
 
 ``` r
 glance(m_full)$AIC
@@ -285,6 +291,23 @@ Based on the output, the full linear model is `trope_count`-hat = 4.58 -
 in trope counts can be explained by the linear model that predicts trope
 count from a song’s tempo and duration. Given this R-squared model, our
 model is very weak.
+
+The intercept tells us that for a song with 0 bpm and that is 0 seconds
+long, the expected number of tropes is 4.58 (this is nonsensical, as
+there is no such thing as a song that is 0 bpm or 0 minutes). The
+intercept of -0.00757 for `bpm` tells us that for an increase in 1 bpm,
+the number of tropes is expected to decrease by 0.00757. The intercept
+of 0.000208 for `sec_duration` tells us that for an increase in a song’s
+duration by 1 second, the number of tropes is expected to increase by
+0.000208. However, the p-values for the coefficients of `bpm` and
+`sec_duration`, 0.241 and 0.980. respectively, are both greater than our
+alpha level of 0.05. Therefore, we fail to reject the null hypothesis.
+There is insufficient evidence that the coefficients for `bpm` and
+`sec_duration` are different than 0.
+
+Circling back to our research question, we now have evidence that our
+two explanatory variables, `bpm` and `sec_duration`, do not seem to have
+any correlation to the trope count for a given fight song.
 
 In order to make sure that there is no better model, we will use the
 `step()` function and use backwards selection with AIC as the selection
