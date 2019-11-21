@@ -63,8 +63,8 @@ that there is a moderate amount of variability in tempos. There are no
 outliers in this distribution. Due to the bimodal result, it seems like
 there is a natural grouping between “slow” songs and “fast” songs, so we
 will mutate our data set to add a new variable, `tempo`, which is “slow”
-if a song’s bpm is less than 100 bpm, “fast” if a song’s tempo is greter
-than 100 bpm.
+if a song’s bpm is less than 100 bpm, “fast” if a song’s tempo is
+greater than 100 bpm.
 
 ``` r
 fight_songs <- fight_songs %>%
@@ -76,7 +76,7 @@ fight_songs <- fight_songs %>%
 
 Now, let’s start exploring our second explanatory variable,
 `sec_duration`, which is the duration of a song in seconds. In order to
-do this, we will create a historgram of the distribution and find the
+do this, we will create a histogram of the distribution and find the
 relevant summary statistics.
 
 ``` r
@@ -102,12 +102,12 @@ durations is roughly symmetric (slightly skewed to the right) and
 unimodal, with a peak at around 70. There are some outliers on the
 higher end of the spectrum (`sec_duration` \> 125.5), indicating that
 these songs are significantly longer than the others. The center of the
-distribution occurs at aroun 67 seconds, and the IQR of the distribution
-is 27 seconds, which is relatively narrow, indicating that fight songs
-do not have dramatically different lengths. Like we did with `bpm`,
-let’s add a new variable, `length`, which is “short” if a song is less
-than or equal to the median of 67 seconds, “long” if a song is greater
-than the median of 67 seconds.
+distribution occurs at around 67 seconds, and the IQR of the
+distribution is 27 seconds, which is relatively narrow, indicating that
+fight songs do not have dramatically different lengths. Like we did with
+`bpm`, let’s add a new variable, `length`, which is “short” if a song is
+less than or equal to the median of 67 seconds, “long” if a song is
+greater than the median of 67 seconds.
 
 ``` r
 fight_songs <- fight_songs %>%
@@ -171,7 +171,7 @@ Based on the histogram and summary statistics, we can see that the
 distribution for number of tropes is unimodal with a peak at around 4
 and skewed slightly to the left. There is 1 outlier at the maximum value
 of our distribution (8 tropes). The center of the distribution is at
-aroun 4 tropes, and the IQR of 2 indicates that there is not a great
+around 4 tropes, and the IQR of 2 indicates that there is not a large
 amount of variability in the number of tropes for college fight songs.
 
 Now, let’s return to our research question by seeing whether the amount
