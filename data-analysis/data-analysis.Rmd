@@ -134,3 +134,31 @@ visualise(null_slow_long) +
 ```
 
 Based on our p-value of 0.038, which is less than alpha = 0.05, we reject the null hypothesis. There is convincing evidence that the median number of tropes for songs that are slow and long is different than the population average of 4.
+
+Now, let's find the full linear model that predicts number of tropes (`trope_count`) from tempo (`bpm`) and duration (`sec_duration`).
+
+```{r model_full_trope_count}
+(m_full <- lm(trope_count ~ bpm + sec_duration, fight_songs)) %>%
+  tidy() %>%
+  select(term, estimate)
+
+glance(m_full)$AIC
+glance(m_full)$r.squared
+```
+
+Based on the output, the full linear model is `trope_count`-hat = 4.58 - 0.00757 * `bpm` + 0.000208 * `sec_duration`. The R-squared value is `r glance(m_full)$r.squared`, which means that approximately `r glance(m_full)$r.squared *100`% of the variability in trope counts can be explained by the linear model that predicts trope count from a song's tempo and duration. Given this R-squared model, our model is very weak.
+
+In order to make sure that there is no better model, we will use the `step()` function and use backwards selection with AIC as the selection criterion.
+
+```{r backwards_selection_trope_count}
+m_trope_count <- step(m_full, direction = "backward")
+
+m_trope_count %>%
+  tidy() %>%
+  select(term, estimate)
+
+glance(m_trope_count)$AIC
+glance(m_trope_count)$r.squared
+```
+
+Since backwards selection removed both `bpm` and `sec_duration` from our model, we can conclude that these two variables are insignificant and are not valid predictors for the number of tropes in a college fight song.

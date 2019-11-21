@@ -247,3 +247,92 @@ Based on our p-value of 0.038, which is less than alpha = 0.05, we
 reject the null hypothesis. There is convincing evidence that the median
 number of tropes for songs that are slow and long is different than the
 population average of 4.
+
+Now, let’s find the full linear model that predicts number of tropes
+(`trope_count`) from tempo (`bpm`) and duration (`sec_duration`).
+
+``` r
+(m_full <- lm(trope_count ~ bpm + sec_duration, fight_songs)) %>%
+  tidy() %>%
+  select(term, estimate)
+```
+
+    ## # A tibble: 3 x 2
+    ##   term          estimate
+    ##   <chr>            <dbl>
+    ## 1 (Intercept)   4.58    
+    ## 2 bpm          -0.00757 
+    ## 3 sec_duration  0.000208
+
+``` r
+glance(m_full)$AIC
+```
+
+    ## [1] 256.96
+
+``` r
+glance(m_full)$r.squared
+```
+
+    ## [1] 0.02260804
+
+Based on the output, the full linear model is `trope_count`-hat = 4.58 -
+0.00757 \* `bpm` + 0.000208 \* `sec_duration`. The R-squared value is
+0.022608, which means that approximately 2.2608044% of the variability
+in trope counts can be explained by the linear model that predicts trope
+count from a song’s tempo and duration. Given this R-squared model, our
+model is very weak.
+
+In order to make sure that there is no better model, we will use the
+`step()` function and use backwards selection with AIC as the selection
+criterion.
+
+``` r
+m_trope_count <- step(m_full, direction = "backward")
+```
+
+    ## Start:  AIC=70.5
+    ## trope_count ~ bpm + sec_duration
+    ## 
+    ##                Df Sum of Sq    RSS    AIC
+    ## - sec_duration  1    0.0017 175.33 68.499
+    ## - bpm           1    3.9608 179.29 69.950
+    ## <none>                      175.33 70.498
+    ## 
+    ## Step:  AIC=68.5
+    ## trope_count ~ bpm
+    ## 
+    ##        Df Sum of Sq    RSS    AIC
+    ## - bpm   1    4.0538 179.38 67.984
+    ## <none>              175.33 68.499
+    ## 
+    ## Step:  AIC=67.98
+    ## trope_count ~ 1
+
+``` r
+m_trope_count %>%
+  tidy() %>%
+  select(term, estimate)
+```
+
+    ## # A tibble: 1 x 2
+    ##   term        estimate
+    ##   <chr>          <dbl>
+    ## 1 (Intercept)     3.62
+
+``` r
+glance(m_trope_count)$AIC
+```
+
+    ## [1] 254.4464
+
+``` r
+glance(m_trope_count)$r.squared
+```
+
+    ## [1] 0
+
+Since backwards selection removed both `bpm` and `sec_duration` from our
+model, we can conclude that these two variables are insignificant and
+are not valid predictors for the number of tropes in a college fight
+song.
