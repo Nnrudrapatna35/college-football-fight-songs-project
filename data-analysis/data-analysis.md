@@ -17,10 +17,11 @@ fight_songs <- fight_songs %>%
 
 ### Research Question 1
 
-Our first research question is: \>"How does the tempo (`bpm`) and
-duration (`sec_duration`) of a college football team’s fight song
-predict the content of the song, specifically the number of
-clichés/tropes (`trope_count`)?
+Our first research question is:
+
+> "How does the tempo (`bpm`) and duration (`sec_duration`) of a college
+> football team’s fight song predict the content of the song,
+> specifically the number of clichés/tropes (`trope_count`)?
 
 Before we delve deeper into our analysis, let’s first take a look at the
 distributions of our two explanatory variables, `bpm` and
@@ -180,7 +181,8 @@ each classification.
 
 ``` r
 ggplot(fight_songs, mapping = aes(x = classify, y = trope_count)) +
-  geom_violin(draw_quantiles = c(.25, .5, .75)) + 
+  geom_violin(draw_quantiles = c(.25, .5, .75)) +
+  geom_jitter() +
   labs(title = "Number of Clichés", subtitle = "by Song Classification", x = "Song Classification", y = "Number of Clichés")
 ```
 
@@ -246,7 +248,8 @@ visualise(null_slow_long) +
 Based on our p-value of 0.038, which is less than alpha = 0.05, we
 reject the null hypothesis. There is convincing evidence that the median
 number of tropes for songs that are slow and long is different than the
-population average of 4.
+population average of 4. However, our sample size is very small (9
+observations), so we must be wary of our results.
 
 Now, let’s find the full linear model that predicts number of tropes
 (`trope_count`) from tempo (`bpm`) and duration (`sec_duration`).
