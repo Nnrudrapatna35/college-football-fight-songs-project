@@ -86,6 +86,24 @@ fight_songs %>%
   count(classify)
 ```
 
+Using these classifications, let's visualize the groupings and fill in each observation using the number of tropes associated with that observtion.
+
+```{r visualize-classify}
+ggplot(fight_songs, mapping = aes(x = sec_duration, y = bpm)) +
+  geom_jitter(aes(color = trope_count), ) + 
+  geom_hline(yintercept = 100, linetype = "dashed", color = "orange") +
+  geom_vline(xintercept = 67, linetype = "dashed", color = "orange") +
+  theme_minimal() +
+  labs(title = "Classification of College Fight Songs", 
+       subtitle = "by tempo and duration",
+       x = "Duration (sec)",
+       y = "Tempo (bpm)",
+       color = "Number of Tropes") +
+  scale_color_gradientn(colours = rainbow(5))
+```
+
+The upper left hand region of the graph represents songs that are "fast and short". The lower left hand region of the graph represents songs that are "slow and short." The upper right hand region of the graph represents songs that are "fast and long", and the lower right hand region of the graph represents songs that are "shlow and long."
+
 Finally, let's get an understanding of our response variable, `trope_count`, which is a measure of the number of clichés/tropes in a given fight song. We will also use a histogram and summary statistics for this univariate analysis.
 
 ```{r histogram-summary-stats-trope_count}
@@ -94,7 +112,7 @@ ggplot(fight_songs, mapping = aes(x = trope_count)) +
   labs(title = "Number of Clichés in College Fight Songs", x = "Number of Clichés", y = "Number of Songs")
 
 fight_songs %>%
-  summarise(min = min(trope_count), Q1 = quantile(trope_count, .25), median = median(trope_count), Q3 = quantile(trope_count, .75), max = max(trope_count), IQR = IQR(trope_count))
+  summarise(min = min(trope_count), Q1 = quantile(trope_count, .25), median = median(trope_count), Q3 = quantile(trope_count, .75), max = max(trope_count), IQR = IQR(trope_count), sd = sd(trope_count))
 ```
 
 Based on the histogram and summary statistics, we can see that the distribution for number of tropes is unimodal with a peak at around 4 and skewed slightly to the left. There is 1 outlier at the maximum value of our distribution (8 tropes). The center of the distribution is at around 4 tropes, and the IQR of 2 indicates that there is not a large amount of variability in the number of tropes for college fight songs.
@@ -109,7 +127,7 @@ ggplot(fight_songs, mapping = aes(x = classify, y = trope_count)) +
 
 fight_songs %>%
   group_by(classify) %>%
-  summarize(median = median(trope_count), IQR = IQR(trope_count))
+  summarize(median = median(trope_count), IQR = IQR(trope_count), sd = sd(trope_count))
 ```
 
 Not surprisingly, all of the distributions, except for "slow and long", are all centered at 4 tropes, which is thie median number of tropes for all songs in the data set. However, there is one classification, "slow and long," which has a median of 5. We would like to check whether this median is statistically significant or not. To do this, we will conduct a hypothesis test for the median number of tropes for songs that are considered "slow and long". Our null hypothesis is that the true median number of tropes for "slow and long" songs is 4, H0: median("slow and long") = 4. Our alternative hypothesis is that the true median number of tropes is different than 4, Ha: median("slow and long") ≠ 4. We will use an alpha level of 0.05. Let's create and visualize the null distribution and calculate the respective p-value.
@@ -136,6 +154,31 @@ visualise(null_slow_long) +
 ```
 
 Based on our p-value of 0.038, which is less than alpha = 0.05, we reject the null hypothesis. There is convincing evidence that the median number of tropes for songs that are slow and long is different than the population average of 4. However, our sample size is very small (9 observations), so we must be wary of our results.
+
+We can also see from the visualization "Number of Clichés" that the spread for "slow and short" songs is a lot smaller compared to all other song classifications. We will test whether the standard deviation for "slow and short" songs is significantly different from the population standard deviation of 1.674182. The null hypothesis is that the true standard deviation for the number of tropes for "slow and short" songs is 1.674182, H0: sigma = 1.674182. The alternative hypothesis is tht the true standard deviation for the number of tropes for "slow and short" songs is less than 1.674182, Ha: sigma < 1.674182. We will use an alpha level of 0.05.
+
+```{r hypothesis-test-slow-and-short}
+slow_short <- fight_songs %>%
+  filter(classify == "slow and short")
+
+set.seed(11101962)
+null_slow_short <- slow_short %>%
+  specify(response = trope_count) %>%
+  hypothesize(null = "point", sigma = 1.674182) %>%
+  generate(reps = 1000, type = "bootstrap") %>%
+  calculate(stat = "sd")
+
+get_p_value(null_slow_short, obs_stat = 1.125992, direction = "left")
+
+visualise(null_slow_short) + 
+  labs(title = "Null Distribution for Standard Deviation of Tropes",
+       subtitle = "for songs that are slow and short",
+       x = "Sample Standard Deviation of Tropes",
+       y = "Count") +
+  shade_p_value(1.125992, "left")
+```
+
+Based on the p-value of 0.685, which is greater than our alpha level of 0.05, we fail to reject the null hypothesis. There is insufficient evidence that the true standard deviation for slow and short songs is less than the population standard deviation of 1.674182.
 
 Now, let's find the full linear model that predicts number of tropes (`trope_count`) from tempo (`bpm`) and duration (`sec_duration`).  We can also check whether there the coefficients for `bpm` and `sec_duration` are statistically significant by finding their respective p-values and using an alpha level of 0.05. Let our null hypotheses be that the slopes associated with both variables are 0, H0: beta(`bpm`) = 0 and beta(`sec_duration`) = 0. Let our alternative hypotheses be that the slopes associated with both variables are significantly different than 0, Ha: beta(`bpm`) ≠ 0 and beta(`sec_duration) ≠ 0.
 
@@ -164,4 +207,4 @@ glance(m_trope_count)$AIC
 glance(m_trope_count)$r.squared
 ```
 
-Since backwards selection removed both `bpm` and `sec_duration` from our model, we can conclude that these two variables are insignificant and are not valid predictors for the number of tropes in a college fight song.
+Since backwards selection removed both `bpm` and `sec_duration` from our model, we can conclude that these two variables are not valid predictors for the number of tropes in a college fight song.
