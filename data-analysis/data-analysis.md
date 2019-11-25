@@ -737,7 +737,7 @@ fight songs: H0 = mu(rahNO) - mu(rahYES) = 0.
 
 The alternative hypothesis is that there is a difference in the median
 rank of college football teams between those with and without “rah” in
-their fight songs: H0 = mu(rahNO) - mu(rahYES) =/= 0.
+their fight songs: Ha = mu(rahNO) - mu(rahYES) =/= 0.
 
 Now, I will run a hypothesis test, calculate the p-value, and interpret
 the results in order to determine whether there is a statistically
@@ -827,3 +827,152 @@ Since backwards selection removed `victory_win_won`, `opponents`,
 `nonsense`, and `rah` from our model, we can conclude that these four
 variables are not valid predictors for the rank of a college football
 team.
+
+## Part 3
+
+Next, we will add a new variable to the fight\_songs dataset called
+`region`, which will represent the region of the US that a given college
+in the dataset is located based on its conference – either north, west,
+south or east. Since Notre Dame is the only college in the dataset that
+is independent (not in a conference), we will encode it to a region on
+its own.
+
+``` r
+fight_songs <- fight_songs %>%
+  mutate(region = case_when(
+    conference == "SEC" ~ "south",
+    conference == "Pac-12" ~ "west",
+    conference == "Big 12" ~ "south",
+    conference == "ACC" ~ "east",
+    conference == "Big Ten" ~ "north",
+    school == "Notre Dame" ~ "north"
+  ))
+```
+
+Now, we will run a hypothesis test, calculate the p-value, and interpret
+the results in order to determine whether there is a statistically
+significant difference in median number of times fights are mentioned
+between colleges in the north versus the south. The observed difference
+in medians is as follows.
+
+``` r
+fight_songs %>%
+  filter(region %in% c("north", "south")) %>%
+  group_by(region) %>%
+  summarize(median = median(number_fights))
+```
+
+    ## # A tibble: 2 x 2
+    ##   region median
+    ##   <chr>   <dbl>
+    ## 1 north       1
+    ## 2 south       3
+
+Based on the output above, we can see that the difference in the median
+number of times fights are mentioned between colleges in the north
+versus the south is 2. Now, we can conduct the hypothesis test.
+
+The null hypothesis is that there is no difference in the median number
+of times fights are mentioned between colleges in the north versus the
+south: H0 = median(north) - median(south) = 0.
+
+The alternative hypothesis is that there is a difference in the median
+number of times fights are mentioned between colleges in the north
+versus the south: Ha = median(north) - median(south) =/= 0.
+
+We hypothesize that a statistically significant relationship exists
+between `region` and `number_fights` because there is a difference in
+the proportion of colleges in the north that mention fights versus
+colleges in the south (0.66 versus 0.79, respectively). Therefore, we
+believe that since a higher proportion of southern colleges mention
+fights in their songs than northern colleges, southern colleges will
+mention fights more times in their songs than northern colleges (we will
+reject the null hypothesis). For this reason, we will set the direction
+operator in the `get_p_value()` function to “left,” because we predict
+that the median number of fights for southern colleges will be greater
+than that of the north (north - south should be negative, hence left).
+
+``` r
+set.seed(08312000)
+null_dist <- fight_songs %>%
+  filter(region %in% c("north", "south")) %>%
+  specify(response = number_fights, explanatory = region) %>%
+  hypothesize(null = "independence") %>% 
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "diff in medians", order = c("north", "south"))
+
+get_p_value(null_dist, obs_stat = -2, direction = "left")
+```
+
+    ## # A tibble: 1 x 1
+    ##   p_value
+    ##     <dbl>
+    ## 1   0.246
+
+Based on the above output, since the p value, 0.246, is greater than our
+alpha level of 0.05, we fail to reject the null hypothesis. In other
+words, there is no convincing evidence of a difference in the median
+number of times fights are mentioned in the fight songs of northern
+versus southern schools. Our original hypothesis was incorrect.
+
+Next, we will run a hypothesis test, calculate the p-value, and
+interpret the results in order to determine whether there is a
+statistically significant difference in mean duration of fight songs
+between colleges in the east versus the west. The observed difference in
+medians is as follows.
+
+``` r
+fight_songs %>%
+  filter(region %in% c("east", "west")) %>%
+  group_by(region) %>%
+  summarize(mean = round(mean(sec_duration), 2))
+```
+
+    ## # A tibble: 2 x 2
+    ##   region  mean
+    ##   <chr>  <dbl>
+    ## 1 east    73.6
+    ## 2 west    71.5
+
+Based on the output above, we can see that the difference in mean
+duration of fight songs between colleges in the east versus the west is
+2.07. Now, we can conduct the hypothesis test.
+
+The null hypothesis is that there is no difference in mean duration of
+fight songs between colleges in the east versus the west: H0 =
+mean(north) - mean(south) = 0.
+
+The alternative hypothesis is that there is a difference in mean
+duration of fight songs between colleges in the east versus the west: Ha
+= mean(north) - mean(south) =/= 0.
+
+We hypothesize that a no statistically significant relationship exists
+between `sec_duration` and `conference` because nearly all of the fight
+songs were created very long ago, and there exists no explanation as to
+why songs used by teams in one reason would consistenly be longer or
+shorter than those of another reason. Plus, some colleges have relocated
+over time with regions, and their fight songs (which were created very
+long ago) have remained the same all the while.
+
+``` r
+set.seed(08312000)
+null_dist <- fight_songs %>%
+  filter(region %in% c("east", "west")) %>%
+  specify(response = sec_duration, explanatory = region) %>%
+  hypothesize(null = "independence") %>% 
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "diff in medians", order = c("east", "west"))
+
+get_p_value(null_dist, obs_stat = 2.07, direction = "both")
+```
+
+    ## # A tibble: 1 x 1
+    ##   p_value
+    ##     <dbl>
+    ## 1   0.844
+
+Based on the above output, since the p value, 0.844, is greater than our
+alpha level of 0.05, we fail to reject the null hypothesis. In other
+words, there is no convincing evidence of a difference in mean duration
+of fight songs between colleges in the east versus the west. Our
+original hypothesis was correct.
