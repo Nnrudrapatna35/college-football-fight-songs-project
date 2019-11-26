@@ -186,19 +186,20 @@ visualise(null_slow_short) +
 
 Based on the p-value of 0.685, which is greater than our alpha level of 0.05, we fail to reject the null hypothesis in favor of the alternative hypothesis; in other words, the true standard deviation in the number of tropes for "slow and short" songs is equal to 1.675. Thus, the data do not provide convincing evidence that the true standard deviation for slow and short songs is less than the population standard deviation of 1.675.
 
-Now, let's find the full linear model that predicts number of tropes (`trope_count`) from tempo (`bpm`) and duration (`sec_duration`). We can also check whether the slope coefficients for `bpm` and `sec_duration` are statistically significant by finding their respective p-values and using an alpha level of 0.05. Let our null hypotheses be that the slopes associated with both variables are 0, H0: beta(`bpm`) = 0 and beta(`sec_duration`) = 0. Let our alternative hypotheses be that the slopes associated with both variables are significantly different than 0, Ha: beta(`bpm`) ≠ 0 and beta(`sec_duration) ≠ 0.
+Now, let's find the full linear model that predicts number of tropes (`trope_count`) from tempo (`bpm`) and duration (`sec_duration`). We can also check whether the slope coefficients for `bpm` and `sec_duration` are statistically significant by finding their respective p-values and using an alpha level of 0.05. Let our null hypotheses be that the slopes associated with both variables are 0, H0: beta(`bpm`) = 0 and beta(`sec_duration`) = 0. Let our alternative hypotheses be that the slopes associated with both variables are significantly different than 0, Ha: beta(`bpm`) ≠ 0 and beta(`sec_duration`) ≠ 0.
 
 ```{r model_full_trope_count}
 (m_full <- lm(trope_count ~ bpm + sec_duration, fight_songs)) %>%
-  tidy()
+  tidy() %>%
+  select(term, estimate)
 
 glance(m_full)$AIC
 glance(m_full)$r.squared
 ```
 
-Based on the output, the full linear model is `trope_count`-hat = 4.58 - 0.00757 * `bpm` + 0.000208 * `sec_duration`. The R-squared value is `r glance(m_full)$r.squared`, which means that approximately `r glance(m_full)$r.squared *100`% of the variability in trope counts can be explained by the linear model that predicts trope count from a song's tempo and duration. Given this R-squared model, our model is very weak.
+Based on the output, the full linear model is `trope_count`-hat = 4.58 - 0.00757 * `bpm` + 0.000208 * `sec_duration`. The R-squared value is `r glance(m_full)$r.squared`, which means that approximately `r glance(m_full)$r.squared *100`% of the variability in trope counts can be explained by the linear model that predicts trope count from a song's tempo and duration. Given this R-squared value, our model is very weak since  since, in general, the closer the R-squared value is to 1 (100% of the variability in trope counts can be explained by the model), the more accurate and useful the final model is. As the model only accounts for a small percent of the variability in trope counts, it is not a great predictor of a fight song's trope count.
 
-The intercept tells us that for a song with 0 bpm and that is 0 seconds long, the expected number of tropes is 4.58 (this is nonsensical, as there is no such thing as a song that is 0 bpm or 0 minutes).  The intercept of -0.00757 for `bpm` tells us that for an increase in 1 bpm, the number of tropes is expected to decrease by 0.00757.  The intercept of 0.000208 for `sec_duration` tells us that for an increase in a song's duration by 1 second, the number of tropes is expected to increase by 0.000208. However, the p-values for the coefficients of `bpm` and `sec_duration`, 0.241 and 0.980. respectively, are both greater than our alpha level of 0.05. Therefore, we fail to reject the null hypothesis. There is insufficient evidence that the coefficients for `bpm` and `sec_duration` are different than 0.
+The intercept tells us that for a song with 0 bpm and that is 0 seconds long, the expected number of tropes is 4.58 (this is nonsensical, as there is no such thing as a song that is 0 bpm or 0 minutes). The intercept of -0.00757 for `bpm` tells us that for an increase in 1 bpm, the number of tropes is expected to decrease by 0.00757.  The intercept of 0.000208 for `sec_duration` tells us that for an increase in a song's duration by 1 second, the number of tropes is expected to increase by 0.000208. However, the p-values for the coefficients of `bpm` and `sec_duration`, 0.241 and 0.980. respectively, are both greater than our alpha level of 0.05. Therefore, we fail to reject the null hypothesis. There is insufficient evidence that the coefficients for `bpm` and `sec_duration` are different than 0.
 
 Circling back to our research question, we now have evidence that our two explanatory variables, `bpm` and `sec_duration`, do not seem to have any correlation to the trope count for a given fight song.
 
@@ -219,11 +220,11 @@ Since backwards selection removed both `bpm` and `sec_duration` from our model, 
 
 Our second research question is:
 
->"How do the characteristics of fight songs of college football teams correspond to their respective historical levels of success?
+> "How do the characteristics of fight songs of college football teams correspond to their respective historical levels of success?
 
 Before we delve deeper into our analysis, let's first take a look at the distributions of our four explanatory variables, `victory_win_won`, `opponents`, `nonsense`, and `rah`, and our response variable, `rank`.
 
-Starting with `victory_win_won`, which is whether the song says "victory," "win," or "won", we will create a bar graph.
+Starting with `victory_win_won`, which is whether the song says "victory", "win", or "won", we will create a bar graph.
 
 ```{r visualize_victory_win_won}
 ggplot(fight_songs, mapping = aes(x = victory_win_won)) +
@@ -291,7 +292,7 @@ The alternative hypothesis is that there is a difference in the median rank of c
 Now, I will run a hypothesis test, calculate the p-value, and interpret the results in order to determine whether there is a statistically significant difference in median rank between colleges with/without "victory", "win", or "won" in their fight songs.
 
 ```{r rank_victory_win_won_hyp_test}
-set.seed(08312000)
+set.seed(11101962)
 null_dist <- fight_songs %>%
   specify(response = rank, explanatory = victory_win_won) %>%
   hypothesize(null = "independence") %>% 
@@ -299,10 +300,10 @@ null_dist <- fight_songs %>%
   calculate(stat = "diff in medians", 
             order = c("No", "Yes"))
 
-get_p_value(null_dist, obs_stat = 5.5, direction = "both")
+get_p_value(null_dist, obs_stat = 5.5, direction = "two_sided")
 ```
 
-Based on the above output, since the p value, 0.66, is greater than our alpha level of 0.05, we fail to reject the null hypothesis. In other words, there is no convincing evidence of a difference in median ranks of college football teams based on whether their fight songs include the words "victory", "win", or "won". Our original hypothesis was incorrect.
+Based on the above output, since the p value, 0.628, is greater than our alpha level of 0.05, we fail to reject the null hypothesis. In other words, there is no convincing evidence of a difference in median ranks of college football teams based on whether their fight songs include the words "victory", "win", or "won". Our original hypothesis was incorrect.
 
 We also hypothesize that a statistically significant relationship exists between `opponents` and `rank` since higher-ranked college football teams are likely to have developed more emotionally-charged rivalries with their highly successful peers. With such long-standing, emotional rivalries, it is reasonable to believe fight songs associated with these highly-ranked college football programs allude to their rivals by name. 
 
@@ -311,10 +312,11 @@ First, I will find the median rank based on `opponents` (yes or no).
 ```{r med_rank_opponents}
 fight_songs %>%
   group_by(opponents) %>%
-  summarise(med_rank = median(rank))
+  summarise(med_rank = median(rank)) %>%
+  summarise(Difference = diff(med_rank))
 ```
 
-I observe a difference of -0.5 (34 - 34.5) in rank between colleges that do and do not mention opponents in their fight songs.
+I observe a difference of 0.5 (34.5 - 34) in rank between colleges that do and do not mention opponents in their fight songs.
 
 The null hypothesis is that there is no difference in the median rank of college football teams between those who do and do not mention their opponents in their fight songs: H0 = mu(opponentsNO) - mu(opponentsYES) = 0.
 
@@ -323,7 +325,9 @@ The alternative hypothesis is that there is a difference in the median rank of c
 Now, I will run a hypothesis test, calculate the p-value, and interpret the results in order to determine whether there is a statistically significant difference in median rank between colleges with/without mentioning their opponents in their fight songs.
 
 ```{r rank_opponents_hyp_test}
-set.seed(08312000)
+obs_diff_opponents <- 0.5
+
+set.seed(11101962)
 null_dist <- fight_songs %>%
   specify(response = rank, explanatory = opponents) %>%
   hypothesize(null = "independence") %>% 
@@ -331,10 +335,10 @@ null_dist <- fight_songs %>%
   calculate(stat = "diff in medians", 
             order = c("No", "Yes"))
 
-get_p_value(null_dist, obs_stat = -0.5, direction = "both")
+get_p_value(null_dist, obs_stat = obs_diff_opponents, direction = "two_sided")
 ```
 
-Based on the above output, since the p value, 0.962, is greater than our alpha level of 0.05, we fail to reject the null hypothesis. In other words, there is no convincing evidence of a difference in median ranks of college football teams based on whether their fight songs mention their opponents. Our original hypothesis was incorrect.
+Based on the above output, since the p value, 0.958, is greater than our alpha level of 0.05, we fail to reject the null hypothesis. In other words, there is no convincing evidence of a difference in median ranks of college football teams based on whether their fight songs mention their opponents. Our original hypothesis was incorrect.
 
 Moreover, we hypothesize that a statistically significant relationship exists between `nonsense` and `rank` because there have been a plethora of articles written about how, in the past, highly successful teams included nonsensical phrases in their fight songs to distract the players on the opposing college football teams. Since the fight songs included in our dataset were written decades ago (as evidenced by the `year` variable), it is reasonable to assume the songs associated with the historically-best college teams will have a higher likelihood of including nonsense (e.g "Hooperay"). 
 
@@ -343,10 +347,11 @@ First, I will find the median rank based on `nonsense` (yes or no).
 ```{r med_rank_nonsense}
 fight_songs %>%
   group_by(nonsense) %>%
-  summarise(med_rank = median(rank))
+  summarise(med_rank = median(rank)) %>%
+  summarise(Difference = diff(med_rank))
 ```
 
-I observe a difference of -11.5 (31 - 42.5) in rank between colleges with and without nonsense words in their fight songs.
+I observe a difference of 11.5 (42.5 - 31) in rank between colleges with and without nonsense words in their fight songs.
 
 The null hypothesis is that there is no difference in the median rank of college football teams between those with and without nonsense words in their fight songs: H0 = mu(nonsenseNO) - mu(nonsenseYES) = 0.
 
@@ -355,7 +360,9 @@ The alternative hypothesis is that there is a difference in the median rank of c
 Now, I will run a hypothesis test, calculate the p-value, and interpret the results in order to determine whether there is a statistically significant difference in median rank between colleges with/without nonsense words in their fight songs.
 
 ```{r rank_nonsense_hyp_test}
-set.seed(08312000)
+obs_diff_nonsense <- 11.5
+
+set.seed(11101962)
 null_dist <- fight_songs %>%
   specify(response = rank, explanatory = nonsense) %>%
   hypothesize(null = "independence") %>% 
@@ -363,10 +370,10 @@ null_dist <- fight_songs %>%
   calculate(stat = "diff in medians", 
             order = c("No", "Yes"))
 
-get_p_value(null_dist, obs_stat = -11.5, direction = "both")
+get_p_value(null_dist, obs_stat = obs_diff_nonsense, direction = "two_sided")
 ```
 
-Based on the above output, since the p value, 0.364, is greater than our alpha level of 0.05, we fail to reject the null hypothesis. In other words, there is no convincing evidence of a difference in median ranks of college football teams based on whether their fight songs include nonsense words. Our original hypothesis was incorrect.
+Based on the above output, since the p value, 0.332, is greater than our alpha level of 0.05, we fail to reject the null hypothesis. In other words, there is no convincing evidence of a difference in median ranks of college football teams based on whether their fight songs include nonsense words. Our original hypothesis was incorrect.
 
 Finally, we hypothesize there is no statistically significant relationship between `rah` and `rank` since "rah" seems like it would be a common word in a fight song, irrespective of the quality (how successful) of a college football team.
 
@@ -375,10 +382,11 @@ First, I will find the median rank based on `rah` (yes or no).
 ```{r med_rank_rah}
 fight_songs %>%
   group_by(rah) %>%
-  summarise(med_rank = median(rank))
+  summarise(med_rank = median(rank)) %>%
+  summarise(Difference = diff(med_rank))
 ```
 
-I observe a difference of -5.5 (32 - 37.5) in rank between colleges with and without "rah" in their fight songs.
+I observe a difference of 5.5 (37.5 - 32) in rank between colleges with and without "rah" in their fight songs.
 
 The null hypothesis is that there is no difference in the median rank of college football teams between those with and without "rah" in their fight songs: H0 = mu(rahNO) - mu(rahYES) = 0.
 
@@ -387,7 +395,9 @@ The alternative hypothesis is that there is a difference in the median rank of c
 Now, I will run a hypothesis test, calculate the p-value, and interpret the results in order to determine whether there is a statistically significant difference in median rank between colleges with/without "rah" in their fight songs.
 
 ```{r rank_rah_hyp_test}
-set.seed(08312000)
+obs_diff_rah <- 5.5
+
+set.seed(11101962)
 null_dist <- fight_songs %>%
   specify(response = rank, explanatory = rah) %>%
   hypothesize(null = "independence") %>% 
@@ -395,10 +405,10 @@ null_dist <- fight_songs %>%
   calculate(stat = "diff in medians", 
             order = c("No", "Yes"))
 
-get_p_value(null_dist, obs_stat = -5.5, direction = "both")
+get_p_value(null_dist, obs_stat = obs_diff_rah, direction = "two_sided")
 ```
 
-Based on the above output, since the p value, 0.628, is greater than our alpha level of 0.05, we fail to reject the null hypothesis. In other words, there is no convincing evidence of a difference in median ranks of college football teams based on whether their fight songs include "rah". Our original hypothesis was correct.
+Based on the above output, since the p value, 0.654, is greater than our alpha level of 0.05, we fail to reject the null hypothesis. In other words, there is no convincing evidence of a difference in median ranks of college football teams based on whether their fight songs include "rah". Our original hypothesis was correct.
 
 Now, let’s find the full linear model that predicts the rank of a college football team (`rank`) based on various characteristics of the college's fight song: `victory_win_won`, `opponents`, `nonsense`, and `rah`.
 
@@ -426,7 +436,7 @@ best_model
 
 Since backwards selection removed `victory_win_won`, `opponents`, `nonsense`, and `rah` from our model, we can conclude that these four variables are not valid predictors for the rank of a college football team.
 
-## Part 3
+## Additional Analysis
 
 Next, we will add a new variable to the fight_songs dataset called `region`, which will represent the region of the US that a given college in the dataset is located based on its conference -- either north, west, south or east. Since Notre Dame is the only college in the dataset that is independent (not in a conference), we will encode it to a region on its own.
 
@@ -458,7 +468,7 @@ The alternative hypothesis is that there is a difference in the median number of
 We hypothesize that a statistically significant relationship exists between `region` and `number_fights` because there is a difference in the proportion of colleges in the north that mention fights versus colleges in the south (0.66 versus 0.79, respectively). Therefore, we believe that since a higher proportion of southern colleges mention fights in their songs than northern colleges, southern colleges will mention fights more times in their songs than northern colleges (we will reject the null hypothesis). For this reason, we will set the direction operator in the `get_p_value()` function to "left," because we predict that the median number of fights for southern colleges will be greater than that of the north (north - south should be negative, hence left).
 
 ```{r north_south_fights_hyp_test}
-set.seed(08312000)
+set.seed(11101962)
 null_dist <- fight_songs %>%
   filter(region %in% c("north", "south")) %>%
   specify(response = number_fights, explanatory = region) %>%
@@ -489,7 +499,7 @@ The alternative hypothesis is that there is a difference in mean duration of fig
 We hypothesize that a no statistically significant relationship exists between `sec_duration` and `conference` because nearly all of the fight songs were created very long ago, and there exists no explanation as to why songs used by teams in one reason would consistenly be longer or shorter than those of another reason. Plus, some colleges have relocated over time with regions, and their fight songs (which were created very long ago) have remained the same all the while.
 
 ```{r east_west_fights_hyp_test}
-set.seed(08312000)
+set.seed(11101962)
 null_dist <- fight_songs %>%
   filter(region %in% c("east", "west")) %>%
   specify(response = sec_duration, explanatory = region) %>%

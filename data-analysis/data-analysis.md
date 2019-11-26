@@ -348,19 +348,20 @@ using an alpha level of 0.05. Let our null hypotheses be that the slopes
 associated with both variables are 0, H0: beta(`bpm`) = 0 and
 beta(`sec_duration`) = 0. Let our alternative hypotheses be that the
 slopes associated with both variables are significantly different than
-0, Ha: beta(`bpm`) ≠ 0 and beta(\`sec\_duration) ≠ 0.
+0, Ha: beta(`bpm`) ≠ 0 and beta(`sec_duration`) ≠ 0.
 
 ``` r
 (m_full <- lm(trope_count ~ bpm + sec_duration, fight_songs)) %>%
-  tidy()
+  tidy() %>%
+  select(term, estimate)
 ```
 
-    ## # A tibble: 3 x 5
-    ##   term          estimate std.error statistic  p.value
-    ##   <chr>            <dbl>     <dbl>     <dbl>    <dbl>
-    ## 1 (Intercept)   4.58       1.11       4.13   0.000109
-    ## 2 bpm          -0.00757    0.00640   -1.18   0.241   
-    ## 3 sec_duration  0.000208   0.00846    0.0246 0.980
+    ## # A tibble: 3 x 2
+    ##   term          estimate
+    ##   <chr>            <dbl>
+    ## 1 (Intercept)   4.58    
+    ## 2 bpm          -0.00757 
+    ## 3 sec_duration  0.000208
 
 ``` r
 glance(m_full)$AIC
@@ -378,8 +379,12 @@ Based on the output, the full linear model is `trope_count`-hat = 4.58 -
 0.00757 \* `bpm` + 0.000208 \* `sec_duration`. The R-squared value is
 0.022608, which means that approximately 2.2608044% of the variability
 in trope counts can be explained by the linear model that predicts trope
-count from a song’s tempo and duration. Given this R-squared model, our
-model is very weak.
+count from a song’s tempo and duration. Given this R-squared value, our
+model is very weak since since, in general, the closer the R-squared
+value is to 1 (100% of the variability in trope counts can be explained
+by the model), the more accurate and useful the final model is. As the
+model only accounts for a small percent of the variability in trope
+counts, it is not a great predictor of a fight song’s trope count.
 
 The intercept tells us that for a song with 0 bpm and that is 0 seconds
 long, the expected number of tropes is 4.58 (this is nonsensical, as
@@ -459,7 +464,7 @@ distributions of our four explanatory variables, `victory_win_won`,
 `opponents`, `nonsense`, and `rah`, and our response variable, `rank`.
 
 Starting with `victory_win_won`, which is whether the song says
-“victory,” “win,” or “won”, we will create a bar graph.
+“victory”, “win”, or “won”, we will create a bar graph.
 
 ``` r
 ggplot(fight_songs, mapping = aes(x = victory_win_won)) +
@@ -579,7 +584,7 @@ significant difference in median rank between colleges with/without
 “victory”, “win”, or “won” in their fight songs.
 
 ``` r
-set.seed(08312000)
+set.seed(11101962)
 null_dist <- fight_songs %>%
   specify(response = rank, explanatory = victory_win_won) %>%
   hypothesize(null = "independence") %>% 
@@ -587,15 +592,15 @@ null_dist <- fight_songs %>%
   calculate(stat = "diff in medians", 
             order = c("No", "Yes"))
 
-get_p_value(null_dist, obs_stat = 5.5, direction = "both")
+get_p_value(null_dist, obs_stat = 5.5, direction = "two_sided")
 ```
 
     ## # A tibble: 1 x 1
     ##   p_value
     ##     <dbl>
-    ## 1    0.66
+    ## 1   0.634
 
-Based on the above output, since the p value, 0.66, is greater than our
+Based on the above output, since the p value, 0.628, is greater than our
 alpha level of 0.05, we fail to reject the null hypothesis. In other
 words, there is no convincing evidence of a difference in median ranks
 of college football teams based on whether their fight songs include the
@@ -613,16 +618,16 @@ First, I will find the median rank based on `opponents` (yes or no).
 ``` r
 fight_songs %>%
   group_by(opponents) %>%
-  summarise(med_rank = median(rank))
+  summarise(med_rank = median(rank)) %>%
+  summarise(Difference = diff(med_rank))
 ```
 
-    ## # A tibble: 2 x 2
-    ##   opponents med_rank
-    ##   <chr>        <dbl>
-    ## 1 No            34  
-    ## 2 Yes           34.5
+    ## # A tibble: 1 x 1
+    ##   Difference
+    ##        <dbl>
+    ## 1        0.5
 
-I observe a difference of -0.5 (34 - 34.5) in rank between colleges that
+I observe a difference of 0.5 (34.5 - 34) in rank between colleges that
 do and do not mention opponents in their fight songs.
 
 The null hypothesis is that there is no difference in the median rank of
@@ -641,7 +646,9 @@ significant difference in median rank between colleges with/without
 mentioning their opponents in their fight songs.
 
 ``` r
-set.seed(08312000)
+obs_diff_opponents <- 0.5
+
+set.seed(11101962)
 null_dist <- fight_songs %>%
   specify(response = rank, explanatory = opponents) %>%
   hypothesize(null = "independence") %>% 
@@ -649,15 +656,15 @@ null_dist <- fight_songs %>%
   calculate(stat = "diff in medians", 
             order = c("No", "Yes"))
 
-get_p_value(null_dist, obs_stat = -0.5, direction = "both")
+get_p_value(null_dist, obs_stat = obs_diff_opponents, direction = "two_sided")
 ```
 
     ## # A tibble: 1 x 1
     ##   p_value
     ##     <dbl>
-    ## 1   0.962
+    ## 1   0.958
 
-Based on the above output, since the p value, 0.962, is greater than our
+Based on the above output, since the p value, 0.958, is greater than our
 alpha level of 0.05, we fail to reject the null hypothesis. In other
 words, there is no convincing evidence of a difference in median ranks
 of college football teams based on whether their fight songs mention
@@ -678,17 +685,17 @@ First, I will find the median rank based on `nonsense` (yes or no).
 ``` r
 fight_songs %>%
   group_by(nonsense) %>%
-  summarise(med_rank = median(rank))
+  summarise(med_rank = median(rank)) %>%
+  summarise(Difference = diff(med_rank))
 ```
 
-    ## # A tibble: 2 x 2
-    ##   nonsense med_rank
-    ##   <chr>       <dbl>
-    ## 1 No           31  
-    ## 2 Yes          42.5
+    ## # A tibble: 1 x 1
+    ##   Difference
+    ##        <dbl>
+    ## 1       11.5
 
-I observe a difference of -11.5 (31 - 42.5) in rank between colleges
-with and without nonsense words in their fight songs.
+I observe a difference of 11.5 (42.5 - 31) in rank between colleges with
+and without nonsense words in their fight songs.
 
 The null hypothesis is that there is no difference in the median rank of
 college football teams between those with and without nonsense words in
@@ -704,7 +711,9 @@ significant difference in median rank between colleges with/without
 nonsense words in their fight songs.
 
 ``` r
-set.seed(08312000)
+obs_diff_nonsense <- 11.5
+
+set.seed(11101962)
 null_dist <- fight_songs %>%
   specify(response = rank, explanatory = nonsense) %>%
   hypothesize(null = "independence") %>% 
@@ -712,15 +721,15 @@ null_dist <- fight_songs %>%
   calculate(stat = "diff in medians", 
             order = c("No", "Yes"))
 
-get_p_value(null_dist, obs_stat = -11.5, direction = "both")
+get_p_value(null_dist, obs_stat = obs_diff_nonsense, direction = "two_sided")
 ```
 
     ## # A tibble: 1 x 1
     ##   p_value
     ##     <dbl>
-    ## 1   0.364
+    ## 1   0.332
 
-Based on the above output, since the p value, 0.364, is greater than our
+Based on the above output, since the p value, 0.332, is greater than our
 alpha level of 0.05, we fail to reject the null hypothesis. In other
 words, there is no convincing evidence of a difference in median ranks
 of college football teams based on whether their fight songs include
@@ -736,16 +745,16 @@ First, I will find the median rank based on `rah` (yes or no).
 ``` r
 fight_songs %>%
   group_by(rah) %>%
-  summarise(med_rank = median(rank))
+  summarise(med_rank = median(rank)) %>%
+  summarise(Difference = diff(med_rank))
 ```
 
-    ## # A tibble: 2 x 2
-    ##   rah   med_rank
-    ##   <chr>    <dbl>
-    ## 1 No        32  
-    ## 2 Yes       37.5
+    ## # A tibble: 1 x 1
+    ##   Difference
+    ##        <dbl>
+    ## 1        5.5
 
-I observe a difference of -5.5 (32 - 37.5) in rank between colleges with
+I observe a difference of 5.5 (37.5 - 32) in rank between colleges with
 and without “rah” in their fight songs.
 
 The null hypothesis is that there is no difference in the median rank of
@@ -762,7 +771,9 @@ significant difference in median rank between colleges with/without
 “rah” in their fight songs.
 
 ``` r
-set.seed(08312000)
+obs_diff_rah <- 5.5
+
+set.seed(11101962)
 null_dist <- fight_songs %>%
   specify(response = rank, explanatory = rah) %>%
   hypothesize(null = "independence") %>% 
@@ -770,15 +781,15 @@ null_dist <- fight_songs %>%
   calculate(stat = "diff in medians", 
             order = c("No", "Yes"))
 
-get_p_value(null_dist, obs_stat = -5.5, direction = "both")
+get_p_value(null_dist, obs_stat = obs_diff_rah, direction = "two_sided")
 ```
 
     ## # A tibble: 1 x 1
     ##   p_value
     ##     <dbl>
-    ## 1   0.628
+    ## 1   0.654
 
-Based on the above output, since the p value, 0.628, is greater than our
+Based on the above output, since the p value, 0.654, is greater than our
 alpha level of 0.05, we fail to reject the null hypothesis. In other
 words, there is no convincing evidence of a difference in median ranks
 of college football teams based on whether their fight songs include
@@ -845,7 +856,7 @@ Since backwards selection removed `victory_win_won`, `opponents`,
 variables are not valid predictors for the rank of a college football
 team.
 
-## Part 3
+## Additional Analysis
 
 Next, we will add a new variable to the fight\_songs dataset called
 `region`, which will represent the region of the US that a given college
@@ -910,7 +921,7 @@ that the median number of fights for southern colleges will be greater
 than that of the north (north - south should be negative, hence left).
 
 ``` r
-set.seed(08312000)
+set.seed(11101962)
 null_dist <- fight_songs %>%
   filter(region %in% c("north", "south")) %>%
   specify(response = number_fights, explanatory = region) %>%
@@ -924,7 +935,7 @@ get_p_value(null_dist, obs_stat = -2, direction = "left")
     ## # A tibble: 1 x 1
     ##   p_value
     ##     <dbl>
-    ## 1   0.246
+    ## 1   0.277
 
 Based on the above output, since the p value, 0.246, is greater than our
 alpha level of 0.05, we fail to reject the null hypothesis. In other
@@ -972,7 +983,7 @@ over time with regions, and their fight songs (which were created very
 long ago) have remained the same all the while.
 
 ``` r
-set.seed(08312000)
+set.seed(11101962)
 null_dist <- fight_songs %>%
   filter(region %in% c("east", "west")) %>%
   specify(response = sec_duration, explanatory = region) %>%
@@ -986,7 +997,7 @@ get_p_value(null_dist, obs_stat = 2.07, direction = "both")
     ## # A tibble: 1 x 1
     ##   p_value
     ##     <dbl>
-    ## 1   0.844
+    ## 1   0.882
 
 Based on the above output, since the p value, 0.844, is greater than our
 alpha level of 0.05, we fail to reject the null hypothesis. In other
