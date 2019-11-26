@@ -62,9 +62,9 @@ more songs that are clustered around the higher bpm mode. The center
 that there is a moderate amount of variability in tempos. There are no
 outliers in this distribution. Due to the bimodal result, it seems like
 there is a natural grouping between “slow” songs and “fast” songs, so we
-will mutate our data set to add a new variable, `tempo`, which is “slow”
-if a song’s bpm is less than 100 bpm, “fast” if a song’s tempo is
-greater than 100 bpm.
+will use the `mutate()` function to add a new variable, `tempo`, which
+is “slow” if a song’s `bpm` is less than or equal to 100 bpm and “fast”
+if a song’s tempo is greater than 100 bpm.
 
 ``` r
 fight_songs <- fight_songs %>%
@@ -77,12 +77,12 @@ fight_songs <- fight_songs %>%
 Now, let’s start exploring our second explanatory variable,
 `sec_duration`, which is the duration of a song in seconds. In order to
 do this, we will create a histogram of the distribution and find the
-relevant summary statistics.
+relevant summary statistics:
 
 ``` r
 ggplot(fight_songs, mapping = aes(x = sec_duration)) +
   geom_histogram(binwidth = 20) +
-  labs(title = "Duration of College Fight Songs", x = "Duration (s)", y = "Number of Songs")
+  labs(title = "Duration of College Fight Songs", x = "Duration (sec)", y = "Number of Songs")
 ```
 
 ![](data-analysis_files/figure-gfm/histogram-summary-stats-sec_duration-1.png)<!-- -->
@@ -106,7 +106,7 @@ distribution occurs at around 67 seconds, and the IQR of the
 distribution is 27 seconds, which is relatively narrow, indicating that
 fight songs do not have dramatically different lengths. Like we did with
 `bpm`, let’s add a new variable, `length`, which is “short” if a song is
-less than or equal to the median of 67 seconds, “long” if a song is
+less than or equal to the median of 67 seconds and “long” if a song is
 greater than the median of 67 seconds.
 
 ``` r
@@ -117,11 +117,11 @@ fight_songs <- fight_songs %>%
   ))
 ```
 
-Now that we have an understanding of our two explanatory variables, we
-want to add a new variable, `classify`, which combines `bpm` and
-`sec_duration` by labeling each song with one of four classifications:
-“slow and short”, “slow and long”, “fast and short”, and “fast and
-long”.
+Now that we have a better understanding of our two explanatory
+variables, we want to add a new variable, `classify`, which combines
+`bpm` and `sec_duration` by labeling each song with one of four
+classifications: “slow and short”, “slow and long”, “fast and short”,
+and “fast and long”:
 
 ``` r
 fight_songs <- fight_songs %>%
@@ -144,13 +144,18 @@ fight_songs %>%
     ## 3 slow and long      9
     ## 4 slow and short     8
 
-Using these classifications, let’s visualize the groupings and fill in
-each observation using the number of tropes associated with that
-observtion.
+Based on the output displayed in the tibble above, 23 songs are
+categorized as “fast and long”, 25 songs are categorized as “fast and
+short”, 9 songs are categorized as “slow and long”, and 8 songs are
+categorized as “slow and short”.
+
+Using these classifications, let’s visualize the groups and fill in each
+observation with the number of tropes associated with that particular
+observation:
 
 ``` r
 ggplot(fight_songs, mapping = aes(x = sec_duration, y = bpm)) +
-  geom_jitter(aes(color = trope_count), ) + 
+  geom_jitter(aes(color = trope_count)) + 
   geom_hline(yintercept = 100, linetype = "dashed", color = "orange") +
   geom_vline(xintercept = 67, linetype = "dashed", color = "orange") +
   theme_minimal() +
@@ -164,16 +169,17 @@ ggplot(fight_songs, mapping = aes(x = sec_duration, y = bpm)) +
 
 ![](data-analysis_files/figure-gfm/visualize-classify-1.png)<!-- -->
 
-The upper left hand region of the graph represents songs that are “fast
-and short”. The lower left hand region of the graph represents songs
-that are “slow and short.” The upper right hand region of the graph
-represents songs that are “fast and long”, and the lower right hand
-region of the graph represents songs that are “shlow and long.”
+The upper left-hand region of the graph represents songs that are “fast
+and short” while the lower left-hand region of the graph represents
+songs that are “slow and short.” The upper right-hand region of the
+graph represents songs that are “fast and long”, and the lower
+right-hand region of the graph represents songs that are “slow and
+long.”
 
 Finally, let’s get an understanding of our response variable,
 `trope_count`, which is a measure of the number of clichés/tropes in a
 given fight song. We will also use a histogram and summary statistics
-for this univariate analysis.
+for this univariate analysis:
 
 ``` r
 ggplot(fight_songs, mapping = aes(x = trope_count)) +
@@ -196,14 +202,15 @@ fight_songs %>%
 Based on the histogram and summary statistics, we can see that the
 distribution for number of tropes is unimodal with a peak at around 4
 and skewed slightly to the left. There is 1 outlier at the maximum value
-of our distribution (8 tropes). The center of the distribution is at
-around 4 tropes, and the IQR of 2 indicates that there is not a large
-amount of variability in the number of tropes for college fight songs.
+of our distribution (8 tropes). The center of the distribution,
+described by the median, is 4 tropes, and the IQR of 2 indicates that
+there is not a large amount of variability in the number of tropes for
+college fight songs.
 
-Now, let’s return to our research question by seeing whether the amount
-of clichés varies based on a song’s classification. First, we will
-create violin plots for the distribution of the number of tropes for
-each classification.
+Now, let’s return to our research question by examining whether the
+amount of clichés varies based on a song’s classification. First, we
+will create violin plots for the distribution of the number of tropes
+for each classification:
 
 ``` r
 ggplot(fight_songs, mapping = aes(x = classify, y = trope_count)) +
@@ -229,19 +236,21 @@ fight_songs %>%
     ## 4 slow and short      4   2    1.13
 
 Not surprisingly, all of the distributions, except for “slow and long”,
-are all centered at 4 tropes, which is thie median number of tropes for
-all songs in the data set. However, there is one classification, “slow
-and long,” which has a median of 5. We would like to check whether this
+are all centered at 4 tropes, which is the median number of tropes for
+all songs in the dataset. However, there is one category, “slow and
+long,” which has a median of 5. We would like to check whether this
 median is statistically significant or not. To do this, we will conduct
 a hypothesis test for the median number of tropes for songs that are
 considered “slow and long”. Our null hypothesis is that the true median
 number of tropes for “slow and long” songs is 4, H0: median(“slow and
 long”) = 4. Our alternative hypothesis is that the true median number of
 tropes is different than 4, Ha: median(“slow and long”) ≠ 4. We will use
-an alpha level of 0.05. Let’s create and visualize the null distribution
-and calculate the respective p-value.
+a significance (alpha) level of 0.05. Let’s create and visualize the
+null distribution and calculate the associated p-value:
 
 ``` r
+obs_median <- 5 # From summary statistics in previous code chunk
+
 slow_long <- fight_songs %>%
   filter(classify == "slow and long")
 
@@ -252,7 +261,7 @@ null_slow_long <- slow_long %>%
   generate(reps = 1000, type = "bootstrap") %>%
   calculate(stat = "median")
 
-get_p_value(null_slow_long, obs_stat = 5, direction = "both")
+get_p_value(null_slow_long, obs_stat = obs_median, direction = "two_sided")
 ```
 
     ## # A tibble: 1 x 1
@@ -263,43 +272,48 @@ get_p_value(null_slow_long, obs_stat = 5, direction = "both")
 ``` r
 visualise(null_slow_long) + 
   labs(title = "Null Distribution for Median Number of Tropes",
-       subtitle = "for songs that are slow and long",
+       subtitle = "for slow and long fight songs",
        x = "Sample Median Number of Tropes",
        y = "Count") +
-  shade_p_value(5, "both")
+  shade_p_value(obs_stat = obs_median, direction = "two_sided")
 ```
 
 ![](data-analysis_files/figure-gfm/hypothesis-test-slow-and-long-1.png)<!-- -->
 
-Based on our p-value of 0.038, which is less than alpha = 0.05, we
-reject the null hypothesis. There is convincing evidence that the median
-number of tropes for songs that are slow and long is different than the
-population average of 4. However, our sample size is very small (9
-observations), so we must be wary of our results.
+Based on our p-value of 0.038, which is less than 0.05 (significance
+level), we reject the null hypothesis in favor of the alternative
+hypothesis; in other words, the true median number of tropes is
+different than 4. Thus, the data provide convincing evidence that the
+median number of tropes for songs that are slow and long is different
+than the population median of 4. However, our sample size is very small
+(9 observations), so we must be wary of our results and acknowledge the
+limitations of our conclusions.
 
 We can also see from the visualization “Number of Clichés” that the
-spread for “slow and short” songs is a lot smaller compared to all other
+spread for “slow and short” songs is much smaller compared to all other
 song classifications. We will test whether the standard deviation for
 “slow and short” songs is significantly different from the population
-standard deviation of 1.674182. The null hypothesis is that the true
-standard deviation for the number of tropes for “slow and short” songs
-is 1.674182, H0: sigma = 1.674182. The alternative hypothesis is tht the
-true standard deviation for the number of tropes for “slow and short”
-songs is less than 1.674182, Ha: sigma \< 1.674182. We will use an alpha
-level of 0.05.
+standard deviation of `(1.73 + 1.56 + 2.28 + 1.13)/4 = 1.675`. The null
+hypothesis is that the true standard deviation in the number of tropes
+for “slow and short” songs is 1.675, H0: sigma = 1.675. The alternative
+hypothesis is that the true standard deviation in the number of tropes
+for “slow and short” songs is less than 1.675, Ha: sigma \< 1.675. We
+will use a significance level of 0.05.
 
 ``` r
+obs_sd <- 1.13 # From summary statistics in previous code chunk
+
 slow_short <- fight_songs %>%
   filter(classify == "slow and short")
 
 set.seed(11101962)
 null_slow_short <- slow_short %>%
   specify(response = trope_count) %>%
-  hypothesize(null = "point", sigma = 1.674182) %>%
+  hypothesize(null = "point", sigma = 1.675) %>%
   generate(reps = 1000, type = "bootstrap") %>%
   calculate(stat = "sd")
 
-get_p_value(null_slow_short, obs_stat = 1.125992, direction = "left")
+get_p_value(null_slow_short, obs_stat = obs_sd, direction = "left")
 ```
 
     ## # A tibble: 1 x 1
@@ -310,22 +324,25 @@ get_p_value(null_slow_short, obs_stat = 1.125992, direction = "left")
 ``` r
 visualise(null_slow_short) + 
   labs(title = "Null Distribution for Standard Deviation of Tropes",
-       subtitle = "for songs that are slow and short",
+       subtitle = "for slow and short fight songs",
        x = "Sample Standard Deviation of Tropes",
        y = "Count") +
-  shade_p_value(1.125992, "left")
+  shade_p_value(obs_sd, "left")
 ```
 
 ![](data-analysis_files/figure-gfm/hypothesis-test-slow-and-short-1.png)<!-- -->
 
 Based on the p-value of 0.685, which is greater than our alpha level of
-0.05, we fail to reject the null hypothesis. There is insufficient
-evidence that the true standard deviation for slow and short songs is
-less than the population standard deviation of 1.674182.
+0.05, we fail to reject the null hypothesis in favor of the alternative
+hypothesis; in other words, the true standard deviation in the number of
+tropes for “slow and short” songs is equal to 1.675. Thus, the data do
+not provide convincing evidence that the true standard deviation for
+slow and short songs is less than the population standard deviation of
+1.675.
 
 Now, let’s find the full linear model that predicts number of tropes
 (`trope_count`) from tempo (`bpm`) and duration (`sec_duration`). We can
-also check whether there the coefficients for `bpm` and `sec_duration`
+also check whether the slope coefficients for `bpm` and `sec_duration`
 are statistically significant by finding their respective p-values and
 using an alpha level of 0.05. Let our null hypotheses be that the slopes
 associated with both variables are 0, H0: beta(`bpm`) = 0 and
