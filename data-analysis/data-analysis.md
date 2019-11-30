@@ -351,11 +351,11 @@ Now, let’s find the full linear model that predicts number of tropes
 (`trope_count`) from tempo (`bpm`) and duration (`sec_duration`). We can
 also check whether the slope coefficients for `bpm` and `sec_duration`
 are statistically significant by finding their respective p-values and
-using an alpha level of 0.05. Let our null hypotheses be that the slopes
-associated with both variables are 0, H0: beta(`bpm`) = 0 and
-beta(`sec_duration`) = 0. Let our alternative hypotheses be that the
-slopes associated with both variables are significantly different than
-0, Ha: beta(`bpm`) ≠ 0 and beta(`sec_duration`) ≠ 0.
+using an alpha level of 0.05. Let our null hypotheses be that the slope
+coefficients associated with both variables are 0, H0: beta(`bpm`) = 0
+and beta(`sec_duration`) = 0. Let our alternative hypotheses be that the
+slope coefficients associated with both variables are significantly
+different than 0, Ha: beta(`bpm`) ≠ 0 and beta(`sec_duration`) ≠ 0.
 
 ``` r
 (m_full <- lm(trope_count ~ bpm + sec_duration, fight_songs)) %>%
@@ -393,26 +393,29 @@ by the model), the more accurate and useful the final model is. As the
 model only accounts for a small percent of the variability in trope
 counts, it is not a great predictor of a fight song’s trope count.
 
-The intercept tells us that for a song with 0 bpm and that is 0 seconds
-long, the expected number of tropes is 4.58 (this is nonsensical, as
-there is no such thing as a song that is 0 bpm or 0 minutes). The
-intercept of -0.00757 for `bpm` tells us that for an increase in 1 bpm,
-the number of tropes is expected to decrease by 0.00757. The intercept
-of 0.000208 for `sec_duration` tells us that for an increase in a song’s
-duration by 1 second, the number of tropes is expected to increase by
-0.000208. However, the p-values for the coefficients of `bpm` and
-`sec_duration`, 0.241 and 0.980. respectively, are both greater than our
-alpha level of 0.05. Therefore, we fail to reject the null hypothesis.
-There is insufficient evidence that the coefficients for `bpm` and
-`sec_duration` are different than 0.
+The intercept tells us that for a song with 0 bpm which lasts 0 seconds,
+the expected number of tropes is 4.58. But of course, this is
+nonsensical since none of the fight songs we are considering in our
+analysis last 0 seconds (for that matter, no songs, by definition, last
+0 seconds\!). The slope coefficient of -0.00757 for `bpm` tells us that
+for an increase in 1 bpm, the number of tropes is expected to decrease
+by 0.00757. The slope coefficient of 0.000208 for `sec_duration` tells
+us that for an increase in a song’s duration by 1 second, the number of
+tropes is expected to increase by 0.000208. However, the p-values for
+the coefficients of `bpm` and `sec_duration`, 0.241 and 0.980
+respectively, are both greater than our alpha level of 0.05. Therefore,
+we fail to reject the null hypotheses in favor of the alternative
+hypotheses. Hence, there is insufficient evidence that the slope
+coefficients for `bpm` and `sec_duration` are different than 0.
 
-Circling back to our research question, we now have evidence that our
-two explanatory variables, `bpm` and `sec_duration`, do not seem to have
-any correlation to the trope count for a given fight song.
+Circling back to our research question, it appears as though we have
+evidence that our two explanatory variables, `bpm` and `sec_duration`,
+do not seem to have any correlation to the trope count for a given fight
+song.
 
-In order to make sure that there is no better model, we will use the
-`step()` function and use backwards selection with AIC as the selection
-criterion.
+To confirm that there is no better linear model, we will use the
+`step()` function and backwards selection with AIC as the selection
+criterion:
 
 ``` r
 (m_trope_count <- step(m_full, direction = "backward")) %>%
@@ -456,8 +459,18 @@ glance(m_trope_count)$r.squared
     ## [1] 0
 
 Since backwards selection removed both `bpm` and `sec_duration` from our
-model, we can conclude that these two variables are not valid predictors
-for the number of tropes in a college fight song.
+model, we should conclude that these two variables are not valid
+predictors for the number of tropes in a college fight song.
+
+However, we must consider one last element before concluding that `bpm`
+and `sec_duration` are poor predictors of `trope_count`: the
+requirements for linear regression. Amongst other things, a linear model
+mandates a continuous numerical response variable\! But, it is clear
+that `trope_count` does not fulfill this criterion since it is a
+counting (discrete) numerical response variable. Thus, our final
+conclusions are as follows: this method of analysis involving linear
+regression is invalid and it is likely (but not guaranteed) that the
+explanatory variables are poor predictors of the response variable.
 
 ### Research Question 2
 
