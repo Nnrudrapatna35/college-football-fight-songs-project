@@ -35,9 +35,14 @@ ggplot(fight_songs, mapping = aes(x = bpm)) +
 
 Let’s also calculate the summary statistics for this distribution. Specifically, we will use the median as a measure of center and the interquartile range as a measure of spread (due to the bimodal nature of the distribution). In addition, we will find the upper and lower quartiles (Q3 and Q1, respectively), and the maximum and minimum values:
 
-```{r}
+```{r calc-summary-stats-bpm}
 fight_songs %>%
-  summarise(min = min(bpm), Q1 = quantile(bpm, .25), median = median(bpm), Q3 = quantile(bpm, .75), max = max(bpm), IQR = IQR(bpm))
+  summarise(min = min(bpm),
+            Q1 = quantile(bpm, 0.25),
+            median = median(bpm),
+            Q3 = quantile(bpm, 0.75),
+            max = max(bpm),
+            IQR = IQR(bpm))
 ```
 
 Based on the histogram, it is clear that the shape of the data is clearly bimodal, with two distinct peaks occurring around 70 bpm and around 150 bpm, with a split in the data at around 100 bpm. There are more songs that are clustered around the higher bpm mode. The center (median) occurs at 140 bpm, and the spread (IQR) is 61 bpm, indicating that there is a moderate amount of variability in tempos. There are no outliers in this distribution. Due to the bimodal result, it seems like there is a natural grouping between “slow” songs and “fast” songs, so we will use the `mutate()` function to add a new variable, `tempo`, which is "slow" if a song's `bpm` is less than or equal to 100 bpm and "fast" if a song's tempo is greater than 100 bpm.
@@ -58,7 +63,12 @@ ggplot(fight_songs, mapping = aes(x = sec_duration)) +
   labs(title = "Duration of College Fight Songs", x = "Duration (sec)", y = "Number of Songs")
 
 fight_songs %>%
-  summarise(min = min(sec_duration), Q1 = quantile(sec_duration, .25), median = median(sec_duration), Q3 = quantile(sec_duration, .75), max = max(sec_duration), IQR = IQR(sec_duration))
+  summarise(min = min(sec_duration),
+            Q1 = quantile(sec_duration, 0.25),
+            median = median(sec_duration),
+            Q3 = quantile(sec_duration, 0.75),
+            max = max(sec_duration),
+            IQR = IQR(sec_duration))
 ```
 
 Based on the histogram, we can see that the distribution of fight song durations is roughly symmetric (slightly skewed to the right) and unimodal, with a peak at around 70. There are some outliers on the higher end of the spectrum (`sec_duration` > 125.5), indicating that these songs are significantly longer than the others. The center of the distribution occurs at around 67 seconds, and the IQR of the distribution is 27 seconds, which is relatively narrow, indicating that fight songs do not have dramatically different lengths. Like we did with `bpm`, let's add a new variable, `length`, which is "short" if a song is less than or equal to the median of 67 seconds and "long" if a song is greater than the median of 67 seconds.
@@ -116,7 +126,13 @@ ggplot(fight_songs, mapping = aes(x = trope_count)) +
   labs(title = "Number of Clichés in College Fight Songs", x = "Number of Clichés", y = "Number of Songs")
 
 fight_songs %>%
-  summarise(min = min(trope_count), Q1 = quantile(trope_count, .25), median = median(trope_count), Q3 = quantile(trope_count, .75), max = max(trope_count), IQR = IQR(trope_count), sd = sd(trope_count))
+  summarise(min = min(trope_count),
+            Q1 = quantile(trope_count, 0.25),
+            median = median(trope_count),
+            Q3 = quantile(trope_count, 0.75),
+            max = max(trope_count),
+            IQR = IQR(trope_count),
+            sd = sd(trope_count))
 ```
 
 Based on the histogram and summary statistics, we can see that the distribution for number of tropes is unimodal with a peak at around 4 and skewed slightly to the left. There is 1 outlier at the maximum value of our distribution (8 tropes). The center of the distribution, described by the median, is 4 tropes, and the IQR of 2 indicates that there is not a large amount of variability in the number of tropes for college fight songs.
@@ -127,7 +143,10 @@ Now, let's return to our research question by examining whether the amount of cl
 ggplot(fight_songs, mapping = aes(x = classify, y = trope_count)) +
   geom_violin(draw_quantiles = c(0.25, 0.50, 0.75)) +
   geom_jitter() +
-  labs(title = "Number of Clichés", subtitle = "by Song Classification", x = "Song Classification", y = "Number of Clichés")
+  labs(title = "Number of Clichés",
+       subtitle = "by Song Classification",
+       x = "Song Classification",
+       y = "Number of Clichés")
 
 fight_songs %>%
   group_by(classify) %>%
@@ -321,7 +340,9 @@ We will begin our analysis with `victory_win_won`, which designates whether a fi
 ```{r visualize_victory_win_won}
 ggplot(fight_songs, mapping = aes(x = victory_win_won)) +
   geom_bar() +
-  labs(title = "Distribution of Whether Fight Songs Include 'Victory', 'Win', or 'Won'", x = "Whether Fight Song Includes 'Victory', 'Win', or 'Won'", y = "Number of College Football Teams")
+  labs(title = "Distribution of Whether Fight Songs Include 'Victory', 'Win', or 'Won'",
+       x = "Whether Fight Song Includes 'Victory', 'Win', or 'Won'",
+       y = "Number of College Football Teams")
 ```
 
 Next, we will look at `opponents`, which designates whether a song mentions an opponent, by creating a bar graph:
@@ -329,7 +350,9 @@ Next, we will look at `opponents`, which designates whether a song mentions an o
 ```{r visualize_opponents}
 ggplot(fight_songs, mapping = aes(x = opponents)) +
   geom_bar() +
-  labs(title = "Distribution of Whether Fight Songs Include Opponents", x = "Whether Fight Song Includes Opponents", y = "Number of College Football Teams")
+  labs(title = "Distribution of Whether Fight Songs Include Opponents",
+       x = "Whether Fight Song Includes Opponents",
+       y = "Number of College Football Teams")
 ```
 
 Now, we will explore `nonsense`, which designates whether a song includes any nonsense words/phrases, by creating a bar graph:
@@ -337,7 +360,9 @@ Now, we will explore `nonsense`, which designates whether a song includes any no
 ```{r visualize_nonsense}
 ggplot(fight_songs, mapping = aes(x = nonsense)) +
   geom_bar() +
-  labs(title = "Distribution of Whether Fight Songs Include Nonsense", x = "Whether Fight Song Includes Nonsense Words", y = "Number of College Football Teams")
+  labs(title = "Distribution of Whether Fight Songs Include Nonsense",
+       x = "Whether Fight Song Includes Nonsense Words",
+       y = "Number of College Football Teams")
 ```
 
 Then, we will examine `rah`, which designates whether a fight song says the word "rah", by creating a bar graph:
@@ -345,7 +370,9 @@ Then, we will examine `rah`, which designates whether a fight song says the word
 ```{r visualize_rah}
 ggplot(fight_songs, mapping = aes(x = rah)) +
   geom_bar() +
-  labs(title = "Distribution of Whether Fight Songs Include 'Rah'", x = "Whether Fight Song Includes 'Rah'", y = "Number of College Football Teams")
+  labs(title = "Distribution of Whether Fight Songs Include 'Rah'",
+       x = "Whether Fight Song Includes 'Rah'",
+       y = "Number of College Football Teams")
 ```
 
 Finally, we will look at `rank`, which corresponds to the team's AP college football ranking. We will create a histogram and calculate the appropriate summary statistics:
@@ -358,9 +385,12 @@ ggplot(fight_songs, mapping = aes(x = rank)) +
 
 In calculating the summary statistics for `rank`, we will use the median as a measure of center and the interquartile range as a measure of spread (due to the skewed nature of the distribution). In addition, we will find the upper and lower quartiles (Q3 and Q1, respectively), and the maximum and minimum values:
 
-```{r summarise_rank}
+```{r summarize_rank}
 fight_songs %>%
-  summarise(min = min(rank), Q1 = quantile(rank, 0.25), median = median(rank), Q3 = quantile(rank, 0.75), max = max(rank), IQR = IQR(rank))
+  summarise(min = min(rank), Q1 = quantile(rank, 0.25),
+            median = median(rank), Q3 = quantile(rank,
+                                                 0.75),
+            max = max(rank), IQR = IQR(rank))
 ```
 
 Based on the histogram, it is clear that the shape of the data is unimodal. The distribution is skewed to the right, with more colleges having higher ranked teams than lower ranked teams. The center (median) occurs at 34, and the spread (IQR) is 38, indicating that there is a moderate amount of variability in rankings. There is one outlier (a college football team ranked higher than 112) with a rank of 120. 

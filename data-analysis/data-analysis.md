@@ -46,7 +46,12 @@ quartiles (Q3 and Q1, respectively), and the maximum and minimum values:
 
 ``` r
 fight_songs %>%
-  summarise(min = min(bpm), Q1 = quantile(bpm, .25), median = median(bpm), Q3 = quantile(bpm, .75), max = max(bpm), IQR = IQR(bpm))
+  summarise(min = min(bpm),
+            Q1 = quantile(bpm, 0.25),
+            median = median(bpm),
+            Q3 = quantile(bpm, 0.75),
+            max = max(bpm),
+            IQR = IQR(bpm))
 ```
 
     ## # A tibble: 1 x 6
@@ -89,7 +94,12 @@ ggplot(fight_songs, mapping = aes(x = sec_duration)) +
 
 ``` r
 fight_songs %>%
-  summarise(min = min(sec_duration), Q1 = quantile(sec_duration, .25), median = median(sec_duration), Q3 = quantile(sec_duration, .75), max = max(sec_duration), IQR = IQR(sec_duration))
+  summarise(min = min(sec_duration),
+            Q1 = quantile(sec_duration, 0.25),
+            median = median(sec_duration),
+            Q3 = quantile(sec_duration, 0.75),
+            max = max(sec_duration),
+            IQR = IQR(sec_duration))
 ```
 
     ## # A tibble: 1 x 6
@@ -198,7 +208,13 @@ ggplot(fight_songs, mapping = aes(x = trope_count)) +
 
 ``` r
 fight_songs %>%
-  summarise(min = min(trope_count), Q1 = quantile(trope_count, .25), median = median(trope_count), Q3 = quantile(trope_count, .75), max = max(trope_count), IQR = IQR(trope_count), sd = sd(trope_count))
+  summarise(min = min(trope_count),
+            Q1 = quantile(trope_count, 0.25),
+            median = median(trope_count),
+            Q3 = quantile(trope_count, 0.75),
+            max = max(trope_count),
+            IQR = IQR(trope_count),
+            sd = sd(trope_count))
 ```
 
     ## # A tibble: 1 x 7
@@ -223,7 +239,10 @@ for each classification:
 ggplot(fight_songs, mapping = aes(x = classify, y = trope_count)) +
   geom_violin(draw_quantiles = c(0.25, 0.50, 0.75)) +
   geom_jitter() +
-  labs(title = "Number of Clichés", subtitle = "by Song Classification", x = "Song Classification", y = "Number of Clichés")
+  labs(title = "Number of Clichés",
+       subtitle = "by Song Classification",
+       x = "Song Classification",
+       y = "Number of Clichés")
 ```
 
 ![](data-analysis_files/figure-gfm/boxplots-summary-statsnumber_tropes-1.png)<!-- -->
@@ -588,7 +607,9 @@ graph:
 ``` r
 ggplot(fight_songs, mapping = aes(x = victory_win_won)) +
   geom_bar() +
-  labs(title = "Distribution of Whether Fight Songs Include 'Victory', 'Win', or 'Won'", x = "Whether Fight Song Includes 'Victory', 'Win', or 'Won'", y = "Number of College Football Teams")
+  labs(title = "Distribution of Whether Fight Songs Include 'Victory', 'Win', or 'Won'",
+       x = "Whether Fight Song Includes 'Victory', 'Win', or 'Won'",
+       y = "Number of College Football Teams")
 ```
 
 ![](data-analysis_files/figure-gfm/visualize_victory_win_won-1.png)<!-- -->
@@ -599,7 +620,9 @@ mentions an opponent, by creating a bar graph:
 ``` r
 ggplot(fight_songs, mapping = aes(x = opponents)) +
   geom_bar() +
-  labs(title = "Distribution of Whether Fight Songs Include Opponents", x = "Whether Fight Song Includes Opponents", y = "Number of College Football Teams")
+  labs(title = "Distribution of Whether Fight Songs Include Opponents",
+       x = "Whether Fight Song Includes Opponents",
+       y = "Number of College Football Teams")
 ```
 
 ![](data-analysis_files/figure-gfm/visualize_opponents-1.png)<!-- -->
@@ -610,7 +633,9 @@ includes any nonsense words/phrases, by creating a bar graph:
 ``` r
 ggplot(fight_songs, mapping = aes(x = nonsense)) +
   geom_bar() +
-  labs(title = "Distribution of Whether Fight Songs Include Nonsense", x = "Whether Fight Song Includes Nonsense Words", y = "Number of College Football Teams")
+  labs(title = "Distribution of Whether Fight Songs Include Nonsense",
+       x = "Whether Fight Song Includes Nonsense Words",
+       y = "Number of College Football Teams")
 ```
 
 ![](data-analysis_files/figure-gfm/visualize_nonsense-1.png)<!-- -->
@@ -621,7 +646,9 @@ the word “rah”, by creating a bar graph:
 ``` r
 ggplot(fight_songs, mapping = aes(x = rah)) +
   geom_bar() +
-  labs(title = "Distribution of Whether Fight Songs Include 'Rah'", x = "Whether Fight Song Includes 'Rah'", y = "Number of College Football Teams")
+  labs(title = "Distribution of Whether Fight Songs Include 'Rah'",
+       x = "Whether Fight Song Includes 'Rah'",
+       y = "Number of College Football Teams")
 ```
 
 ![](data-analysis_files/figure-gfm/visualize_rah-1.png)<!-- -->
@@ -646,7 +673,10 @@ the maximum and minimum values:
 
 ``` r
 fight_songs %>%
-  summarise(min = min(rank), Q1 = quantile(rank, 0.25), median = median(rank), Q3 = quantile(rank, 0.75), max = max(rank), IQR = IQR(rank))
+  summarise(min = min(rank), Q1 = quantile(rank, 0.25),
+            median = median(rank), Q3 = quantile(rank,
+                                                 0.75),
+            max = max(rank), IQR = IQR(rank))
 ```
 
     ## # A tibble: 1 x 6
