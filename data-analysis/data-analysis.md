@@ -300,12 +300,14 @@ We can also see from the visualization “Number of Clichés” that the
 spread for “slow and short” songs is much smaller compared to all other
 song classifications. We will test whether the standard deviation for
 “slow and short” songs is significantly different from the population
-standard deviation of `(1.73 + 1.56 + 2.28 + 1.13)/4 = 1.675`. The null
-hypothesis is that the true standard deviation in the number of tropes
-for “slow and short” songs is 1.675, H0: sigma = 1.675. The alternative
-hypothesis is that the true standard deviation in the number of tropes
-for “slow and short” songs is less than 1.675, Ha: sigma \< 1.675. We
-will use a significance level of 0.05.
+standard deviation of `(1.73 + 1.56 + 2.28 + 1.13)/4 = 1.675`.
+
+The null hypothesis is that the true standard deviation in the number of
+tropes for “slow and short” songs is 1.675, H0: sigma = 1.675.
+
+The alternative hypothesis is that the true standard deviation in the
+number of tropes for “slow and short” songs is less than 1.675, Ha:
+sigma \< 1.675. We will use a significance level of 0.05.
 
 ``` r
 obs_sd <- 1.13 # From summary statistics in previous code chunk
@@ -334,7 +336,7 @@ visualise(null_slow_short) +
        subtitle = "for slow and short fight songs",
        x = "Sample Standard Deviation of Tropes",
        y = "Count") +
-  shade_p_value(obs_sd, "left")
+  shade_p_value(obs_sd, direction = "left")
 ```
 
 ![](data-analysis_files/figure-gfm/hypothesis-test-slow-and-short-1.png)<!-- -->
@@ -348,17 +350,10 @@ slow and short songs is less than the population standard deviation of
 1.675.
 
 Now, let’s find the full linear model that predicts number of tropes
-(`trope_count`) from tempo (`bpm`) and duration (`sec_duration`). We can
-also check whether the slope coefficients for `bpm` and `sec_duration`
-are statistically significant by finding their respective p-values and
-using an alpha level of 0.05. Let our null hypotheses be that the slope
-coefficients associated with both variables are 0, H0: beta(`bpm`) = 0
-and beta(`sec_duration`) = 0. Let our alternative hypotheses be that the
-slope coefficients associated with both variables are significantly
-different than 0, Ha: beta(`bpm`) ≠ 0 and beta(`sec_duration`) ≠ 0.
+(`trope_count`) from tempo (`bpm`) and duration (`sec_duration`):
 
 ``` r
-(m_full <- lm(trope_count ~ bpm + sec_duration, fight_songs)) %>%
+(m_full <- lm(trope_count ~ bpm + sec_duration, data = fight_songs)) %>%
   tidy() %>%
   select(term, estimate)
 ```
@@ -402,17 +397,138 @@ for an increase in 1 bpm, the number of tropes is expected, on average,
 to decrease by 0.00757, holding all else constant. The slope coefficient
 associated with `sec_duration` tells us that for an increase in a song’s
 duration by 1 second, the number of tropes is expected, on average, to
-increase by 0.000208, holding all else constant. However, the p-values
-for the coefficients of `bpm` and `sec_duration`, 0.241 and 0.980
-respectively, are both greater than our alpha level of 0.05. Therefore,
-we fail to reject the null hypotheses in favor of the alternative
-hypotheses. Hence, there is insufficient evidence that the slope
-coefficients for `bpm` and `sec_duration` are different than 0.
+increase by 0.000208, holding all else constant.
+
+Now, we will conduct a hypothesis test for the slopes to determine
+whether the slope coefficients for `bpm` and `sec_duration` are
+significantly different from 0. We will use a significance level of
+0.05.
+
+Let our null hypotheses be that the slope coefficients associated with
+both variables are 0; H0: beta(`bpm`) = 0 and beta(`sec_duration`) = 0.
+
+Let our alternative hypotheses be that the slope coefficients associated
+with both variables are significantly different than 0, Ha: beta(`bpm`)
+≠ 0 and beta(`sec_duration`) ≠ 0.
+
+``` r
+obs_beta_bpm <- tidy(m_full) %>% 
+  select(estimate) %>% 
+  slice(2) %>% pull() 
+
+set.seed(11101962)
+null_dist_bpm_slope <- fight_songs %>%
+  specify(response = trope_count, explanatory = bpm) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "slope")
+
+get_p_value(null_dist_bpm_slope, obs_stat = obs_beta_bpm, direction = "two_sided")
+```
+
+    ## # A tibble: 1 x 1
+    ##   p_value
+    ##     <dbl>
+    ## 1   0.238
+
+``` r
+visualise(null_dist_bpm_slope) + 
+  labs(title = "Null Distribution for Bpm Slope Coefficient",
+       subtitle = "in full linear model for trope count",
+       x = "Sample Slope Coefficients",
+       y = "Count") +
+  shade_p_value(obs_beta_bpm, direction = "two_sided")
+```
+
+![](data-analysis_files/figure-gfm/hypothesis-test-bpm-slope-1.png)<!-- -->
+
+``` r
+obs_beta_sec_duration <- tidy(m_full) %>% 
+  select(estimate) %>% 
+  slice(3) %>% pull() 
+
+set.seed(11101962)
+null_dist_sec_duration_slope <- fight_songs %>%
+  specify(response = trope_count, explanatory = sec_duration) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "slope")
+
+get_p_value(null_dist_sec_duration_slope, obs_stat = obs_beta_sec_duration, direction = "two_sided")
+```
+
+    ## # A tibble: 1 x 1
+    ##   p_value
+    ##     <dbl>
+    ## 1   0.978
+
+``` r
+visualise(null_dist_sec_duration_slope) + 
+  labs(title = "Null Distribution for Song Duration Slope Coefficient",
+       subtitle = "in full linear model for trope count",
+       x = "Sample Slope Coefficients",
+       y = "Count") +
+  shade_p_value(obs_beta_sec_duration, direction = "two_sided")
+```
+
+![](data-analysis_files/figure-gfm/hypothesis-test-sec-duration-slope-1.png)<!-- -->
+
+The p-values for the slope coefficients of `bpm` and `sec_duration` are
+0.238 and 0.978, respectively. Since both p-values are greater than our
+alpha level of 0.05, we should fail to reject the null hypotheses in
+favor of the alternative hypotheses. Hence, there appears to be
+insufficient evidence that the slope coefficients for `bpm` and
+`sec_duration` are different than 0.
+
+However, we must must verify that the four conditions for inference for
+regression are satisfied before finalizing any conclusions: (1)
+observations should be independent; (2) residuals should be randomly
+distributed around 0; (3) residuals should be nearly normally
+distributed, centered at 0; (4) residuals should have constant variance.
+
+First, we will check for the independence of observations by plotting
+the residuals in the order of data collection:
+
+``` r
+m_full_aug <- augment(m_full)
+ggplot(data = m_full_aug, aes(x = 1:nrow(m_full_aug), y = .resid)) +
+  geom_point() +
+  labs(x = "Index", y = "Residual")
+```
+
+![](data-analysis_files/figure-gfm/testing-condition-1-1.png)<!-- -->
+
+Next, let’s examine the normality of residuals:
+
+``` r
+ggplot(data = m_full_aug, aes(x = .resid)) +
+  geom_histogram(binwidth = 1.25) +
+  labs(x = "Residuals")
+```
+
+![](data-analysis_files/figure-gfm/testing-condition-3-1.png)<!-- -->
+
+Finally, we will check the distribution of residuals around 0 and
+constant variance:
+
+``` r
+ggplot(data = m_full_aug, aes(x = .fitted, y = .resid)) +
+  geom_point() +
+  geom_hline(yintercept = 0, lty = 3, color = "blue") +
+  labs(y = "Residuals", x = "Predicted values, y-hat")
+```
+
+![](data-analysis_files/figure-gfm/testing-conditions-2-and-4-1.png)<!-- -->
+
+Clearly, condition 4 (constant variance) is violated. Therefore,
+inference for regression is invalid. This means our conclusion that
+there is insufficient evidence to suggest the slope coefficients for
+`bpm` and `sec_duration` are different than 0 is also not credible.
 
 Circling back to our research question, it appears as though we have
-evidence that our two explanatory variables, `bpm` and `sec_duration`,
-do not seem to have any correlation to the trope count for a given fight
-song.
+insufficient evidence to describe the correlation (if any) between our
+two explanatory variables, `bpm` and `sec_duration`, and the trope count
+for a given fight song.
 
 To confirm that there is no better linear model, we will use the
 `step()` function and backwards selection with AIC as the selection
