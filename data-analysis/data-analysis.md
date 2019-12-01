@@ -591,14 +591,14 @@ who do not:
 obs_diff_victory_win_won <- 5.5 # From above code chunk
 
 set.seed(11101962)
-null_dist <- fight_songs %>%
+null_dist_victory_win_won <- fight_songs %>%
   specify(response = rank, explanatory = victory_win_won) %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in medians", 
             order = c("No", "Yes"))
 
-get_p_value(null_dist, obs_stat = obs_diff_victory_win_won, direction = "two_sided")
+get_p_value(null_dist_victory_win_won, obs_stat = obs_diff_victory_win_won, direction = "two_sided")
 ```
 
     ## # A tibble: 1 x 1
@@ -606,7 +606,18 @@ get_p_value(null_dist, obs_stat = obs_diff_victory_win_won, direction = "two_sid
     ##     <dbl>
     ## 1   0.634
 
-Since the p-value, 0.628, is greater than our significance level of
+``` r
+visualise(null_dist_victory_win_won) + 
+  labs(title = "Null Distribution for Median Rankings of College Football Teams",
+       subtitle = "for fight songs which include 'victory', 'win', or 'won'",
+       x = "Sample Median Ranking",
+       y = "Count") +
+  shade_p_value(obs_stat = obs_diff_victory_win_won, direction = "two_sided")
+```
+
+![](data-analysis_files/figure-gfm/rank_victory_win_won_hyp_test-1.png)<!-- -->
+
+Since the p-value, 0.634, is greater than our significance level of
 0.05, we fail to reject the null hypothesis in favor of the alternative
 hypothesis. In other words, the data do not provide convincing evidence
 of a difference in the median rankings of college football teams based
@@ -657,14 +668,14 @@ who do not:
 obs_diff_opponents <- 0.5 # From above code chunk
 
 set.seed(11101962)
-null_dist <- fight_songs %>%
+null_dist_opponents <- fight_songs %>%
   specify(response = rank, explanatory = opponents) %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in medians", 
             order = c("Yes", "No"))
 
-get_p_value(null_dist, obs_stat = obs_diff_opponents, direction = "two_sided")
+get_p_value(null_dist_opponents, obs_stat = obs_diff_opponents, direction = "two_sided")
 ```
 
     ## # A tibble: 1 x 1
@@ -672,12 +683,23 @@ get_p_value(null_dist, obs_stat = obs_diff_opponents, direction = "two_sided")
     ##     <dbl>
     ## 1       1
 
-Since the p-value, 0.958, is greater than our alpha level of 0.05, we
-fail to reject the null hypothesis in favor of the alternative
-hypothesis. In other words, the data do not provide convincing evidence
-of a difference in the median rankings of college football teams based
-on whether or not their fight songs mention opponents. Thus, our
-original hypothesis was incorrect.
+``` r
+visualise(null_dist_opponents) + 
+  labs(title = "Null Distribution for Median Rankings of College Football Teams",
+       subtitle = "for fight songs which include opponents",
+       x = "Sample Median Ranking",
+       y = "Count") +
+  shade_p_value(obs_stat = obs_diff_opponents, direction = "two_sided")
+```
+
+![](data-analysis_files/figure-gfm/rank_opponents_hyp_test-1.png)<!-- -->
+
+Since the p-value, 1, is greater than our alpha level of 0.05, we fail
+to reject the null hypothesis in favor of the alternative hypothesis. In
+other words, the data do not provide convincing evidence of a difference
+in the median rankings of college football teams based on whether or not
+their fight songs mention opponents. Thus, our original hypothesis was
+incorrect.
 
 Moreover, we hypothesize that a statistically significant relationship
 exists between `nonsense` and `rank` because there have been a plethora
@@ -725,14 +747,14 @@ nonsense words in their fight songs:
 obs_diff_nonsense <- 11.5 # From above code chunk
 
 set.seed(11101962)
-null_dist <- fight_songs %>%
+null_dist_nonsense <- fight_songs %>%
   specify(response = rank, explanatory = nonsense) %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in medians", 
             order = c("Yes", "No"))
 
-get_p_value(null_dist, obs_stat = obs_diff_nonsense, direction = "two_sided")
+get_p_value(null_dist_nonsense, obs_stat = obs_diff_nonsense, direction = "two_sided")
 ```
 
     ## # A tibble: 1 x 1
@@ -740,7 +762,18 @@ get_p_value(null_dist, obs_stat = obs_diff_nonsense, direction = "two_sided")
     ##     <dbl>
     ## 1   0.344
 
-Since the p-value, 0.332, is greater than our alpha level of 0.05, we
+``` r
+visualise(null_dist_nonsense) + 
+  labs(title = "Null Distribution for Median Rankings of College Football Teams",
+       subtitle = "for fight songs which include nonsense",
+       x = "Sample Median Ranking",
+       y = "Count") +
+  shade_p_value(obs_stat = obs_diff_nonsense, direction = "two_sided")
+```
+
+![](data-analysis_files/figure-gfm/rank_nonsense_hyp_test-1.png)<!-- -->
+
+Since the p-value, 0.344, is greater than our alpha level of 0.05, we
 fail to reject the null hypothesis in favor of the alternative
 hypothesis. In other words, the data do not provide convincing evidence
 of a difference in the median rankings of college football teams based
@@ -786,14 +819,14 @@ significant difference in median rankings between colleges with/without
 obs_diff_rah <- 5.5 # From above code chunk
 
 set.seed(11101962)
-null_dist <- fight_songs %>%
+null_dist_rah <- fight_songs %>%
   specify(response = rank, explanatory = rah) %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in medians", 
             order = c("Yes", "No"))
 
-get_p_value(null_dist, obs_stat = obs_diff_rah, direction = "two_sided")
+get_p_value(null_dist_rah, obs_stat = obs_diff_rah, direction = "two_sided")
 ```
 
     ## # A tibble: 1 x 1
@@ -801,7 +834,18 @@ get_p_value(null_dist, obs_stat = obs_diff_rah, direction = "two_sided")
     ##     <dbl>
     ## 1   0.678
 
-Since the p-value, 0.654, is greater than our significance level of
+``` r
+visualise(null_dist_rah) + 
+  labs(title = "Null Distribution for Median Rankings of College Football Teams",
+       subtitle = "for fight songs which include 'rah'",
+       x = "Sample Median Ranking",
+       y = "Count") +
+  shade_p_value(obs_stat = obs_diff_rah, direction = "two_sided")
+```
+
+![](data-analysis_files/figure-gfm/rank_rah_hyp_test-1.png)<!-- -->
+
+Since the p-value, 0.678, is greater than our significance level of
 0.05, we fail to reject the null hypothesis. In other words, the data do
 not provide convincing evidence of a difference in the median rankings
 of college football teams based on whether or not their fight songs
@@ -840,16 +884,16 @@ glance(m_rank_full)$r.squared
 
     ## [1] 0.06228747
 
-Based on the output, the full linear model is `rank-hat` = 39.017795 -
-6.253008 \* `victory_win_wonYes` - 5.559138 \* `opponentsYes` +
-10.557542 \* `nonsenseYes` + 6.797271 \* `rahYes`. The R-squared value
-is 0.0622875, which means that approximately 6.2287474% of the
-variability in rank can be accounted for by the model. Given this
-R-squared value, the model is very weak since, in general, the closer
-the R-squared value is to 1 (100% of the variability in rankings can be
-explained by the model), the more accurate and useful the final model
-is. As the model only accounts for a small percent of the variability in
-rank, it is not a great predictor of a college football team’s ranking.
+Based on the output, the full linear model is `rank-hat` = 39.0 - 6.25
+\* `victory_win_wonYes` - 5.56 \* `opponentsYes` + 10.6 \*
+`nonsenseYes`+ 6.80 \* `rahYes`. The R-squared value is 0.0622875, which
+means that approximately 6.2287474% of the variability in rank can be
+accounted for by the model. Given this R-squared value, the model is
+very weak since, in general, the closer the R-squared value is to 1
+(100% of the variability in rankings can be explained by the model), the
+more accurate and useful the final model is. As the model only accounts
+for a small percent of the variability in rank, it is not a great
+predictor of a college football team’s ranking.
 
 The intercept tells us that for a college with “No” responses for
 `victory_win_won`, `opponents`, `nonsense`, and `rah`, the expected
@@ -964,15 +1008,16 @@ versus those located in the north; Ha: median(south) - median(north) ≠
 
 We hypothesize that a statistically significant relationship exists
 between `region` and `number_fights` because there is a difference in
-the proportion of colleges in the north that mention fights versus
-colleges in the south (0.66 versus 0.79, respectively). Therefore, we
-believe that since a higher proportion of southern colleges mention
-fights in their songs than northern colleges, southern colleges will
-mention fights more times in their songs than northern colleges (we will
-reject the null hypothesis). For this reason, we will set the direction
-operator in the `get_p_value()` function to “left,” because we predict
-that the median number of fights for southern colleges will be greater
-than that of the north (north - south should be negative, hence left).
+the proportion of colleges in the north that mention fights (in their
+fight songs) versus those that mention fights in the south (0.66 versus
+0.79, respectively). Therefore, we believe that, since a higher
+proportion of southern colleges mention fights in their songs than
+northern colleges, southern colleges will mention fights more times in
+their songs than northern colleges (we will reject the null hypothesis).
+For this reason, we will set the direction operator in the
+`get_p_value()` function to “left,” because we predict that the median
+number of fights for southern colleges will be greater than that of the
+north (north - south should be negative, hence left).
 
 ``` r
 obs_diff_north_south <- 2 # From above code chunk
@@ -993,7 +1038,18 @@ get_p_value(null_dist_north_south, obs_stat = obs_diff_north_south, direction = 
     ##     <dbl>
     ## 1   0.835
 
-Since the p-value, 0.246, is greater than our significance level of
+``` r
+visualise(null_dist_north_south) + 
+  labs(title = "Null Distribution for Median Number of Times Fights Are Mentioned",
+       subtitle = "for colleges located in the north and south",
+       x = "Sample Median Ranking",
+       y = "Count") +
+  shade_p_value(obs_stat = obs_diff_north_south, direction = "left")
+```
+
+![](data-analysis_files/figure-gfm/north_south_fights_hyp_test-1.png)<!-- -->
+
+Since the p-value, 0.835, is greater than our significance level of
 0.05, we fail to reject the null hypothesis in favor of the alternative
 hypothesis. In other words, the data do not provide convincing evidence
 of a difference in the median number of times fights are mentioned in
@@ -1010,7 +1066,7 @@ observed difference in means is as follows:
 fight_songs %>%
   filter(region %in% c("east", "west")) %>%
   group_by(region) %>%
-  summarize(mean = round(mean(sec_duration), 2))
+  summarise(mean = round(mean(sec_duration), 2))
 ```
 
     ## # A tibble: 2 x 2
@@ -1021,7 +1077,7 @@ fight_songs %>%
 
 Based on the output above, we can see that the difference in the mean
 duration of fight songs between colleges in the east versus those
-located in the west is 2.07. Now, we can conduct the hypothesis test.
+located in the west is 2.1. Now, we can conduct the hypothesis test.
 
 The null hypothesis is that there is no difference in the mean duration
 of fight songs between colleges in the east versus those located in the
@@ -1032,32 +1088,46 @@ duration of fight songs between colleges in the east versus the west;
 Ha: mean(east) - mean(west) ≠ 0.
 
 We hypothesize that no statistically significant relationship exists
-between `sec_duration` and `conference` because nearly all of the fight
+between `sec_duration` and `region` because nearly all of the fight
 songs were created very long ago (as evidenced by the `year` variable),
-and there is no reason why songs used by teams in one region would
-consistently be longer or shorter than those of another region.
-Moreover, some colleges have relocated over time and their fight songs
-(which were created very long ago) have remained the same throughout.
+and there is no reason why fight songs associated with teams in one
+region would consistently be longer or shorter than those associated
+with college football teams of another region. Moreover, some colleges
+have relocated over time and their fight songs (which were created very
+long ago) have remained the same throughout.
 
 ``` r
+obs_diff_east_west <- 2.1 # From code chunk above
+
 set.seed(11101962)
-null_dist <- fight_songs %>%
+null_dist_east_west <- fight_songs %>%
   filter(region %in% c("east", "west")) %>%
   specify(response = sec_duration, explanatory = region) %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in medians", order = c("east", "west"))
+  calculate(stat = "diff in means", order = c("east", "west"))
 
-get_p_value(null_dist, obs_stat = 2.07, direction = "both")
+get_p_value(null_dist_east_west, obs_stat = obs_diff_east_west, direction = "two_sided")
 ```
 
     ## # A tibble: 1 x 1
     ##   p_value
     ##     <dbl>
-    ## 1   0.882
+    ## 1   0.788
 
-Based on the above output, since the p-value, 0.844, is greater than our
-alpha level of 0.05, we fail to reject the null hypothesis. In other
-words, there is no convincing evidence of a difference in mean duration
-of fight songs between colleges in the east versus the west. Our
+``` r
+visualise(null_dist_east_west) + 
+  labs(title = "Null Distribution for Average Duration of Fight Songs",
+       subtitle = "for colleges located in the east and west",
+       y = "Count") +
+  shade_p_value(obs_stat = obs_diff_east_west, direction = "two_sided")
+```
+
+![](data-analysis_files/figure-gfm/east_west_fights_hyp_test-1.png)<!-- -->
+
+Since the p-value, 0.788, is greater than our significance level of
+0.05, we fail to reject the null hypothesis in favor of the alternative
+hypothesis. In other words, the data do not provide convincing evidence
+of a difference in the mean duration of fight songs between colleges
+located in the east versus those located in the west. Therefore, our
 original hypothesis was correct.
