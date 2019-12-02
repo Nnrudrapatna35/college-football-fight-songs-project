@@ -33,7 +33,9 @@ create a histogram and find the relevant summary statistics:
 ``` r
 ggplot(fight_songs, mapping = aes(x = bpm)) +
   geom_histogram(binwidth = 10) +
-  labs(title = "Tempo of College Fight Songs", x = "Beats per Minute (bpm)", y = "Number of Songs")
+  labs(title = "Tempo of College Fight Songs",
+       x = "Beats per Minute (bpm)",
+       y = "Number of Songs")
 ```
 
 ![](data-analysis_files/figure-gfm/histogram-bpm-1.png)<!-- -->
@@ -87,7 +89,9 @@ relevant summary statistics:
 ``` r
 ggplot(fight_songs, mapping = aes(x = sec_duration)) +
   geom_histogram(binwidth = 20) +
-  labs(title = "Duration of College Fight Songs", x = "Duration (sec)", y = "Number of Songs")
+  labs(title = "Duration of College Fight Songs",
+       x = "Duration (sec)",
+       y = "Number of Songs")
 ```
 
 ![](data-analysis_files/figure-gfm/histogram-summary-stats-sec_duration-1.png)<!-- -->
@@ -173,7 +177,7 @@ ggplot(fight_songs, mapping = aes(x = sec_duration, y = bpm)) +
   geom_vline(xintercept = 67, linetype = "dashed", color = "orange") +
   theme_minimal() +
   labs(title = "Classification of College Fight Songs", 
-       subtitle = "by tempo and duration",
+       subtitle = "By tempo and duration",
        x = "Duration (sec)",
        y = "Tempo (bpm)",
        color = "Number of Tropes") +
@@ -196,7 +200,9 @@ for this univariate analysis:
 ``` r
 ggplot(fight_songs, mapping = aes(x = trope_count)) +
   geom_histogram(binwidth = 1) +
-  labs(title = "Number of Clichés in College Fight Songs", x = "Number of Clichés", y = "Number of Songs")
+  labs(title = "Number of Clichés in College Fight Songs",
+       x = "Number of Clichés",
+       y = "Number of Songs")
 ```
 
 ![](data-analysis_files/figure-gfm/histogram-summary-stats-trope_count-1.png)<!-- -->
@@ -239,7 +245,7 @@ ggplot(fight_songs, mapping = aes(x = classify, y = trope_count)) +
   geom_violin(draw_quantiles = c(0.25, 0.50, 0.75)) +
   geom_jitter() +
   labs(title = "Number of Clichés",
-       subtitle = "by Song Classification",
+       subtitle = "By Song Classification",
        x = "Song Classification",
        y = "Number of Clichés")
 ```
@@ -261,11 +267,11 @@ fight_songs %>%
     ## 4 slow and short      4   2    1.13
 
 Not surprisingly, all of the distributions, except for “slow and long”,
-are all centered at 4 tropes, which is the median number of tropes for
-all songs in the dataset. However, there is one category, “slow and
-long,” which has a median of 5. We would like to check whether this
-median is statistically significant or not. To do this, we will conduct
-a hypothesis test for the median number of tropes for songs that are
+are centered at 4 tropes, which is the median number of tropes for all
+songs in the dataset. However, there is one category, “slow and long,”
+which has a median of 5. We would like to check whether this median is
+statistically significant or not. To do this, we will conduct a
+hypothesis test for the median number of tropes for songs that are
 considered “slow and long”. Our null hypothesis is that the true median
 number of tropes for “slow and long” songs is 4, H0: median(“slow and
 long”) = 4. Our alternative hypothesis is that the true median number of
@@ -453,9 +459,9 @@ get_p_value(null_dist_bpm_slope, obs_stat = obs_beta_bpm, direction = "two_sided
 
 ``` r
 visualise(null_dist_bpm_slope) + 
-  labs(title = "Null Distribution for bpm Slope Coefficient",
-       subtitle = "in full linear model for trope count",
-       x = "Sample Slope Coefficients",
+  labs(title = "Null Distribution for Tempo Slope Coefficient",
+       subtitle = "In full linear model for trope count",
+       x = "Sample bpm Slope Coefficients",
        y = "Count") +
   shade_p_value(obs_beta_bpm, direction = "two_sided")
 ```
@@ -465,7 +471,8 @@ visualise(null_dist_bpm_slope) +
 ``` r
 obs_beta_sec_duration <- tidy(m_full) %>% 
   select(estimate) %>% 
-  slice(3) %>% pull() 
+  slice(3) %>%
+  pull() 
 
 set.seed(11101962)
 null_dist_sec_duration_slope <- fight_songs %>%
@@ -485,8 +492,8 @@ get_p_value(null_dist_sec_duration_slope, obs_stat = obs_beta_sec_duration, dire
 ``` r
 visualise(null_dist_sec_duration_slope) + 
   labs(title = "Null Distribution for Song Duration Slope Coefficient",
-       subtitle = "in full linear model for trope count",
-       x = "Sample Slope Coefficients",
+       subtitle = "In full linear model for trope count",
+       x = "Sample Song Duration Slope Coefficients",
        y = "Count") +
   shade_p_value(obs_beta_sec_duration, direction = "two_sided")
 ```
@@ -510,14 +517,17 @@ First, we can assume that the observations (fight songs) are independent
 because college fight songs are unique to every team and written by
 different authors.
 
-Next, we will check for the independence of observations by plotting the
-residuals in the order of data collection:
+Next, we will verify our assumption (confirm independence of
+observations) by plotting the residuals in the order of data collection:
 
 ``` r
 m_full_aug <- augment(m_full)
 ggplot(data = m_full_aug, aes(x = 1:nrow(m_full_aug), y = .resid)) +
   geom_point() +
-  labs(x = "Index", y = "Residual")
+  labs(title = "Residual Plot by Index",
+       subtitle = "In the order of data collection",
+       x = "Index",
+       y = "Residual")
 ```
 
 ![](data-analysis_files/figure-gfm/testing-condition-1-1.png)<!-- -->
@@ -527,7 +537,8 @@ Next, let’s examine the normality of residuals:
 ``` r
 ggplot(data = m_full_aug, aes(x = .resid)) +
   geom_histogram(binwidth = 1.25) +
-  labs(x = "Residuals")
+  labs(title = "Normality of Residuals",
+       x = "Residuals")
 ```
 
 ![](data-analysis_files/figure-gfm/testing-condition-3-1.png)<!-- -->
@@ -539,7 +550,9 @@ constant variance:
 ggplot(data = m_full_aug, aes(x = .fitted, y = .resid)) +
   geom_point() +
   geom_hline(yintercept = 0, lty = 3, color = "blue") +
-  labs(y = "Residuals", x = "Predicted values, y-hat")
+  labs(title = "Distribution of Residuals",
+       x = "Predicted values, y-hat",
+       y = "Residuals")
 ```
 
 ![](data-analysis_files/figure-gfm/testing-conditions-2-and-4-1.png)<!-- -->
@@ -614,8 +627,8 @@ graph:
 ``` r
 ggplot(fight_songs, mapping = aes(x = victory_win_won)) +
   geom_bar() +
-  labs(title = "Distribution of Whether Fight Songs Include 'Victory', 'Win', or 'Won'",
-       x = "Whether Fight Song Includes 'Victory', 'Win', or 'Won'",
+  labs(title = "Distribution of Whether Fight Songs Include 'victory', 'win', or 'won'",
+       x = "Whether Fight Song Includes 'victory', 'win', or 'won'",
        y = "Number of College Football Teams")
 ```
 
@@ -653,8 +666,8 @@ the word “rah”, by creating a bar graph:
 ``` r
 ggplot(fight_songs, mapping = aes(x = rah)) +
   geom_bar() +
-  labs(title = "Distribution of Whether Fight Songs Include 'Rah'",
-       x = "Whether Fight Song Includes 'Rah'",
+  labs(title = "Distribution of Whether Fight Songs Include 'rah'",
+       x = "Whether Fight Song Includes 'rah'",
        y = "Number of College Football Teams")
 ```
 
@@ -667,7 +680,9 @@ appropriate summary statistics:
 ``` r
 ggplot(fight_songs, mapping = aes(x = rank)) +
   geom_histogram(bins = 10) +
-  labs(title = "Distribution of College Football Rankings", x = "Rank", y = "Number of College Football Teams")
+  labs(title = "Distribution of College Football Rankings",
+       x = "Rank",
+       y = "Number of College Football Teams")
 ```
 
 ![](data-analysis_files/figure-gfm/visualize_rank-1.png)<!-- -->
@@ -762,7 +777,7 @@ get_p_value(null_dist_victory_win_won, obs_stat = obs_diff_victory_win_won, dire
 ``` r
 visualise(null_dist_victory_win_won) + 
   labs(title = "Null Distribution for Median Rankings of College Football Teams",
-       subtitle = "for fight songs which include 'victory', 'win', or 'won'",
+       subtitle = "For fight songs which include 'victory', 'win', or 'won'",
        x = "Sample Median Ranking",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_victory_win_won, direction = "two_sided")
@@ -839,7 +854,7 @@ get_p_value(null_dist_opponents, obs_stat = obs_diff_opponents, direction = "two
 ``` r
 visualise(null_dist_opponents) + 
   labs(title = "Null Distribution for Median Rankings of College Football Teams",
-       subtitle = "for fight songs which include opponents",
+       subtitle = "For fight songs which mention opponents",
        x = "Sample Median Ranking",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_opponents, direction = "two_sided")
@@ -918,7 +933,7 @@ get_p_value(null_dist_nonsense, obs_stat = obs_diff_nonsense, direction = "two_s
 ``` r
 visualise(null_dist_nonsense) + 
   labs(title = "Null Distribution for Median Rankings of College Football Teams",
-       subtitle = "for fight songs which include nonsense",
+       subtitle = "For fight songs which include nonsensical phrases",
        x = "Sample Median Ranking",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_nonsense, direction = "two_sided")
@@ -990,7 +1005,7 @@ get_p_value(null_dist_rah, obs_stat = obs_diff_rah, direction = "two_sided")
 ``` r
 visualise(null_dist_rah) + 
   labs(title = "Null Distribution for Median Rankings of College Football Teams",
-       subtitle = "for fight songs which include 'rah'",
+       subtitle = "For fight songs which include 'rah'",
        x = "Sample Median Ranking",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_rah, direction = "two_sided")
@@ -1194,7 +1209,7 @@ get_p_value(null_dist_north_south, obs_stat = obs_diff_north_south, direction = 
 ``` r
 visualise(null_dist_north_south) + 
   labs(title = "Null Distribution for Median Number of Times Fights Are Mentioned",
-       subtitle = "for colleges located in the north and south",
+       subtitle = "For colleges located in the north and south",
        x = "Sample Median Ranking",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_north_south, direction = "left")
@@ -1271,7 +1286,7 @@ get_p_value(null_dist_east_west, obs_stat = obs_diff_east_west, direction = "two
 ``` r
 visualise(null_dist_east_west) + 
   labs(title = "Null Distribution for Average Duration of Fight Songs",
-       subtitle = "for colleges located in the east and west",
+       subtitle = "For colleges located in the east and west",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_east_west, direction = "two_sided")
 ```
