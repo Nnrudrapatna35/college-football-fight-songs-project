@@ -182,11 +182,6 @@ ggplot(fight_songs, mapping = aes(x = sec_duration, y = bpm)) +
 
 ![](data-analysis_files/figure-gfm/visualize-classify-1.png)<!-- -->
 
-Using jittered points allows us to manage the effects of overplotting
-when working with smaller datasets. We were inspired to use this type of
-plot after conferencing with Dr. Eric Monson who delivered the “Tips for
-Effective Data Visualization” presentation earlier this semester.
-
 The upper left-hand region of the plot represents songs that are “fast
 and short” while the lower left-hand region represents songs that are
 “slow and short.” The upper right-hand region of the plot represents
@@ -233,7 +228,11 @@ college fight songs.
 Now, let’s return to our research question by examining whether the
 amount of clichés varies based on a song’s classification. First, we
 will create violin plots for the distribution of the number of tropes
-for each classification:
+for each classification and add jitter. Using jittered points allows us
+to manage the effects of overplotting when working with smaller
+datasets. We were inspired to use this type of plot after conferencing
+with Dr. Eric Monson who delivered the “Tips for Effective Data
+Visualization” presentation earlier this semester.
 
 ``` r
 ggplot(fight_songs, mapping = aes(x = classify, y = trope_count)) +
@@ -298,7 +297,7 @@ get_p_value(null_slow_long, obs_stat = obs_median, direction = "two_sided")
 ``` r
 visualise(null_slow_long) + 
   labs(title = "Null Distribution for Median Number of Tropes",
-       subtitle = "for slow and long fight songs",
+       subtitle = "For Slow and Long Fight Songs",
        x = "Sample Median Number of Tropes",
        y = "Count") +
   shade_p_value(obs_stat = obs_median, direction = "two_sided")
@@ -308,18 +307,18 @@ visualise(null_slow_long) +
 
 Based on our p-value of 0.038, which is less than 0.05 (significance
 level), we reject the null hypothesis in favor of the alternative
-hypothesis; in other words, the true median number of tropes is
-different than 4. Thus, the data provide convincing evidence that the
-median number of tropes for songs that are slow and long is different
-than the population median of 4. However, our sample size is very small
-(9 observations), so we must be wary of our results and acknowledge the
-limitations of our conclusions.
+hypothesis; in other words, there is sufficient evidence that the true
+median number of tropes is different than 4. Thus, the data provide
+convincing evidence that the median number of tropes for songs that are
+slow and long is different than the population median of 4. However, our
+sample size is very small (9 observations), so we must be wary of our
+results and acknowledge the limitations of our conclusions.
 
 We can also see from the visualization “Number of Clichés” that the
 spread for “slow and short” songs is much smaller compared to all other
 song classifications. We will test whether the standard deviation for
 “slow and short” songs is significantly different from the population
-standard deviation of `(1.73 + 1.56 + 2.28 + 1.13)/4 = 1.675`.
+standard deviation of 1.675.
 
 The null hypothesis is that the true standard deviation in the number of
 tropes for “slow and short” songs is 1.675, H0: sigma = 1.675.
@@ -352,7 +351,7 @@ get_p_value(null_slow_short, obs_stat = obs_sd, direction = "left")
 ``` r
 visualise(null_slow_short) + 
   labs(title = "Null Distribution for Standard Deviation of Tropes",
-       subtitle = "for slow and short fight songs",
+       subtitle = "For Slow and Short Fight Songs",
        x = "Sample Standard Deviation of Tropes",
        y = "Count") +
   shade_p_value(obs_sd, direction = "left")
@@ -362,11 +361,9 @@ visualise(null_slow_short) +
 
 Based on the p-value of 0.685, which is greater than our alpha level of
 0.05, we fail to reject the null hypothesis in favor of the alternative
-hypothesis; in other words, the true standard deviation in the number of
-tropes for “slow and short” songs is equal to 1.675. Thus, the data do
-not provide convincing evidence that the true standard deviation for
-slow and short songs is less than the population standard deviation of
-1.675.
+hypothesis; in other words, the data do not provide convincing evidence
+that the true standard deviation for slow and short songs is less than
+the population standard deviation of 1.675.
 
 Now, let’s find the full linear model that predicts number of tropes
 (`trope_count`) from tempo (`bpm`) and duration (`sec_duration`):
@@ -401,7 +398,7 @@ Based on the output, the full linear model is `trope_count-hat` = 4.58 -
 0.022608, which means that approximately 2.2608044% of the variability
 in trope counts can be explained by the linear model that predicts trope
 count from a song’s tempo and duration. Given this R-squared value, our
-model is very weak since, in general, the closer the R-squared value is
+model is very weak, since, in general, the closer the R-squared value is
 to 1 (100% of the variability in trope counts can be explained by the
 model), the more accurate and useful the final model is. As the model
 only accounts for a small percent of the variability in trope counts, it
@@ -409,7 +406,7 @@ is not a great predictor of a fight song’s trope count.
 
 The intercept tells us that for a song with 0 bpm which lasts 0 seconds,
 the expected number of tropes is 4.58. But of course, this is
-nonsensical since none of the fight songs we are considering in our
+nonsensical, since none of the fight songs we are considering in our
 analysis last 0 seconds (for that matter, no songs, by definition, last
 0 seconds\!). The slope coefficient associated with `bpm` tells us that
 for an increase in 1 bpm, the number of tropes is expected, on average,
@@ -421,7 +418,10 @@ increase by 0.000208, holding all else constant.
 Now, we will conduct a hypothesis test for the slopes to determine
 whether the slope coefficients for `bpm` and `sec_duration` are
 significantly different from 0. We will use a significance level of
-0.05.
+0.05. Conducting a hypothesis test for the slopes will help us confirm
+or deny or research question on whether either tempo or duration are
+useful predictors of the content of a fight song, as determined by a
+song’s number of tropes.
 
 Let our null hypotheses be that the slope coefficients associated with
 both variables are 0; H0: beta(`bpm`) = 0 and beta(`sec_duration`) = 0.
@@ -431,9 +431,10 @@ with both variables are significantly different than 0, Ha: beta(`bpm`)
 ≠ 0 and beta(`sec_duration`) ≠ 0.
 
 ``` r
-obs_beta_bpm <- tidy(m_full) %>% 
+obs_beta_bpm <- tidy(m_full) %>%
   select(estimate) %>% 
-  slice(2) %>% pull() 
+  slice(2) %>% 
+  pull() 
 
 set.seed(11101962)
 null_dist_bpm_slope <- fight_songs %>%
@@ -452,7 +453,7 @@ get_p_value(null_dist_bpm_slope, obs_stat = obs_beta_bpm, direction = "two_sided
 
 ``` r
 visualise(null_dist_bpm_slope) + 
-  labs(title = "Null Distribution for Bpm Slope Coefficient",
+  labs(title = "Null Distribution for bpm Slope Coefficient",
        subtitle = "in full linear model for trope count",
        x = "Sample Slope Coefficients",
        y = "Count") +
@@ -505,8 +506,12 @@ observations should be independent; (2) residuals should be randomly
 distributed around 0; (3) residuals should be nearly normally
 distributed, centered at 0; (4) residuals should have constant variance.
 
-First, we will check for the independence of observations by plotting
-the residuals in the order of data collection:
+First, we can assume that the observations (fight songs) are independent
+because college fight songs are unique to every team and written by
+different authors.
+
+Next, we will check for the independence of observations by plotting the
+residuals in the order of data collection:
 
 ``` r
 m_full_aug <- augment(m_full)
@@ -543,11 +548,6 @@ Clearly, condition 4 (constant variance) is violated. Therefore,
 inference for regression is invalid. This means our conclusion that
 there is insufficient evidence to suggest the slope coefficients for
 `bpm` and `sec_duration` are different than 0 is also not credible.
-
-Circling back to our research question, it appears as though we have
-insufficient evidence to describe the correlation (if any) between our
-two explanatory variables, `bpm` and `sec_duration`, and the trope count
-for a given fight song.
 
 To confirm that there is no better linear model, we will use the
 `step()` function and backwards selection with AIC as the selection
@@ -587,6 +587,13 @@ is a counting (discrete) numerical response variable. Thus, our final
 conclusions are as follows: this method of analysis involving linear
 regression is invalid and there is no guarantee that the explanatory
 variables are poor predictors of the response variable.
+
+Circling back to our research question, it appears as though we have
+insufficient evidence to describe the correlation (if any) between our
+two explanatory variables, `bpm` and `sec_duration`, and the trope count
+for a given fight song. The only evidence that we have is that “slow and
+long” fight songs have a different median number of tropes than other
+fight songs.
 
 ### Research Question 2
 
