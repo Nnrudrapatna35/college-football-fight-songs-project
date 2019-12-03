@@ -94,7 +94,7 @@ ggplot(fight_songs, mapping = aes(x = sec_duration)) +
        y = "Number of Songs")
 ```
 
-![](data-analysis_files/figure-gfm/histogram-summary-stats-sec_duration-1.png)<!-- -->
+![](data-analysis_files/figure-gfm/histogram-summary-stats-sec-duration-1.png)<!-- -->
 
 ``` r
 fight_songs %>%
@@ -206,7 +206,7 @@ ggplot(fight_songs, mapping = aes(x = trope_count)) +
        y = "Number of Songs")
 ```
 
-![](data-analysis_files/figure-gfm/histogram-summary-stats-trope_count-1.png)<!-- -->
+![](data-analysis_files/figure-gfm/histogram-summary-stats-trope-count-1.png)<!-- -->
 
 ``` r
 fight_songs %>%
@@ -251,7 +251,7 @@ ggplot(fight_songs, mapping = aes(x = classify, y = trope_count)) +
        y = "Number of Clichés")
 ```
 
-![](data-analysis_files/figure-gfm/boxplots-summary-statsnumber_tropes-1.png)<!-- -->
+![](data-analysis_files/figure-gfm/boxplots-summary-stats-number-tropes-1.png)<!-- -->
 
 ``` r
 fight_songs %>%
@@ -633,7 +633,7 @@ ggplot(fight_songs, mapping = aes(x = victory_win_won)) +
        y = "Number of College Football Teams")
 ```
 
-![](data-analysis_files/figure-gfm/visualize_victory_win_won-1.png)<!-- -->
+![](data-analysis_files/figure-gfm/visualize-victory-win-won-1.png)<!-- -->
 
 Next, we will look at `opponents`, which designates whether a song
 mentions an opponent, by creating a bar graph:
@@ -646,7 +646,7 @@ ggplot(fight_songs, mapping = aes(x = opponents)) +
        y = "Number of College Football Teams")
 ```
 
-![](data-analysis_files/figure-gfm/visualize_opponents-1.png)<!-- -->
+![](data-analysis_files/figure-gfm/visualize-opponents-1.png)<!-- -->
 
 Now, we will explore `nonsense`, which designates whether a song
 includes any nonsense words/phrases, by creating a bar graph:
@@ -672,7 +672,7 @@ ggplot(fight_songs, mapping = aes(x = rah)) +
        y = "Number of College Football Teams")
 ```
 
-![](data-analysis_files/figure-gfm/visualize_rah-1.png)<!-- -->
+![](data-analysis_files/figure-gfm/visualize-rah-1.png)<!-- -->
 
 Finally, we will look at `rank`, which corresponds to the team’s AP
 college football ranking. We will create a histogram and calculate the
@@ -686,7 +686,7 @@ ggplot(fight_songs, mapping = aes(x = rank)) +
        y = "Number of College Football Teams")
 ```
 
-![](data-analysis_files/figure-gfm/visualize_rank-1.png)<!-- -->
+![](data-analysis_files/figure-gfm/visualize-rank-1.png)<!-- -->
 
 In calculating the summary statistics for `rank`, we will use the median
 as a measure of center and the interquartile range as a measure of
@@ -784,7 +784,7 @@ visualise(null_dist_victory_win_won) +
   shade_p_value(obs_stat = obs_diff_victory_win_won, direction = "two_sided")
 ```
 
-![](data-analysis_files/figure-gfm/rank_victory_win_won_hyp_test-1.png)<!-- -->
+![](data-analysis_files/figure-gfm/rank-victory-win-won-hyp-test-1.png)<!-- -->
 
 Since the p-value, 0.634, is greater than our significance level of
 0.05, we fail to reject the null hypothesis in favor of the alternative
@@ -861,7 +861,7 @@ visualise(null_dist_opponents) +
   shade_p_value(obs_stat = obs_diff_opponents, direction = "two_sided")
 ```
 
-![](data-analysis_files/figure-gfm/rank_opponents_hyp_test-1.png)<!-- -->
+![](data-analysis_files/figure-gfm/rank-opponents-hyp-test-1.png)<!-- -->
 
 Since the p-value, 1, is greater than our alpha level of 0.05, we fail
 to reject the null hypothesis in favor of the alternative hypothesis. In
@@ -940,7 +940,7 @@ visualise(null_dist_nonsense) +
   shade_p_value(obs_stat = obs_diff_nonsense, direction = "two_sided")
 ```
 
-![](data-analysis_files/figure-gfm/rank_nonsense_hyp_test-1.png)<!-- -->
+![](data-analysis_files/figure-gfm/rank-nonsense-hyp-test-1.png)<!-- -->
 
 Since the p-value, 0.344, is greater than our alpha level of 0.05, we
 fail to reject the null hypothesis in favor of the alternative
@@ -1012,7 +1012,7 @@ visualise(null_dist_rah) +
   shade_p_value(obs_stat = obs_diff_rah, direction = "two_sided")
 ```
 
-![](data-analysis_files/figure-gfm/rank_rah_hyp_test-1.png)<!-- -->
+![](data-analysis_files/figure-gfm/rank-rah-hyp-test-1.png)<!-- -->
 
 Since the p-value, 0.678, is greater than our significance level of
 0.05, we fail to reject the null hypothesis. In other words, the data do
@@ -1195,9 +1195,8 @@ words “victory,” “win,” or “won” in their fight songs. On the other
 hand, only 57.9% of schools in southern conferences have the words
 “victory,” “win,” or “won” in their fight songs. We would like to see
 if this result is statistically significant and what the true difference
-in proportions is. First, we will use simulation to conduct a hypothesis
-test. We have to use simulation because we are looking for the
-*difference* in proportions.
+in proportions is. We have to use simulation-based hypothesis testing
+because we are looking for the difference in proportions.
 
 First, we will run a hypothesis test, calculate the p-value, and
 interpret the results in order to determine whether there is a
@@ -1222,7 +1221,7 @@ null_dist_north_south_victory <- fight_songs %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in props", order = c("north", "south"))
 
-get_p_value(null_dist_north_south_victory, obs_stat = obs_diff_props_n_s_victory, direction = "both")
+get_p_value(null_dist_north_south_victory, obs_stat = obs_diff_props_n_s_victory, direction = "two_sided")
 ```
 
     ## # A tibble: 1 x 1
@@ -1236,7 +1235,7 @@ visualise(null_dist_north_south_victory) +
        subtitle = "For colleges located in the north and south",
        x = "Sample Difference in Proportions",
        y = "Count") +
-  shade_p_value(obs_stat = obs_diff_props_n_s_victory, direction = "both")
+  shade_p_value(obs_stat = obs_diff_props_n_s_victory, direction = "two_sided")
 ```
 
 ![](data-analysis_files/figure-gfm/hyp-test-victory-win-won-1.png)<!-- -->
@@ -1253,7 +1252,7 @@ proportion of teams with fight songs for which `victory_win_won` was
 true difference in proportions really is.
 
 ``` r
-set.seed(10081999)
+set.seed(11101962)
 boot_victory_win_won <- fight_songs %>%
   specify(response = victory_win_won, explanatory = region, success = "Yes") %>%
   generate(reps = 1000, type = "bootstrap") %>%
@@ -1266,17 +1265,18 @@ CI
     ## # A tibble: 1 x 2
     ##   `2.5%` `97.5%`
     ##    <dbl>   <dbl>
-    ## 1 -0.107   0.362
+    ## 1 -0.106   0.351
 
 ``` r
 visualise(boot_victory_win_won) +
   labs(title = "Bootstrap Distribution of Differences in Sample Proportions of victory_win_won", 
-          subtitle = "North - South", 
-          x = "Sample Difference in Proportions", y = "Count") +
+       subtitle = "North - South", 
+       x = "Sample Difference in Proportions",
+       y = "Count") +
   shade_ci(CI)
 ```
 
-![](data-analysis_files/figure-gfm/CI_victory_win_won-1.png)<!-- -->
+![](data-analysis_files/figure-gfm/CI-victory-win-won-1.png)<!-- -->
 
 Based on the output, we are 95% confident that the true difference in
 proportions of teams that include “victory,” “win,” or “won,” in their
@@ -1288,7 +1288,7 @@ Next, let’s look at our second variable, `men`, which refers to whether
 a fight song mentions male groups in its lyrics, to see whether there
 exists a statistically significant relationship between the proportion
 of teams for which `men` is “yes” for northern or southern conferences.
-First, let’s find what the two proportions are.
+First, let’s find what the two proportions are:
 
 ``` r
 fight_songs %>%
@@ -1310,9 +1310,9 @@ Based on the output, 44.4% of schools in northern conferences mention
 male groups in their fight songs. On the other hand, only 31.6% of
 schools in southern conferences mention male groups in their fight
 songs. We would like to see if this result is statistically significant
-and what the true difference in proportions is. First, we will use
-simulation to conduct a hypothesis test. We have to use simulation
-because we are looking for the *difference* in proportions.
+and what the true difference in proportions is. We have to use
+simulation-based hypothesis testing because we are looking for the
+difference in proportions.
 
 First, we will run a hypothesis test, calculate the p-value, and
 interpret the results in order to determine whether there is a
@@ -1336,7 +1336,7 @@ null_dist_north_south_men <- fight_songs %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in props", order = c("north", "south"))
 
-get_p_value(null_dist_north_south_men, obs_stat = obs_diff_props_n_s_men, direction = "both")
+get_p_value(null_dist_north_south_men, obs_stat = obs_diff_props_n_s_men, direction = "two_sided")
 ```
 
     ## # A tibble: 1 x 1
@@ -1350,7 +1350,7 @@ visualise(null_dist_north_south_men) +
        subtitle = "For colleges located in the north and south",
        x = "Sample Difference in Proportions",
        y = "Count") +
-  shade_p_value(obs_stat = obs_diff_props_n_s_men, direction = "both")
+  shade_p_value(obs_stat = obs_diff_props_n_s_men, direction = "two_sided")
 ```
 
 ![](data-analysis_files/figure-gfm/hyp-test-men-1.png)<!-- -->
@@ -1364,7 +1364,7 @@ conferences.
 However, we did observe that northern conferences had a greater
 proportion of teams with fight songs for which `men` was “yes.”
 Therefore, let’s create a confidence interval to find what the true
-difference in proportions really is.
+difference in proportions really is:
 
 ``` r
 set.seed(10081999)
@@ -1390,7 +1390,7 @@ visualise(boot_men) +
   shade_ci(CI)
 ```
 
-![](data-analysis_files/figure-gfm/CI_men-1.png)<!-- -->
+![](data-analysis_files/figure-gfm/CI-men-1.png)<!-- -->
 
 Based on the output, we are 95% confident that the true difference in
 proportions of teams that mention male groups in their fight songs for
@@ -1402,7 +1402,7 @@ Finally, let’s look at our last variable, `nonsense`, which refers to
 whether a fight song uses nonsense syllables in its lyrics, to see
 whether there exists a statistically significant relationship between
 the proportion of teams for which `nonsense` is “yes” for northern or
-southern conferences. First, let’s find what the two proportions are.
+southern conferences. First, let’s find what the two proportions are:
 
 ``` r
 fight_songs %>%
@@ -1424,9 +1424,9 @@ Based on the output, 14.8% of schools in northern conferences use
 nonsense syllables in their fight songs. On the other hand, 15.8% of
 schools in southern conferences use nonsense syllables in their fight
 songs. We would like to see if this result is statistically significant
-and what the true difference in proportions is. First, we will use
-simulation to conduct a hypothesis test. We have to use simulation
-because we are looking for the *difference* in proportions.
+and what the true difference in proportions is. We have to use
+simulation-based hypothesis testing because we are looking for the
+difference in proportions.
 
 First, we will run a hypothesis test, calculate the p-value, and
 interpret the results in order to determine whether there is a
@@ -1465,7 +1465,7 @@ visualise(null_dist_north_south_nonsense) +
        subtitle = "For colleges located in the north and south",
        x = "Sample Difference in Proportions",
        y = "Count") +
-  shade_p_value(obs_stat = obs_diff_props_n_s_nonsense, direction = "both")
+  shade_p_value(obs_stat = obs_diff_props_n_s_nonsense, direction = "two_sided")
 ```
 
 ![](data-analysis_files/figure-gfm/hyp-test-nonsense-1.png)<!-- -->
@@ -1479,10 +1479,10 @@ conferences.
 However, we did observe that southern conferences had a greater
 proportion of teams with fight songs for which `nonsense` was “yes.”
 Therefore, let’s create a confidence interval to find what the true
-difference in proportions really is.
+difference in proportions really is:
 
 ``` r
-set.seed(10081999)
+set.seed(11101962)
 boot_nonsense <- fight_songs %>%
   specify(response = nonsense, explanatory = region, success = "Yes") %>%
   generate(reps = 1000, type = "bootstrap") %>%
@@ -1495,7 +1495,7 @@ CI
     ## # A tibble: 1 x 2
     ##   `2.5%` `97.5%`
     ##    <dbl>   <dbl>
-    ## 1 -0.193   0.159
+    ## 1 -0.192   0.160
 
 ``` r
 visualise(boot_nonsense) +
@@ -1505,18 +1505,20 @@ visualise(boot_nonsense) +
   shade_ci(CI)
 ```
 
-![](data-analysis_files/figure-gfm/CI_nonsense-1.png)<!-- -->
+![](data-analysis_files/figure-gfm/CI-nonsense-1.png)<!-- -->
 
 Based on the output, we are 95% confident that the true difference in
-proportions of teams that mention male groups in their fight songs for
-northern vs. southern conferences (north - south) is between -0.193
-(-19.3%) and 0.159 (15.9%). Since 0 is included in our interval, this
-aligns with what we found from our hypothesis test.
+proportions of teams that mention male individuals/groups in their fight
+songs for northern vs. southern conferences (`north` - `south`) is
+between -0.193 (-19.3%) and 0.159 (15.9%). Since 0 is included in our
+confidence interval, this aligns with what we found from our hypothesis
+test.
 
 Based on the hypothesis testing above, it turns out that the variables
-`victory_win_won`, `men`, and `nonsense` are NOT regionally unqiue. In
+`victory_win_won`, `men`, and `nonsense` are NOT regionally unique. In
 other words, knowing whether a school is in a southern vs. northern
 conference does not tell us whether that school’s fight song is more or
-less likely to include the words “victory,” “win,” or “won,” mention
-male groups, or use nonsense syllables. This leads us to believe that
-college fight songs are truly independent and random from one another.
+less likely to include the words “victory”, “win”, or “won”, mention
+male individuals/groups, or use nonsense words/phrases. The data leads
+us to believe that college fight songs are truly independent and random
+from one another.
