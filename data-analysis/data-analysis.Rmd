@@ -102,7 +102,7 @@ fight_songs %>%
 
 Based on the output displayed in the tibble above, 23 songs are categorized as "fast and long", 25 songs are categorized as "fast and short", 9 songs are categorized as "slow and long", and 8 songs are categorized as "slow and short".
 
-Using these classifications, let's visualize the groups and fill in each observation with the number of tropes associated with that particular observation. We choose to use `geom_hline()` and `geom_vline()` to add horizontal and vertical reference lines to the jittered plot (`geom_jitter()` adds a small amount of random variation to the location of each point). We also choose to use `scale_color_gradientn()` to create a rainbow-colored gradient scale.
+Using these classifications, let's visualize the groups and fill in each observation with the number of tropes associated with that particular observation. We choose to use `geom_hline()` and `geom_vline()` to add horizontal and vertical reference lines to the jittered plot (`geom_jitter()` adds a small amount of random variation to the location of each point). We also choose to use `scale_color_gradientn()` to create a rainbow-colored gradient scale, which indicates the number of tropes for a given fight song.
 
 ```{r visualize-classify}
 ggplot(fight_songs, mapping = aes(x = sec_duration, y = bpm)) +

@@ -169,7 +169,8 @@ observation. We choose to use `geom_hline()` and `geom_vline()` to add
 horizontal and vertical reference lines to the jittered plot
 (`geom_jitter()` adds a small amount of random variation to the location
 of each point). We also choose to use `scale_color_gradientn()` to
-create a rainbow-colored gradient scale.
+create a rainbow-colored gradient scale, which indicates the number of
+tropes for a given fight song.
 
 ``` r
 ggplot(fight_songs, mapping = aes(x = sec_duration, y = bpm)) +
