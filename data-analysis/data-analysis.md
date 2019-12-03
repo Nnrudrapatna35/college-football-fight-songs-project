@@ -1300,3 +1300,15 @@ hypothesis. In other words, the data do not provide convincing evidence
 of a difference in the mean duration of fight songs between colleges
 located in the east versus those located in the west. Therefore, our
 original hypothesis was correct.
+
+Now, we will use the `mutate()` function to create a variable called
+`rank_level`. Colleges with a `rank` between 1-25, inclusive, will be
+designated as “high,” and all others will be designated as “low.”
+
+``` r
+fight_songs <- fight_songs %>%
+  mutate(rank_level = case_when(
+    rank <= 25 ~ "high",
+    rank >25 ~ "low"
+  ))
+```
