@@ -426,7 +426,7 @@ Now, we will conduct a hypothesis test for the slopes to determine
 whether the slope coefficients for `bpm` and `sec_duration` are
 significantly different from 0. We will use a significance level of
 0.05. Conducting a hypothesis test for the slopes will help us confirm
-or deny or research question on whether either tempo or duration are
+or deny our research question on whether either tempo or duration are
 useful predictors of the content of a fight song, as determined by a
 song’s number of tropes.
 
