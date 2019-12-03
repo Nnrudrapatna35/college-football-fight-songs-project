@@ -898,13 +898,13 @@ and without nonsense words in their fight songs.
 
 The null hypothesis is that there is no difference in the median
 rankings of college football teams between those with and without
-nonsense words in their fight songs: H0 = mu(nonsenseNO) -
-mu(nonsenseYES) = 0.
+nonsense words in their fight songs: H0 = mu(nonsenseNo) -
+mu(nonsenseYes) = 0.
 
 The alternative hypothesis is that there is a difference in the median
 rankings of college football teams between those with and without
-nonsense words in their fight songs: H0 = mu(nonsenseNO) -
-mu(nonsenseYES) ≠ 0.
+nonsense words in their fight songs: H0 = mu(nonsenseNo) -
+mu(nonsenseYes) ≠ 0.
 
 Now, I will run a hypothesis test, calculate the p-value, and interpret
 the results in order to determine whether there is a statistically
