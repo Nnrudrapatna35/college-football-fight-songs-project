@@ -352,7 +352,7 @@ Before we delve deeper into our analysis, let's first take a look at the distrib
 We will begin our analysis with `victory_win_won`, which designates whether a fight song says "victory", "win", or "won", by creating a bar graph:
 
 ```{r visualize-victory-win-won}
-ggplot(fight_songs, mapping = aes(x = victory_win_won)) +
+ggplot(fight_songs, mapping = aes(x = victory_win_won, fill = victory_win_won)) +
   geom_bar() +
   labs(title = "Distribution of Whether Fight Songs Include 'victory', 'win', or 'won'",
        x = "Whether Fight Song Includes 'victory', 'win', or 'won'",
@@ -362,7 +362,7 @@ ggplot(fight_songs, mapping = aes(x = victory_win_won)) +
 Next, we will look at `opponents`, which designates whether a song mentions an opponent, by creating a bar graph:
 
 ```{r visualize-opponents}
-ggplot(fight_songs, mapping = aes(x = opponents)) +
+ggplot(fight_songs, mapping = aes(x = opponents, fill = opponents)) +
   geom_bar() +
   labs(title = "Distribution of Whether Fight Songs Include Opponents",
        x = "Whether Fight Song Includes Opponents",
@@ -372,7 +372,7 @@ ggplot(fight_songs, mapping = aes(x = opponents)) +
 Now, we will explore `nonsense`, which designates whether a song includes any nonsense words/phrases, by creating a bar graph:
 
 ```{r visualize_nonsense}
-ggplot(fight_songs, mapping = aes(x = nonsense)) +
+ggplot(fight_songs, mapping = aes(x = nonsense, fill = nonsense)) +
   geom_bar() +
   labs(title = "Distribution of Whether Fight Songs Include Nonsense",
        x = "Whether Fight Song Includes Nonsense Words",
@@ -382,7 +382,7 @@ ggplot(fight_songs, mapping = aes(x = nonsense)) +
 Then, we will examine `rah`, which designates whether a fight song says the word "rah", by creating a bar graph:
 
 ```{r visualize-rah}
-ggplot(fight_songs, mapping = aes(x = rah)) +
+ggplot(fight_songs, mapping = aes(x = rah, fill = rah)) +
   geom_bar() +
   labs(title = "Distribution of Whether Fight Songs Include 'rah'",
        x = "Whether Fight Song Includes 'rah'",
@@ -800,3 +800,42 @@ visualise(boot_nonsense) +
 Based on the output, we are 95% confident that the true difference in proportions of teams that mention male individuals/groups in their fight songs for northern vs. southern conferences (`north` - `south`) is between -0.193 (-19.3%) and 0.159 (15.9%). Since 0 is included in our confidence interval, this aligns with what we found from our hypothesis test.
 
 Based on the hypothesis testing above, it turns out that the variables `victory_win_won`, `men`, and `nonsense` are NOT regionally unique.  In other words, knowing whether a school is in a southern vs. northern conference does not tell us whether that school's fight song is more or less likely to include the words "victory", "win", or "won", mention male individuals/groups, or use nonsense words/phrases. The data leads us to believe that college fight songs are truly independent and random from one another.
+
+We would also like to determin whether the variables `victory_win_won`, `men`, and `nonsense` vary by the rank of a college. In order to determine this, we will use the mutate() function to create a variable called rank_level. Colleges with a rank between 1-25, inclusive, will be designated as “high,” and all others will be designated as “low.”
+
+```{r create_rank_level}
+fight_songs <- fight_songs %>%
+  mutate(rank_level = case_when(
+    rank <= 25 ~ "high",
+    rank >25 ~ "low"
+  ))
+```
+
+Now, we will visualize the difference in the `victory_win_won` variable divided by high and low ranking teams using the `rank_level` variable.
+
+```{r visualize_rank_level_victory_win_won, warning = FALSE}
+ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = victory_win_won)) +
+  geom_histogram(stat = "count", position = "fill") +
+  labs(title = "Effect of rank on whether fight song contains 'victory', 'win', or 'won'", 
+       x = "Rank Level", y = "Proportion", 
+       fill = "Whether Song Contains\n'Victory', 'Win', or 'Won'")
+```
+
+Now, we will visualize the difference in the `nonsense` variable divided by high and low ranking teams using the `rank_level` variable.
+
+```{r visualize_rank_level_nonsense, warning = FALSE}
+ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = nonsense)) +
+  geom_histogram(stat = "count", position = "fill") +
+  labs(title = "Effect of rank on whether fight song contains nonsense words", 
+       x = "Rank Level", y = "Proportion", 
+       fill = "Whether Song Contains\nNonsense Words")
+```
+
+Now, we will visualize the difference in the `men` variable divided by high and low ranking teams using the `rank_level` variable.
+
+```{r visualize_rank_level_men, warning = FALSE}
+ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = men)) +
+  geom_histogram(stat = "count", position = "fill") +
+  labs(title = "Effect of rank on whether fight song refers to a group of men", 
+       x = "Rank Level", y = "Proportion", fill = "Whether Song\nRefers to Men")
+```
