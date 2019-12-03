@@ -168,7 +168,8 @@ observation with the number of tropes associated with that particular
 observation. We choose to use `geom_hline()` and `geom_vline()` to add
 horizontal and vertical reference lines to the jittered plot
 (`geom_jitter()` adds a small amount of random variation to the location
-of each point):
+of each point). We also choose to use `scale_color_gradientn()` to
+create a rainbow-colored gradient scale.
 
 ``` r
 ggplot(fight_songs, mapping = aes(x = sec_duration, y = bpm)) +
@@ -181,7 +182,7 @@ ggplot(fight_songs, mapping = aes(x = sec_duration, y = bpm)) +
        x = "Duration (sec)",
        y = "Tempo (bpm)",
        color = "Number of Tropes") +
-  scale_color_gradientn(colours = rainbow(5))
+  scale_color_gradientn(colors = rainbow(5))
 ```
 
 ![](data-analysis_files/figure-gfm/visualize-classify-1.png)<!-- -->
@@ -1255,7 +1256,7 @@ The alternative hypothesis is that there is a difference in the mean
 duration of fight songs between colleges in the east versus the west;
 Ha: mean(east) - mean(west) ≠ 0.
 
-We hypothesize that no statistically significant relationship exists
+We hypothesize that there is no statistically significant relationship
 between `sec_duration` and `region` because nearly all of the fight
 songs were created very long ago (as evidenced by the `year` variable),
 and there is no reason why fight songs associated with teams in one

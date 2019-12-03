@@ -102,7 +102,7 @@ fight_songs %>%
 
 Based on the output displayed in the tibble above, 23 songs are categorized as "fast and long", 25 songs are categorized as "fast and short", 9 songs are categorized as "slow and long", and 8 songs are categorized as "slow and short".
 
-Using these classifications, let's visualize the groups and fill in each observation with the number of tropes associated with that particular observation. We choose to use `geom_hline()` and `geom_vline()` to add horizontal and vertical reference lines to the jittered plot (`geom_jitter()` adds a small amount of random variation to the location of each point):
+Using these classifications, let's visualize the groups and fill in each observation with the number of tropes associated with that particular observation. We choose to use `geom_hline()` and `geom_vline()` to add horizontal and vertical reference lines to the jittered plot (`geom_jitter()` adds a small amount of random variation to the location of each point). We also choose to use `scale_color_gradientn()` to create a rainbow-colored gradient scale.
 
 ```{r visualize-classify}
 ggplot(fight_songs, mapping = aes(x = sec_duration, y = bpm)) +
@@ -115,7 +115,7 @@ ggplot(fight_songs, mapping = aes(x = sec_duration, y = bpm)) +
        x = "Duration (sec)",
        y = "Tempo (bpm)",
        color = "Number of Tropes") +
-  scale_color_gradientn(colours = rainbow(5))
+  scale_color_gradientn(colors = rainbow(5))
 ```
 
 The upper left-hand region of the plot represents songs that are "fast and short" while the lower left-hand region represents songs that are "slow and short." The upper right-hand region of the plot represents songs that are "fast and long", and the lower right-hand region represents songs that are "slow and long".
@@ -678,7 +678,7 @@ The null hypothesis is that there is no difference in the mean duration of fight
 
 The alternative hypothesis is that there is a difference in the mean duration of fight songs between colleges in the east versus the west; Ha: mean(east) - mean(west) ≠ 0.
 
-We hypothesize that no statistically significant relationship exists between `sec_duration` and `region` because nearly all of the fight songs were created very long ago (as evidenced by the `year` variable), and there is no reason why fight songs associated with teams in one region would consistently be longer or shorter than those associated with college football teams of another region. Moreover, some colleges have relocated over time and their fight songs (which were created very long ago) have remained the same throughout.
+We hypothesize that there is no statistically significant relationship between `sec_duration` and `region` because nearly all of the fight songs were created very long ago (as evidenced by the `year` variable), and there is no reason why fight songs associated with teams in one region would consistently be longer or shorter than those associated with college football teams of another region. Moreover, some colleges have relocated over time and their fight songs (which were created very long ago) have remained the same throughout.
 
 ```{r east_west_fights_hyp_test}
 obs_diff_east_west <- 2.1 # From code chunk above
