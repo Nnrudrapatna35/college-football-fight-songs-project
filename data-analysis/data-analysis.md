@@ -752,7 +752,7 @@ elements of dominance, giving us reason to believe higher-ranked teams
 are more likely to have their fights songs include these words.
 
 First, we will calculate and visualize the difference in proportions of
-`victory_win_won` based on
+“yes” responses to `victory_win_won` based on
 `rank_level`.
 
 ``` r
@@ -841,55 +841,71 @@ of a difference in the proportion of colleges that include the words
 low rank. Thus, our original hypothesis was incorrect.
 
 We also hypothesize that a statistically significant relationship exists
-between `opponents` and `rank` since higher-ranked college football
-teams are likely to have developed more emotionally-charged rivalries
-with their highly successful peers. With such long-standing, emotional
-rivalries, it is reasonable to believe fight songs associated with these
-highly-ranked college football programs allude to their rivals by name.
+between `opponents` and `rank_level` since higher-ranked college
+football teams are likely to have developed more emotionally-charged
+rivalries with their highly successful peers. With such long-standing,
+emotional rivalries, it is reasonable to believe fight songs associated
+with these highly-ranked college football programs allude to their
+rivals by name.
 
-First, I will find the median rankings based on `opponents` (yes or no):
+First, we will calculate and visualize the difference in proportions of
+“yes” responses to `opponents` based on
+`rank_level`:
+
+``` r
+ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = opponents)) +
+  geom_histogram(stat = "count", position = "fill") +
+  labs(title = "Effect of rank on whether fight song mentions opponents", 
+       x = "Rank Level", y = "Proportion", 
+       fill = "Whether Song\nMentions Opponents")
+```
+
+![](data-analysis_files/figure-gfm/visualize-rank-opponents-1.png)<!-- -->
 
 ``` r
 fight_songs %>%
-  group_by(opponents) %>%
-  summarise(med_rank = median(rank))
+  count(opponents, rank_level) %>%
+  group_by(rank_level) %>%
+  mutate(rel_freq=n/sum(n)) %>%
+  select(-n)
 ```
 
-    ## # A tibble: 2 x 2
-    ##   opponents med_rank
-    ##   <chr>        <dbl>
-    ## 1 No            34  
-    ## 2 Yes           34.5
+    ## # A tibble: 4 x 3
+    ## # Groups:   rank_level [2]
+    ##   opponents rank_level rel_freq
+    ##   <chr>     <chr>         <dbl>
+    ## 1 No        high          0.8  
+    ## 2 No        low           0.825
+    ## 3 Yes       high          0.2  
+    ## 4 Yes       low           0.175
 
-I observe a difference of 0.5 (34.5 - 34.0) in rank between colleges
-that do and do not mention opponents in their fight songs.
+Based on the output, 20% of high ranked teams and 17.5% of low ranked
+teams mention opponents in their fight songs. This is an observed
+difference of 2.5% (in the order of high - low rank).
 
-The null hypothesis is that there is no difference in the median
-rankings of college football teams between those who do and do not
-mention their opponents in their fight songs; H0: mu(opponentsNo) -
-mu(opponentsYes) = 0.
+The null hypothesis is that there is no difference in the proportion of
+colleges that mention opponents in their fight songs based on high
+versus low rank; H0: p(high\_rank) - p(low\_rank) = 0.
 
-The alternative hypothesis is that there is a difference in the median
-rankings of college football teams between those who do and do not
-mention their opponents in their fight songs; H0: mu(opponentsNo) -
-mu(opponentsYes) ≠ 0.
+The alternative hypothesis is that there is a difference in the
+proportion of colleges that mention opponents in their fight songs based
+on high versus low rank; Ha: p(high\_rank) - p(low\_rank) ≠ 0.
 
 Now, I will run a hypothesis test, calculate the p-value, and interpret
 the results in order to determine whether there is a statistically
-significant difference in the median rankings of college football teams
-who mention their opponents in their respective fight songs and those
-who do not:
+significant difference in the proportion of colleges that mention
+opponents in their fight songs based on high versus low rank:
 
 ``` r
-obs_diff_opponents <- 0.5 # From above code chunk
+obs_diff_opponents <- 0.025 # From above code chunk
 
 set.seed(11101962)
 null_dist_opponents <- fight_songs %>%
-  specify(response = rank, explanatory = opponents) %>%
+  specify(response = opponents, explanatory = rank_level, success = "Yes") %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in medians", 
-            order = c("Yes", "No"))
+  calculate(stat = "diff in props", 
+            order = c("high", "low"))
 
 get_p_value(null_dist_opponents, obs_stat = obs_diff_opponents, direction = "two_sided")
 ```
@@ -897,78 +913,94 @@ get_p_value(null_dist_opponents, obs_stat = obs_diff_opponents, direction = "two
     ## # A tibble: 1 x 1
     ##   p_value
     ##     <dbl>
-    ## 1       1
+    ## 1   0.958
 
 ``` r
 visualise(null_dist_opponents) + 
-  labs(title = "Null Distribution for Median Rankings of College Football Teams",
-       subtitle = "For fight songs which mention opponents",
-       x = "Sample Median Ranking",
+  labs(title = "Null distribution for proportion of fight songs 
+       that mention opponents",
+       x = "Sample proportion",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_opponents, direction = "two_sided")
 ```
 
 ![](data-analysis_files/figure-gfm/rank-opponents-hyp-test-1.png)<!-- -->
 
-Since the p-value, 1, is greater than our alpha level of 0.05, we fail
-to reject the null hypothesis in favor of the alternative hypothesis. In
-other words, the data do not provide convincing evidence of a difference
-in the median rankings of college football teams based on whether or not
-their fight songs mention opponents. Thus, our original hypothesis was
-incorrect.
+Since the p-value, 0.958, is greater than our alpha level of 0.05, we
+fail to reject the null hypothesis in favor of the alternative
+hypothesis. In other words, the data do not provide convincing evidence
+of a difference in the proportion of colleges that mention opponents in
+their fight songs based on high versus low rank.. Thus, our original
+hypothesis was incorrect.
 
 Moreover, we hypothesize that a statistically significant relationship
-exists between `nonsense` and `rank` because there have been a plethora
-of articles written about how, in the past, highly successful teams
-included nonsensical phrases in their fight songs to distract the
+exists between `nonsense` and `rank_level` because there have been a
+plethora of articles written about how, in the past, highly successful
+teams included nonsensical phrases in their fight songs to distract the
 players on opposing college football teams. Since the fight songs
 included in our dataset were written decades ago (as evidenced by the
 `year` variable), it is reasonable to assume the songs associated with
 the historically-best college teams will have a higher likelihood of
 including nonsense (e.g “Hooperay”).
 
-First, I will find the median rankings based on `nonsense` (yes or no):
+First, we will calculate and visualize the difference in proportions of
+“yes” responses to `nonsense` based on
+`rank_level`:
+
+``` r
+ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = nonsense)) +
+  geom_histogram(stat = "count", position = "fill") +
+  labs(title = "Effect of rank on whether fight song contains nonsense words", 
+       x = "Rank Level", y = "Proportion", 
+       fill = "Whether Song Contains\nNonsense Words")
+```
+
+![](data-analysis_files/figure-gfm/visualize-rank-nonsense-1.png)<!-- -->
 
 ``` r
 fight_songs %>%
-  group_by(nonsense) %>%
-  summarise(med_rank = median(rank))
+  count(nonsense, rank_level) %>%
+  group_by(rank_level) %>%
+  mutate(rel_freq=n/sum(n)) %>%
+  select(-n)
 ```
 
-    ## # A tibble: 2 x 2
-    ##   nonsense med_rank
-    ##   <chr>       <dbl>
-    ## 1 No           31  
-    ## 2 Yes          42.5
+    ## # A tibble: 4 x 3
+    ## # Groups:   rank_level [2]
+    ##   nonsense rank_level rel_freq
+    ##   <chr>    <chr>         <dbl>
+    ## 1 No       high           0.92
+    ## 2 No       low            0.8 
+    ## 3 Yes      high           0.08
+    ## 4 Yes      low            0.2
 
-I observe a difference of 11.5 (42.5 - 31) in rank between colleges with
-and without nonsense words in their fight songs.
+Based on the output, 8% of high ranked teams and 20% of low ranked teams
+include nonsense words in their fight songs. This is an observed
+difference of -12% (in the order of high - low rank).
 
-The null hypothesis is that there is no difference in the median
-rankings of college football teams between those with and without
-nonsense words in their fight songs: H0 = mu(nonsenseNo) -
-mu(nonsenseYes) = 0.
+The null hypothesis is that there is no difference in the proportion of
+colleges that include nonsense in their fight songs based on high versus
+low rank; H0: p(high\_rank) - p(low\_rank) = 0.
 
-The alternative hypothesis is that there is a difference in the median
-rankings of college football teams between those with and without
-nonsense words in their fight songs: H0 = mu(nonsenseNo) -
-mu(nonsenseYes) ≠ 0.
+The alternative hypothesis is that there is a difference in the
+proportion of colleges that include nonsense words in their fight songs
+based on high versus low rank; Ha: p(high\_rank) - p(low\_rank) ≠ 0.
 
 Now, I will run a hypothesis test, calculate the p-value, and interpret
 the results in order to determine whether there is a statistically
-significant difference in median rank between colleges with/without
-nonsense words in their fight songs:
+significant difference in the proportion of colleges that include
+nonsense words in their fight songs based on high versus low rank:
 
 ``` r
-obs_diff_nonsense <- 11.5 # From above code chunk
+obs_diff_nonsense <- -.12 # From above code chunk
 
 set.seed(11101962)
 null_dist_nonsense <- fight_songs %>%
-  specify(response = rank, explanatory = nonsense) %>%
+  specify(response = nonsense, explanatory = rank_level, success = "Yes") %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in medians", 
-            order = c("Yes", "No"))
+  calculate(stat = "diff in props", 
+            order = c("high", "low"))
 
 get_p_value(null_dist_nonsense, obs_stat = obs_diff_nonsense, direction = "two_sided")
 ```
@@ -976,71 +1008,88 @@ get_p_value(null_dist_nonsense, obs_stat = obs_diff_nonsense, direction = "two_s
     ## # A tibble: 1 x 1
     ##   p_value
     ##     <dbl>
-    ## 1   0.344
+    ## 1    0.38
 
 ``` r
 visualise(null_dist_nonsense) + 
-  labs(title = "Null Distribution for Median Rankings of College Football Teams",
-       subtitle = "For fight songs which include nonsensical phrases",
-       x = "Sample Median Ranking",
+  labs(title = "Null distribution for proportion of fight songs that 
+       include nonsense words",
+       x = "Sample proportion",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_nonsense, direction = "two_sided")
 ```
 
 ![](data-analysis_files/figure-gfm/rank-nonsense-hyp-test-1.png)<!-- -->
 
-Since the p-value, 0.344, is greater than our alpha level of 0.05, we
-fail to reject the null hypothesis in favor of the alternative
+Since the p-value, 0.38, is greater than our significance level of 0.05,
+we fail to reject the null hypothesis in favor of the alternative
 hypothesis. In other words, the data do not provide convincing evidence
-of a difference in the median rankings of college football teams based
-on whether or not their fight songs include nonsense words. Thus, our
+of a difference in the proportion of colleges that include nonsense
+words in their fight songs based on high versus low rank. Thus, our
 original hypothesis was incorrect.
 
 Finally, we hypothesize that there is no statistically significant
-relationship between `rah` and `rank` since “rah” seems like it would be
-a common word in a fight song, irrespective of the quality (how
+relationship between `rah` and `rank_level` since “rah” seems like it
+would be a common word in a fight song, irrespective of the quality (how
 successful) of a college football team.
 
-First, I will find the median rankings based on `rah` (yes or no):
+First, we will calculate and visualize the difference in proportions of
+“yes” responses to `rah` based on `rank_level`.
+
+``` r
+ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = rah)) +
+  geom_histogram(stat = "count", position = "fill") +
+  labs(title = "Effect of rank on whether fight song contains 'rah'", 
+       x = "Rank Level", y = "Proportion", 
+       fill = "Whether Song\nContains 'Rah'")
+```
+
+![](data-analysis_files/figure-gfm/visualize-rank-rah-1.png)<!-- -->
 
 ``` r
 fight_songs %>%
-  group_by(rah) %>%
-  summarise(med_rank = median(rank))
+  count(rah, rank_level) %>%
+  group_by(rank_level) %>%
+  mutate(rel_freq=n/sum(n)) %>%
+  select(-n)
 ```
 
-    ## # A tibble: 2 x 2
-    ##   rah   med_rank
-    ##   <chr>    <dbl>
-    ## 1 No        32  
-    ## 2 Yes       37.5
+    ## # A tibble: 4 x 3
+    ## # Groups:   rank_level [2]
+    ##   rah   rank_level rel_freq
+    ##   <chr> <chr>         <dbl>
+    ## 1 No    high           0.76
+    ## 2 No    low            0.7 
+    ## 3 Yes   high           0.24
+    ## 4 Yes   low            0.3
 
-I observe a difference of 5.5 (37.5 - 32.0) in rank between colleges
-with and without “rah” in their fight songs.
+Based on the output, 24% of high ranked teams and 30% of low ranked
+teams include the word “rah” in their fight songs. This is an observed
+difference of -6% (in the order of high - low rank).
 
-The null hypothesis is that there is no difference in the median
-rankings of college football teams between those with and without “rah”
-in their fight songs; H0: mu(rahNo) - mu(rahYes) = 0.
+The null hypothesis is that there is no difference in the proportion of
+colleges that include the word “rah” in their fight songs based on high
+versus low rank; H0: p(high\_rank) - p(low\_rank) = 0.
 
-The alternative hypothesis is that there is a difference in the median
-rankings of college football teams between those with and without “rah”
-in their fight songs: Ha = mu(rahNo) - mu(rahYes) ≠ 0.
+The alternative hypothesis is that there is a difference in the
+proportion of colleges that include the word “rah” in their fight songs
+based on high versus low rank; Ha: p(high\_rank) - p(low\_rank) ≠ 0.
 
 Now, I will run a hypothesis test, calculate the p-value, and interpret
 the results in order to determine whether there is a statistically
-significant difference in median rankings between colleges with/without
-“rah” in their fight songs:
+significant difference in the proportion of colleges that include the
+words “rah” in their fight songs based on high versus low rank:
 
 ``` r
-obs_diff_rah <- 5.5 # From above code chunk
+obs_diff_rah <- -0.06 # From above code chunk
 
 set.seed(11101962)
 null_dist_rah <- fight_songs %>%
-  specify(response = rank, explanatory = rah) %>%
+  specify(response = rah, explanatory = rank_level, success = "Yes") %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in medians", 
-            order = c("Yes", "No"))
+  calculate(stat = "diff in props", 
+            order = c("high", "low"))
 
 get_p_value(null_dist_rah, obs_stat = obs_diff_rah, direction = "two_sided")
 ```
@@ -1048,24 +1097,25 @@ get_p_value(null_dist_rah, obs_stat = obs_diff_rah, direction = "two_sided")
     ## # A tibble: 1 x 1
     ##   p_value
     ##     <dbl>
-    ## 1   0.678
+    ## 1   0.752
 
 ``` r
 visualise(null_dist_rah) + 
-  labs(title = "Null Distribution for Median Rankings of College Football Teams",
-       subtitle = "For fight songs which include 'rah'",
-       x = "Sample Median Ranking",
+  labs(title = "Null distribution for proportion 
+       of fight songs that include 'rah'",
+       x = "Sample proportion",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_rah, direction = "two_sided")
 ```
 
 ![](data-analysis_files/figure-gfm/rank-rah-hyp-test-1.png)<!-- -->
 
-Since the p-value, 0.678, is greater than our significance level of
-0.05, we fail to reject the null hypothesis. In other words, the data do
-not provide convincing evidence of a difference in the median rankings
-of college football teams based on whether or not their fight songs
-include “rah”. Therefore, our original hypothesis was correct.
+Since the p-value, 0.752, is greater than our significance level of
+0.05, we fail to reject the null hypothesis in favor of the alternative
+hypothesis. In other words, the data do not provide convincing evidence
+of a difference in the proportion of colleges that include the word
+“rah” in their fight songs based on high versus low rank. Thus, our
+original hypothesis was correct.
 
 Now, let’s find the full linear model that predicts the rank of a
 college football team (`rank`) based on various characteristics of the
