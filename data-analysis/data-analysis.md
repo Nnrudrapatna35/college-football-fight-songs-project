@@ -24,7 +24,10 @@ interpret each question.
 We used hypothesis tests because finding the p-value for each instance
 allowed us to conclude whether or not the data provided convincing
 evidence of a trend, such as the relationship between the tempo and
-content of songs.
+content of songs. Our hypothesis tests were conducted using simulation
+instead of the CLT. The CLT was not a valid option, as none of the
+subsets of the data set had at least 30 observations and the majority of
+our tests are for independence (difference between two groups).
 
 Visualizing the relationships with plots would make it easier for
 viewers to understand how the level or occurrence of certain variables
@@ -1346,7 +1349,7 @@ get_p_value(null_dist_north_south_victory, obs_stat = obs_diff_props_n_s_victory
 ``` r
 visualise(null_dist_north_south_victory) + 
   labs(title = "Null Distribution for Difference in Proportions of Fight Songs that Include 'Victory', 'Win', or 'Won'",
-       subtitle = "For colleges located in the north and south",
+       subtitle = "For Fight Songs that Include 'Victory', 'Win', or 'Won'",
        x = "Sample Difference in Proportions",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_props_n_s_victory, direction = "two_sided")
@@ -1422,8 +1425,8 @@ get_p_value(null_dist_north_south_men, obs_stat = obs_diff_props_n_s_men, direct
 
 ``` r
 visualise(null_dist_north_south_men) + 
-  labs(title = "Null Distribution for Difference in Proportions of Fight Songs that Mention Male Groups",
-       subtitle = "For colleges located in the north and south",
+  labs(title = "Null Distribution for Difference in Proportions",
+       subtitle = "For Fight Songs that Mention Male Groups (N-S)",
        x = "Sample Difference in Proportions",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_props_n_s_men, direction = "two_sided")
@@ -1500,8 +1503,8 @@ get_p_value(null_dist_north_south_nonsense, obs_stat = obs_diff_props_n_s_nonsen
 
 ``` r
 visualise(null_dist_north_south_nonsense) + 
-  labs(title = "Null Distribution for Difference in Proportions of Fight Songs that Use Nonsense Syllables",
-       subtitle = "For colleges located in the north and south",
+  labs(title = "Null Distribution for Difference in Proportions",
+       subtitle = "For Fight Songs with Nonsense Syllables (N-S)",
        x = "Sample Difference in Proportions",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_props_n_s_nonsense, direction = "two_sided")
