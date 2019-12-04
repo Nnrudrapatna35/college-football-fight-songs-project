@@ -5,7 +5,7 @@ date: "12.03.2019"
 output: github_document
 ---
 
-### Load data and packages
+### Load Data and Packages
 
 ```{r load-data-and-packages, message = FALSE, warning = FALSE}
 library(tidyverse)
@@ -16,6 +16,14 @@ fight_songs <- read_csv("/cloud/project/data/fight-songs.csv")
 fight_songs <- fight_songs %>%
   select(-X21)
 ```
+
+### Statistical Methods Used
+
+For our data analysis, we used a combination of hypothesis tests and a variety of plots (from the `ggplot` package) in order to visualize and interpret each question. 
+
+We used hypothesis tests because finding the p-value for each instance allowed us to conclude whether or not the data provided convincing evidence of a trend, such as the relationship between the tempo and content of songs. 
+
+Visualizing the relationships with plots would make it easier for viewers to understand how the level or occurrence of certain variables changed based on differing factors between songs. We tried to use unique but clearly structured and labeled plot formats that would display information in a visually appealing way without confusing the viewer.
 
 ### Research Question 1
 
