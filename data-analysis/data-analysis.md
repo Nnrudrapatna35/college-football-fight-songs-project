@@ -713,13 +713,15 @@ unimodal. The distribution is skewed to the right, with more colleges
 having higher ranked teams than lower ranked teams. The center (median)
 occurs at 34, and the spread (IQR) is 38, indicating that there is a
 moderate amount of variability in rankings. There is one outlier (a
-college football team ranked higher than 112) with a rank of 120. While
-we have framed `rank` as a numerical variable, it is actually
+college football team ranked higher than 112) with a rank of 120.
+
+While we have framed `rank` as a numerical variable, it is actually
 categorical. Therefore, in order to provide a more accurate analysis, we
 would like to create a new more straight-forward variable called
 `rank_level` in order to split the colleges into high and low rank.
 Colleges with a rank between 1-25, inclusive, will be designated as
-“high,” and all others will be designated as “low.”
+“high” in accordance with college football’s standards, and all others
+will be designated as “low.”
 
 ``` r
 fight_songs <- fight_songs %>%
@@ -727,7 +729,19 @@ fight_songs <- fight_songs %>%
     rank <= 25 ~ "high",
     rank >25 ~ "low"
   ))
+
+fight_songs %>%
+  count(rank_level)
 ```
+
+    ## # A tibble: 2 x 2
+    ##   rank_level     n
+    ##   <chr>      <int>
+    ## 1 high          25
+    ## 2 low           40
+
+25 teams in the data set are considered high ranking teams, while 40 are
+considered low ranking teams.
 
 We hypothesize that a statistically significant relationship exists
 between `victory_win_won` and `rank_level` because it is reasonable to
@@ -1279,44 +1293,6 @@ insufficient evidence that there is a difference in the proportion of
 fight songs that include “victory,” “win,” or “won” for southern and
 northern conferences.
 
-However, we did observe that northern conferences had a greater
-proportion of teams with fight songs for which `victory_win_won` was
-“yes.” Therefore, let’s create a confidence interval to find what the
-true difference in proportions really is.
-
-``` r
-set.seed(11101962)
-boot_victory_win_won <- fight_songs %>%
-  specify(response = victory_win_won, explanatory = region, success = "Yes") %>%
-  generate(reps = 1000, type = "bootstrap") %>%
-  calculate(stat = "diff in props", order = c("north", "south"))
-
-CI <- get_ci(boot_victory_win_won, .95)
-CI
-```
-
-    ## # A tibble: 1 x 2
-    ##   `2.5%` `97.5%`
-    ##    <dbl>   <dbl>
-    ## 1 -0.106   0.351
-
-``` r
-visualise(boot_victory_win_won) +
-  labs(title = "Bootstrap Distribution of Differences in Sample Proportions of victory_win_won", 
-       subtitle = "North - South", 
-       x = "Sample Difference in Proportions",
-       y = "Count") +
-  shade_ci(CI)
-```
-
-![](data-analysis_files/figure-gfm/CI-victory-win-won-1.png)<!-- -->
-
-Based on the output, we are 95% confident that the true difference in
-proportions of teams that include “victory,” “win,” or “won,” in their
-fight songs for northern vs. southern conferences (north - south) is
-between -0.107 (-10.7%) and 0.362 (36.2%). Since 0 is included in our
-interval, this aligns with what we found from our hypothesis test.
-
 Next, let’s look at our second variable, `men`, which refers to whether
 a fight song mentions male groups in its lyrics, to see whether there
 exists a statistically significant relationship between the proportion
@@ -1393,43 +1369,6 @@ level of 0.05, we fail to reject the null hypothesis. There is
 insufficient evidence that there is a difference in the proportion of
 fight songs that mention male groups for southern and northern
 conferences.
-
-However, we did observe that northern conferences had a greater
-proportion of teams with fight songs for which `men` was “yes.”
-Therefore, let’s create a confidence interval to find what the true
-difference in proportions really is:
-
-``` r
-set.seed(10081999)
-boot_men <- fight_songs %>%
-  specify(response = men, explanatory = region, success = "Yes") %>%
-  generate(reps = 1000, type = "bootstrap") %>%
-  calculate(stat = "diff in props", order = c("north", "south"))
-
-CI <- get_ci(boot_men, .95)
-CI
-```
-
-    ## # A tibble: 1 x 2
-    ##   `2.5%` `97.5%`
-    ##    <dbl>   <dbl>
-    ## 1 -0.123   0.365
-
-``` r
-visualise(boot_men) +
-  labs(title = "Bootstrap Distribution of Differences in Sample Proportions for men", 
-          subtitle = "North - South", 
-          x = "Sample Difference in Proportions", y = "Count") +
-  shade_ci(CI)
-```
-
-![](data-analysis_files/figure-gfm/CI-men-1.png)<!-- -->
-
-Based on the output, we are 95% confident that the true difference in
-proportions of teams that mention male groups in their fight songs for
-northern vs. southern conferences (north - south) is between -0.123
-(-12.3%) and 0.365 (36.5%). Since 0 is included in our interval, this
-aligns with what we found from our hypothesis test.
 
 Finally, let’s look at our last variable, `nonsense`, which refers to
 whether a fight song uses nonsense syllables in its lyrics, to see
@@ -1508,44 +1447,6 @@ level of 0.05, we fail to reject the null hypothesis. There is
 insufficient evidence that there is a difference in the proportion of
 fight songs that use nonsense syllables for southern and northern
 conferences.
-
-However, we did observe that southern conferences had a greater
-proportion of teams with fight songs for which `nonsense` was “yes.”
-Therefore, let’s create a confidence interval to find what the true
-difference in proportions really is:
-
-``` r
-set.seed(11101962)
-boot_nonsense <- fight_songs %>%
-  specify(response = nonsense, explanatory = region, success = "Yes") %>%
-  generate(reps = 1000, type = "bootstrap") %>%
-  calculate(stat = "diff in props", order = c("north", "south"))
-
-CI <- get_ci(boot_nonsense, .95)
-CI
-```
-
-    ## # A tibble: 1 x 2
-    ##   `2.5%` `97.5%`
-    ##    <dbl>   <dbl>
-    ## 1 -0.192   0.160
-
-``` r
-visualise(boot_nonsense) +
-  labs(title = "Bootstrap Distribution of Differences in Sample Proportions for nonsense", 
-          subtitle = "North - South", 
-          x = "Sample Difference in Proportions", y = "Count") +
-  shade_ci(CI)
-```
-
-![](data-analysis_files/figure-gfm/CI-nonsense-1.png)<!-- -->
-
-Based on the output, we are 95% confident that the true difference in
-proportions of teams that mention male individuals/groups in their fight
-songs for northern vs. southern conferences (`north` - `south`) is
-between -0.193 (-19.3%) and 0.159 (15.9%). Since 0 is included in our
-confidence interval, this aligns with what we found from our hypothesis
-test.
 
 Based on the hypothesis testing above, it turns out that the variables
 `victory_win_won`, `men`, and `nonsense` are NOT regionally unique. In
