@@ -629,7 +629,7 @@ graph:
 ``` r
 ggplot(fight_songs, mapping = aes(x = victory_win_won, fill = victory_win_won)) +
   geom_bar() +
-  labs(title = "Distribution of Whether Fight Songs Include 'victory', 'win', or 'won'",
+  labs(title = "Distribution of whether fight songs include 'victory', 'win', or 'won'",
        x = "Whether Fight Song Includes 'victory', 'win', or 'won'",
        y = "Number of College Football Teams")
 ```
@@ -642,8 +642,8 @@ mentions an opponent, by creating a bar graph:
 ``` r
 ggplot(fight_songs, mapping = aes(x = opponents, fill = opponents)) +
   geom_bar() +
-  labs(title = "Distribution of Whether Fight Songs Include Opponents",
-       x = "Whether Fight Song Includes Opponents",
+  labs(title = "Distribution of whether fight songs mention opponents",
+       x = "Whether Fight Song Mentions Opponents",
        y = "Number of College Football Teams")
 ```
 
@@ -655,7 +655,7 @@ includes any nonsense words/phrases, by creating a bar graph:
 ``` r
 ggplot(fight_songs, mapping = aes(x = nonsense, fill = nonsense)) +
   geom_bar() +
-  labs(title = "Distribution of Whether Fight Songs Include Nonsense",
+  labs(title = "Distribution of whether fight songs include nonsense",
        x = "Whether Fight Song Includes Nonsense Words",
        y = "Number of College Football Teams")
 ```
@@ -668,7 +668,7 @@ the word “rah”, by creating a bar graph:
 ``` r
 ggplot(fight_songs, mapping = aes(x = rah, fill = rah)) +
   geom_bar() +
-  labs(title = "Distribution of Whether Fight Songs Include 'rah'",
+  labs(title = "Distribution of whether fight songs include 'rah'",
        x = "Whether Fight Song Includes 'rah'",
        y = "Number of College Football Teams")
 ```
@@ -713,60 +713,92 @@ unimodal. The distribution is skewed to the right, with more colleges
 having higher ranked teams than lower ranked teams. The center (median)
 occurs at 34, and the spread (IQR) is 38, indicating that there is a
 moderate amount of variability in rankings. There is one outlier (a
-college football team ranked higher than 112) with a rank of 120.
+college football team ranked higher than 112) with a rank of 120. While
+we have framed `rank` as a numerical variable, it is actually
+categorical. Therefore, in order to provide a more accurate analysis, we
+would like to create a new more straight-forward variable called
+`rank_level` in order to split the colleges into high and low rank.
+Colleges with a rank between 1-25, inclusive, will be designated as
+“high,” and all others will be designated as “low.”
+
+``` r
+fight_songs <- fight_songs %>%
+  mutate(rank_level = case_when(
+    rank <= 25 ~ "high",
+    rank >25 ~ "low"
+  ))
+```
 
 We hypothesize that a statistically significant relationship exists
-between `victory_win_won` and `rank` because it is reasonable to asssume
-historically successful college football teams would incorporate
+between `victory_win_won` and `rank_level` because it is reasonable to
+asssume historically successful college football teams would incorporate
 symbolic elements of their dominance into their iconic fight songs. In
 this case, we believe the words “victory”, “win”, and “won” are symbolic
 elements of dominance, giving us reason to believe higher-ranked teams
 are more likely to have their fights songs include these words.
 
-First, I will find the median rankings based on `victory_win_won` (yes
-or no):
+First, we will calculate and visualize the difference in proportions of
+`victory_win_won` based on
+`rank_level`.
+
+``` r
+ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = victory_win_won)) +
+  geom_histogram(stat = "count", position = "fill") +
+  labs(title = "Effect of rank on whether fight song contains 'victory', 'win', or 'won'", 
+       x = "Rank Level", y = "Proportion", 
+       fill = "Whether Song Contains\n'Victory', 'Win', or 'Won'")
+```
+
+![](data-analysis_files/figure-gfm/visualize_rank_level_victory_win_won-1.png)<!-- -->
 
 ``` r
 fight_songs %>%
-  group_by(victory_win_won) %>%
-  summarise(med_rank = median(rank))
+  count(victory_win_won, rank_level) %>%
+  group_by(rank_level) %>%
+  mutate(rel_freq=n/sum(n)) %>%
+  select(-n)
 ```
 
-    ## # A tibble: 2 x 2
-    ##   victory_win_won med_rank
-    ##   <chr>              <dbl>
-    ## 1 No                  37.5
-    ## 2 Yes                 32
+    ## # A tibble: 4 x 3
+    ## # Groups:   rank_level [2]
+    ##   victory_win_won rank_level rel_freq
+    ##   <chr>           <chr>         <dbl>
+    ## 1 No              high          0.44 
+    ## 2 No              low           0.325
+    ## 3 Yes             high          0.56 
+    ## 4 Yes             low           0.675
 
-I observe a difference of 5.5 (37.5 - 32.0) in rank between colleges
-with and without “victory”, “win”, or “won” in their fight songs.
+Based on the output, 56% of high ranked teams and 67.5% of low ranked
+teams include the words “victory”, “win”, or “won” in their fight songs.
+This is an observed difference of -11.5% (in the order of high - low
+rank).
 
-The null hypothesis is that there is no difference in the median
-rankings of college football teams between those with and without
-“victory”, “win”, or “won” in their fight songs; H0:
-mu(victory\_win\_wonNo) - mu(victory\_win\_wonYes) = 0.
+The null hypothesis is that there is no difference in the proportion of
+colleges that include the words “victory”, “win”, or “won” in their
+fight songs based on high versus low rank; H0: p(high\_rank) -
+p(low\_rank) = 0.
 
-The alternative hypothesis is that there is a difference in the median
-rankings of college football teams between those with and without
-“victory”, “win”, or “won” in their fight songs; H0:
-mu(victory\_win\_wonNo) - mu(victory\_win\_wonYes) ≠ 0.
+The alternative hypothesis is that there is a difference in the
+proportion of colleges that include the words “victory”, “win”, or “won”
+in their fight songs based on high versus low rank; Ha: p(high\_rank) -
+p(low\_rank) ≠ 0.
 
 Now, I will run a hypothesis test, calculate the p-value, and interpret
 the results in order to determine whether there is a statistically
-significant difference in the median rankings of college football teams
-who include “victory”, “win”, or “won” in their fight songs and those
-who do not:
+significant difference in the proportion of colleges that include the
+words “victory”, “win”, or “won” in their fight songs based on high
+versus low rank:
 
 ``` r
-obs_diff_victory_win_won <- 5.5 # From above code chunk
+obs_diff_victory_win_won <- -.115 # From above code chunk
 
 set.seed(11101962)
 null_dist_victory_win_won <- fight_songs %>%
-  specify(response = rank, explanatory = victory_win_won) %>%
+  specify(response = victory_win_won, explanatory = rank_level, success = "Yes") %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in medians", 
-            order = c("No", "Yes"))
+  calculate(stat = "diff in props", 
+            order = c("high", "low"))
 
 get_p_value(null_dist_victory_win_won, obs_stat = obs_diff_victory_win_won, direction = "two_sided")
 ```
@@ -774,25 +806,25 @@ get_p_value(null_dist_victory_win_won, obs_stat = obs_diff_victory_win_won, dire
     ## # A tibble: 1 x 1
     ##   p_value
     ##     <dbl>
-    ## 1   0.634
+    ## 1   0.262
 
 ``` r
 visualise(null_dist_victory_win_won) + 
-  labs(title = "Null Distribution for Median Rankings of College Football Teams",
-       subtitle = "For fight songs which include 'victory', 'win', or 'won'",
-       x = "Sample Median Ranking",
+  labs(title = "Null distribution for proportion of fight songs that 
+       include 'victory', 'win', or 'won'",
+       x = "Sample proportion",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_victory_win_won, direction = "two_sided")
 ```
 
 ![](data-analysis_files/figure-gfm/rank-victory-win-won-hyp-test-1.png)<!-- -->
 
-Since the p-value, 0.634, is greater than our significance level of
+Since the p-value, 0.262, is greater than our significance level of
 0.05, we fail to reject the null hypothesis in favor of the alternative
 hypothesis. In other words, the data do not provide convincing evidence
-of a difference in the median rankings of college football teams based
-on whether or not their fight songs include the words “victory”, “win”,
-or “won”. Thus, our original hypothesis was incorrect.
+of a difference in the proportion of colleges that include the words
+“victory”, “win”, or “won” in their fight songs based on high versus
+low rank. Thus, our original hypothesis was incorrect.
 
 We also hypothesize that a statistically significant relationship exists
 between `opponents` and `rank` since higher-ranked college football
@@ -1523,57 +1555,3 @@ less likely to include the words “victory”, “win”, or “won”, mention
 male individuals/groups, or use nonsense words/phrases. The data leads
 us to believe that college fight songs are truly independent and random
 from one another.
-
-We would also like to determin whether the variables `victory_win_won`,
-`men`, and `nonsense` vary by the rank of a college. In order to
-determine this, we will use the mutate() function to create a variable
-called rank\_level. Colleges with a rank between 1-25, inclusive, will
-be designated as “high,” and all others will be designated as “low.”
-
-``` r
-fight_songs <- fight_songs %>%
-  mutate(rank_level = case_when(
-    rank <= 25 ~ "high",
-    rank >25 ~ "low"
-  ))
-```
-
-Now, we will visualize the difference in the `victory_win_won` variable
-divided by high and low ranking teams using the `rank_level`
-variable.
-
-``` r
-ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = victory_win_won)) +
-  geom_histogram(stat = "count", position = "fill") +
-  labs(title = "Effect of rank on whether fight song contains 'victory', 'win', or 'won'", 
-       x = "Rank Level", y = "Proportion", 
-       fill = "Whether Song Contains\n'Victory', 'Win', or 'Won'")
-```
-
-![](data-analysis_files/figure-gfm/visualize_rank_level_victory_win_won-1.png)<!-- -->
-
-Now, we will visualize the difference in the `nonsense` variable divided
-by high and low ranking teams using the `rank_level`
-variable.
-
-``` r
-ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = nonsense)) +
-  geom_histogram(stat = "count", position = "fill") +
-  labs(title = "Effect of rank on whether fight song contains nonsense words", 
-       x = "Rank Level", y = "Proportion", 
-       fill = "Whether Song Contains\nNonsense Words")
-```
-
-![](data-analysis_files/figure-gfm/visualize_rank_level_nonsense-1.png)<!-- -->
-
-Now, we will visualize the difference in the `men` variable divided by
-high and low ranking teams using the `rank_level` variable.
-
-``` r
-ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = men)) +
-  geom_histogram(stat = "count", position = "fill") +
-  labs(title = "Effect of rank on whether fight song refers to a group of men", 
-       x = "Rank Level", y = "Proportion", fill = "Whether Song\nRefers to Men")
-```
-
-![](data-analysis_files/figure-gfm/visualize_rank_level_men-1.png)<!-- -->
