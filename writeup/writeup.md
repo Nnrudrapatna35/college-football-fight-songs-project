@@ -26,13 +26,13 @@ labeled plot formats that would display information in a visually
 appealing way without confusing the
 viewer.
 
-### Research Question 1:Predicting the Content of College Fight Songs Using Tempo and Duration
+### Research Question 1: Predicting the Content of College Fight Songs Using Tempo and Duration
 
 Our first research question is:
 
-> "How does the tempo and duration of a college football team’s fight
+> “How does the tempo and duration of a college football team’s fight
 > song predict the content of the song, specifically the number of
-> clichés/tropes?
+> clichés/tropes?”
 
 Before delving deeper into the analysis, we will first look at the
 distributions of the two explanatory variables, `bpm` and
