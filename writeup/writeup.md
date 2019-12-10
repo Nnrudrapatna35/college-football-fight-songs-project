@@ -101,6 +101,30 @@ variability in ranks is accounted for by the linear model. This means
 that the linear model is extremely weak since, the closer the R squared
 value is to 1 (or 100% variability), the more accurate the model is.
 
+After observing these initial findings, we have determined the two
+research questions we will discuss in greater detail. Our first research
+question is: how does the tempo and duration of a college football
+team’s fight song predict the content of the song, specifically the
+number of clichés/tropes? We will utilize the `trope_count` variable,
+which counts the number of clichés in a fight song (since we define a
+cliché as whether a song contains the word “fight”, the word “victory”,
+the word “won”, the word “win”, the word “rah”, nonsense syllables, or
+an opponent name), to form connections between a song’s duration and
+tempo and its content. The predictor variables we are interested in are:
+`bpm` and `sec_duration`. We aim to describe the relationship, if any
+exists, between the two numerical predictor (X) variables and the
+numerical response (Y) variable, `trope_count`. Our second research
+question is: how do characteristics of the fight songs of college
+football teams correspond to their respective historical levels of
+success (rankings)? We will utilize the `rank` variable to form
+connections between the performances of college football teams and their
+respective fight songs. The predictor variables we are interested in
+are: `victory_win_won`, `opponents`, `nonsense`, and `rah`. We aim to
+describe the relationship, if any exists, between these four categorical
+predictor (X) variables and the numerical response (Y) variable, `rank`.
+Finally, we will compare the characteristics of fight songs in northern
+and southern athletic conferences in the `Additional Analysis` section.
+
 ### Description of Statistical Methods
 
 For our data analysis, we used a combination of hypothesis tests and a
@@ -502,9 +526,9 @@ songs.
 
 Our second research question is:
 
-> "How do characteristics of the fight songs of college football teams
+> “How do characteristics of the fight songs of college football teams
 > correspond to their respective historical levels of success
-> (rankings)?
+> (rankings)?”
 
 Before delving deeper into the analysis, we will first look at the
 distributions of the four explanatory variables, `victory_win_won`,

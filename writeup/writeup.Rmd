@@ -71,6 +71,8 @@ There seems to be a weak positive linear relationship between number of clichés
 
 Based on the output, the linear model that predicts rank based on number of clichés is: `rank-hat` = 35.6 + 0.545 * `trope_count`. The intercept tells us that if a song has 0 clichés, it is expected to have a ranking of 35.6, on average. The slope tells us that for an increase in 1 cliché, the historical college football team ranking is predicted, on average, to increase by 0.545 points. The R-squared value of this model is `r glance(m_tropes_rank)$r.squared`, meaning that approximately `r glance(m_tropes_rank)$r.squared*100` percent of the variability in ranks is accounted for by the linear model. This means that the linear model is extremely weak since, the closer the R squared value is to 1 (or 100% variability), the more accurate the model is.
 
+After observing these initial findings, we have determined the two research questions we will discuss in greater detail. Our first research question is: how does the tempo and duration of a college football team's fight song predict the content of the song, specifically the number of clichés/tropes? We will utilize the `trope_count` variable, which counts the number of clichés in a fight song (since we define a cliché as whether a song contains the word "fight", the word "victory", the word "won", the word "win", the word "rah", nonsense syllables, or an opponent name), to form connections between a song's duration and tempo and its content. The predictor variables we are interested in are: `bpm` and `sec_duration`. We aim to describe the relationship, if any exists, between the two numerical predictor (X) variables and the numerical response (Y) variable, `trope_count`. Our second research question is: how do characteristics of the fight songs of college football teams correspond to their respective historical levels of success (rankings)? We will utilize the `rank` variable to form connections between the performances of college football teams and their respective fight songs. The predictor variables we are interested in are: `victory_win_won`, `opponents`, `nonsense`, and `rah`. We aim to describe the relationship, if any exists, between these four categorical predictor (X) variables and the numerical response (Y) variable, `rank`. Finally, we will compare the characteristics of fight songs in northern and southern athletic conferences in the `Additional Analysis` section.
+
 ### Description of Statistical Methods
 
 For our data analysis, we used a combination of hypothesis tests and a variety of plots (from the `ggplot` package) in order to visualize and interpret each question. 
@@ -234,14 +236,17 @@ null_slow_long <- slow_long %>%
   generate(reps = 1000, type = "bootstrap") %>%
   calculate(stat = "median")
 
-get_p_value(null_slow_long, obs_stat = obs_median, direction = "two_sided")
+get_p_value(null_slow_long,
+            obs_stat = obs_median,
+            direction = "two_sided")
 
 visualize(null_slow_long) + 
   labs(title = "Null Distribution for Median Number of Tropes",
        subtitle = "For Slow and Long Fight Songs",
        x = "Sample Median Number of Tropes",
        y = "Count") +
-  shade_p_value(obs_stat = obs_median, direction = "two_sided")
+  shade_p_value(obs_stat = obs_median,
+                direction = "two_sided")
 ```
 
 Based on our p-value of 0.038, which is less than 0.05 (significance level), we reject the null hypothesis in favor of the alternative hypothesis; in other words, there is sufficient evidence that the true median number of tropes is different than 4. Thus, the data provide convincing evidence that the median number of tropes for songs that are slow and long is different than the population median of 4. However, our sample size is very small (9 observations), so we must be wary of our results and acknowledge the limitations of our conclusions.
@@ -261,14 +266,17 @@ null_slow_short <- slow_short %>%
   generate(reps = 1000, type = "bootstrap") %>%
   calculate(stat = "sd")
 
-get_p_value(null_slow_short, obs_stat = obs_sd, direction = "left")
+get_p_value(null_slow_short,
+            obs_stat = obs_sd,
+            direction = "left")
 
 visualize(null_slow_short) + 
   labs(title = "Null Distribution for Standard Deviation of Tropes",
        subtitle = "For Slow and Short Fight Songs",
        x = "Sample Standard Deviation of Tropes",
        y = "Count") +
-  shade_p_value(obs_sd, direction = "left")
+  shade_p_value(obs_sd,
+                direction = "left")
 ```
 
 Based on the p-value of 0.685, which is greater than our alpha level of 0.05, we fail to reject the null hypothesis in favor of the alternative hypothesis; in other words, the data do not provide convincing evidence that the true standard deviation for slow and short songs is less than the population standard deviation of 1.675.
@@ -304,14 +312,17 @@ null_dist_bpm_slope <- fight_songs %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "slope")
 
-get_p_value(null_dist_bpm_slope, obs_stat = obs_beta_bpm, direction = "two_sided")
+get_p_value(null_dist_bpm_slope,
+            obs_stat = obs_beta_bpm,
+            direction = "two_sided")
 
 visualize(null_dist_bpm_slope) + 
   labs(title = "Null Distribution for Tempo Slope Coefficient",
-       subtitle = "In full linear model for trope count",
+       subtitle = "In Full Linear Model For Trope Count",
        x = "Sample bpm Slope Coefficients",
        y = "Count") +
-  shade_p_value(obs_beta_bpm, direction = "two_sided")
+  shade_p_value(obs_beta_bpm,
+                direction = "two_sided")
 ```
 
 Next, we will look at the slope of `tempo`, which we found to be 0.000208:
@@ -329,14 +340,17 @@ null_dist_sec_duration_slope <- fight_songs %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "slope")
 
-get_p_value(null_dist_sec_duration_slope, obs_stat = obs_beta_sec_duration, direction = "two_sided")
+get_p_value(null_dist_sec_duration_slope,
+            obs_stat = obs_beta_sec_duration,
+            direction = "two_sided")
 
 visualize(null_dist_sec_duration_slope) + 
   labs(title = "Null Distribution for Song Duration Slope Coefficient",
-       subtitle = "In full linear model for trope count",
+       subtitle = "In Full Linear Model For Trope Count",
        x = "Sample Song Duration Slope Coefficients",
        y = "Count") +
-  shade_p_value(obs_beta_sec_duration, direction = "two_sided")
+  shade_p_value(obs_beta_sec_duration,
+                direction = "two_sided")
 ```
 
 The p-values for the slope coefficients of `bpm` and `sec_duration` are 0.238 and 0.978, respectively. Since both p-values are greater than our alpha level of 0.05, we fail to reject the null hypotheses in favor of the alternative hypotheses. Hence, there appears to be insufficient evidence that the slope coefficients for `bpm` and `sec_duration` are different than 0. 
@@ -352,7 +366,7 @@ m_full_aug <- augment(m_full)
 ggplot(data = m_full_aug, aes(x = 1:nrow(m_full_aug), y = .resid)) +
   geom_point() +
   labs(title = "Residual Plot by Index",
-       subtitle = "In the order of data collection",
+       subtitle = "In The Order of Data Collection",
        x = "Index",
        y = "Residual")
 ```
@@ -373,7 +387,7 @@ ggplot(data = m_full_aug, aes(x = .fitted, y = .resid)) +
   geom_point() +
   geom_hline(yintercept = 0, lty = 3, color = "blue") +
   labs(title = "Distribution of Residuals",
-       x = "Predicted values, y-hat",
+       x = "Predicted Values, y-hat",
        y = "Residuals")
 ```
 
@@ -411,7 +425,7 @@ Finally, we used backwards selection using AIC as the criterion to see if there 
 
 Our second research question is:
 
-> "How do characteristics of the fight songs of college football teams correspond to their respective historical levels of success (rankings)?
+> "How do characteristics of the fight songs of college football teams correspond to their respective historical levels of success (rankings)?"
 
 Before delving deeper into the analysis, we will first look at the distributions of the four explanatory variables, `victory_win_won`, `opponents`, `nonsense`, and `rah`, and our response variable, `rank`.
 
@@ -431,9 +445,9 @@ Next, we will explore `opponents`, which designates whether a song mentions an o
 ```{r visualize-opponents}
 ggplot(fight_songs, mapping = aes(x = "", fill = opponents)) +
   geom_bar(position = "fill") +
-  labs(title = "Distribution of whether fight songs mention opponents",
+  labs(title = "Distribution of Whether Fight Songs Mention Opponents",
        fill = "Whether Fight Song Mentions Opponents", 
-       x = "opponents",
+       x = "Opponents",
        y = "Number of College Football Teams")
 ```
 
@@ -567,7 +581,7 @@ First, we will calculate and visualize the difference in proportions of "yes" re
 ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = opponents)) +
   geom_histogram(stat = "count", position = "fill") +
   labs(title = "Effect of Rank on Whether Fight Song Mentions Opponents", 
-       x = "Rank Level",
+       x = "Level",
        y = "Proportion", 
        fill = "Whether Song Mentions Opponents")
 ```
@@ -678,7 +692,7 @@ ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = rah)) +
   labs(title = "Effect of Rank on Whether Fight Song Contains 'rah'", 
        x = "Level",
        y = "Proportion", 
-       fill = "Whether Song Contains 'Rah'")
+       fill = "Whether Song Contains 'rah'")
 ```
 
 ```{r prop-rank-rah}
@@ -713,7 +727,8 @@ get_p_value(null_dist_rah,
             direction = "two_sided")
 
 visualize(null_dist_rah) + 
-  labs(title = "Null Distribution for Proportion of Fight Songs that Include 'rah'",
+  labs(title = "Null Distribution for Proportion of Fight Songs",
+       subtitle = "that Include 'rah'",
        x = "Sample Proportion",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_rah,
@@ -810,7 +825,8 @@ get_p_value(null_dist_north_south_victory,
             direction = "two_sided")
 
 visualize(null_dist_north_south_victory) + 
-  labs(title = "Null Distribution for Difference in Proportions of Fight Songs that Include 'Victory', 'Win', or 'Won'",
+  labs(title = "Null Distribution for Difference in Proportions of Fight Songs",
+       subtitle = "that Include 'victory', 'win', or 'won'",
        x = "Sample Difference in Proportions",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_props_n_s_victory,
