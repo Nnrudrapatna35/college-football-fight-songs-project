@@ -400,6 +400,379 @@ we can say is that “slow and long” fight songs have a different median
 number of tropes than other fight
 songs.
 
+## Research Question 2: Predicting the Success of College Football Teams Using Fight Song Content
+
+Our second research question is:
+
+> "How do characteristics of the fight songs of college football teams
+> correspond to their respective historical levels of success
+> (rankings)?
+
+Before delving deeper into the analysis, we will first look at the
+distributions of the four explanatory variables, `victory_win_won`,
+`opponents`, `nonsense`, and `rah`, and our response variable, `rank`.
+
+Starting with `victory_win_won`, which designates whether a fight song
+says “victory”, “win”, or “won”, we will create a bar graph for the
+distribution:
+
+![](writeup_files/figure-gfm/visualize-victory-win-won-1.png)<!-- -->
+
+Next, we will explore `opponents`, which designates whether a song
+mentions an opponent, by creating a bar graph:
+
+![](writeup_files/figure-gfm/visualize-opponents-1.png)<!-- -->
+
+Now, we will examine `nonsense`, which designates whether a song
+includes any nonsense words/phrases, by creating a bar graph:
+
+![](writeup_files/figure-gfm/visualize_nonsense-1.png)<!-- -->
+
+Next, we will explore `rah`, which designates whether a fight song says
+the word “rah”, by creating a bar graph:
+
+![](writeup_files/figure-gfm/visualize-rah-1.png)<!-- -->
+
+Finally, we will look at `rank`, which corresponds to the team’s AP
+college football ranking. We will create a histogram and calculate the
+appropriate summary statistics (Q1, median, Q3, min, max, and IQR):
+
+![](writeup_files/figure-gfm/visualize-rank-1.png)<!-- -->
+
+    ## # A tibble: 1 x 6
+    ##     min    Q1 median    Q3   max   IQR
+    ##   <dbl> <dbl>  <dbl> <dbl> <dbl> <dbl>
+    ## 1     1    17     34    55   120    38
+
+Based on the histogram, it is clear that the shape of the data is
+unimodal. The distribution is skewed to the right, with more colleges
+having higher ranked teams than lower ranked teams. The center (median)
+occurs at 34, and the spread (IQR) is 38, indicating that there is a
+moderate amount of variability in rankings. There is one outlier (a
+college football team ranked higher than 112) with a rank of 120.
+
+While we have framed `rank` as a numerical variable, it is actually
+categorical. Therefore, in order to provide a more accurate analysis, we
+will create a new variable called `rank_level` in order to split the
+colleges into high and low rank. Colleges with a rank between 1-25,
+inclusive, will be designated as “high” in accordance with college
+football’s standards, and all others will be designated as “low.” We
+will visualize `rank_level` using a boxplot.
+
+![](writeup_files/figure-gfm/visualize-rank-level-1.png)<!-- -->
+
+    ## # A tibble: 2 x 2
+    ##   rank_level     n
+    ##   <chr>      <int>
+    ## 1 high          25
+    ## 2 low           40
+
+Based on the boxplots, we can see that the lower ranking teams have a
+larger spread and include more outliers. There are also fewer high
+ranking teams than low ranking teams: 25 teams in the data set are
+considered high ranking while 40 are considered low ranking.
+
+Now, we will return to our research question by examining whether the
+rank of a college football team varies based on the content of the
+school’s fight song. We hypothesize that a statistically significant
+relationship exists between `victory_win_won` and `rank_level` because
+it is reasonable to asssume historically successful college football
+teams would incorporate symbolic elements of their dominance into their
+iconic fight songs. In this case, we believe the words “victory”, “win”,
+and “won” are symbolic elements of dominance, giving us reason to
+believe higher-ranked teams are more likely to have their fights songs
+include these words.
+
+First, we will calculate and visualize the difference in proportions of
+“yes” responses to `victory_win_won` based on
+`rank_level`.
+
+![](writeup_files/figure-gfm/visualize_rank_level_victory_win_won-1.png)<!-- -->
+
+    ## # A tibble: 4 x 3
+    ## # Groups:   rank_level [2]
+    ##   victory_win_won rank_level rel_freq
+    ##   <chr>           <chr>         <dbl>
+    ## 1 No              high          0.44 
+    ## 2 No              low           0.325
+    ## 3 Yes             high          0.56 
+    ## 4 Yes             low           0.675
+
+Based on the output, 56% of high ranked teams and 67.5% of low ranked
+teams include the words “victory”, “win”, or “won” in their fight songs.
+This is an observed difference of -11.5% (in the order of high - low
+rank).
+
+The null hypothesis is that there is no difference in the proportion of
+colleges that include the words “victory”, “win”, or “won” in their
+fight songs based on high versus low rank; H0: p(high\_rank) -
+p(low\_rank) = 0.
+
+The alternative hypothesis is that there is a difference in the
+proportion of colleges that include the words “victory”, “win”, or “won”
+in their fight songs based on high versus low rank; Ha: p(high\_rank) -
+p(low\_rank) ≠ 0.
+
+Now, we will run a hypothesis test, calculate the p-value, and interpret
+the results in order to determine whether there is a statistically
+significant difference in the proportion of colleges that include the
+words “victory”, “win”, or “won” in their fight songs based on high
+versus low rank:
+
+    ## # A tibble: 1 x 1
+    ##   p_value
+    ##     <dbl>
+    ## 1   0.262
+
+![](writeup_files/figure-gfm/rank-victory-win-won-hyp-test-1.png)<!-- -->
+
+Since the p-value, 0.262, is greater than our significance level of
+0.05, we fail to reject the null hypothesis in favor of the alternative
+hypothesis. In other words, the data do not provide convincing evidence
+of a difference in the proportion of colleges that include the words
+“victory”, “win”, or “won” in their fight songs based on high versus
+low rank. Thus, our original hypothesis was incorrect.
+
+We also hypothesize that a statistically significant relationship exists
+between `opponents` and `rank_level` since higher-ranked college
+football teams are likely to have developed more emotionally-charged
+rivalries with their highly successful peers. With such long-standing,
+emotional rivalries, it is reasonable to believe fight songs associated
+with these highly-ranked college football programs allude to their
+rivals by name.
+
+First, we will calculate and visualize the difference in proportions of
+“yes” responses to `opponents` based on `rank_level`:
+
+![](writeup_files/figure-gfm/visualize-rank-opponents-1.png)<!-- -->
+
+    ## # A tibble: 4 x 3
+    ## # Groups:   rank_level [2]
+    ##   opponents rank_level rel_freq
+    ##   <chr>     <chr>         <dbl>
+    ## 1 No        high          0.8  
+    ## 2 No        low           0.825
+    ## 3 Yes       high          0.2  
+    ## 4 Yes       low           0.175
+
+Based on the output, 20% of high ranked teams and 17.5% of low ranked
+teams mention opponents in their fight songs. This is an observed
+difference of 2.5% (in the order of high - low rank).
+
+The null hypothesis is that there is no difference in the proportion of
+colleges that mention opponents in their fight songs based on high
+versus low rank; H0: p(high\_rank) - p(low\_rank) = 0.
+
+The alternative hypothesis is that there is a difference in the
+proportion of colleges that mention opponents in their fight songs based
+on high versus low rank; Ha: p(high\_rank) - p(low\_rank) ≠ 0.
+
+Now, we will run a hypothesis test, calculate the p-value, and interpret
+the results in order to determine whether there is a statistically
+significant difference in the proportion of colleges that mention
+opponents in their fight songs based on high versus low rank:
+
+    ## # A tibble: 1 x 1
+    ##   p_value
+    ##     <dbl>
+    ## 1   0.958
+
+![](writeup_files/figure-gfm/rank-opponents-hyp-test-1.png)<!-- -->
+
+Since the p-value, 0.958, is greater than our alpha level of 0.05, we
+fail to reject the null hypothesis in favor of the alternative
+hypothesis. In other words, the data do not provide convincing evidence
+of a difference in the proportion of colleges that mention opponents in
+their fight songs based on high versus low rank. Thus, our original
+hypothesis was incorrect.
+
+Moreover, we hypothesize that a statistically significant relationship
+exists between `nonsense` and `rank_level` because there have been a
+plethora of articles written about how, in the past, highly successful
+teams included nonsensical phrases in their fight songs to distract the
+players on opposing college football teams. Since the fight songs
+included in our dataset were written decades ago (as evidenced by the
+`year` variable), it is reasonable to assume the songs associated with
+the historically-best college teams will have a higher likelihood of
+including nonsense (e.g “Hooperay”).
+
+First, we will calculate and visualize the difference in proportions of
+“yes” responses to `nonsense` based on `rank_level`:
+
+![](writeup_files/figure-gfm/visualize-rank-nonsense-1.png)<!-- -->
+
+    ## # A tibble: 4 x 3
+    ## # Groups:   rank_level [2]
+    ##   nonsense rank_level rel_freq
+    ##   <chr>    <chr>         <dbl>
+    ## 1 No       high           0.92
+    ## 2 No       low            0.8 
+    ## 3 Yes      high           0.08
+    ## 4 Yes      low            0.2
+
+Based on the output, 8% of high ranked teams and 20% of low ranked teams
+include nonsense words in their fight songs. This is an observed
+difference of -12% (in the order of high - low rank).
+
+The null hypothesis is that there is no difference in the proportion of
+colleges that include nonsense in their fight songs based on high versus
+low rank; H0: p(high\_rank) - p(low\_rank) = 0.
+
+The alternative hypothesis is that there is a difference in the
+proportion of colleges that include nonsense words in their fight songs
+based on high versus low rank; Ha: p(high\_rank) - p(low\_rank) ≠ 0.
+
+Now, we will run a hypothesis test, calculate the p-value, and interpret
+the results in order to determine whether there is a statistically
+significant difference in the proportion of colleges that include
+nonsense words in their fight songs based on high versus low rank:
+
+    ## # A tibble: 1 x 1
+    ##   p_value
+    ##     <dbl>
+    ## 1    0.38
+
+![](writeup_files/figure-gfm/rank-nonsense-hyp-test-1.png)<!-- -->
+
+Since the p-value, 0.38, is greater than our significance level of 0.05,
+we fail to reject the null hypothesis in favor of the alternative
+hypothesis. In other words, the data do not provide convincing evidence
+of a difference in the proportion of colleges that include nonsense
+words in their fight songs based on high versus low rank. Thus, our
+original hypothesis was incorrect.
+
+Finally, we hypothesize that there is no statistically significant
+relationship between `rah` and `rank_level` since “rah” is a common word
+in a fight song, seemingly irrespective of the success of a college
+football team.
+
+First, we will calculate and visualize the difference in proportions of
+“yes” responses to `rah` based on `rank_level`.
+
+![](writeup_files/figure-gfm/visualize-rank-rah-1.png)<!-- -->
+
+    ## # A tibble: 4 x 3
+    ## # Groups:   rank_level [2]
+    ##   rah   rank_level rel_freq
+    ##   <chr> <chr>         <dbl>
+    ## 1 No    high           0.76
+    ## 2 No    low            0.7 
+    ## 3 Yes   high           0.24
+    ## 4 Yes   low            0.3
+
+Based on the output, 24% of high ranked teams and 30% of low ranked
+teams include the word “rah” in their fight songs. This is an observed
+difference of -6% (in the order of high - low rank).
+
+The null hypothesis is that there is no difference in the proportion of
+colleges that include the word “rah” in their fight songs based on high
+versus low rank; H0: p(high\_rank) - p(low\_rank) = 0.
+
+The alternative hypothesis is that there is a difference in the
+proportion of colleges that include the word “rah” in their fight songs
+based on high versus low rank; Ha: p(high\_rank) - p(low\_rank) ≠ 0.
+
+Now, we will run a hypothesis test, calculate the p-value, and interpret
+the results in order to determine whether there is a statistically
+significant difference in the proportion of colleges that include the
+words “rah” in their fight songs based on high versus low rank:
+
+    ## # A tibble: 1 x 1
+    ##   p_value
+    ##     <dbl>
+    ## 1   0.752
+
+![](writeup_files/figure-gfm/rank-rah-hyp-test-1.png)<!-- -->
+
+Since the p-value, 0.752, is greater than our significance level of
+0.05, we fail to reject the null hypothesis in favor of the alternative
+hypothesis. In other words, the data do not provide convincing evidence
+of a difference in the proportion of colleges that include the word
+“rah” in their fight songs based on high versus low rank. Thus, our
+original hypothesis was correct.
+
+Now, we will find the full linear model that predicts the rank of a
+college football team (`rank`) based on various characteristics of the
+college’s fight song: `victory_win_won`, `opponents`, `nonsense`, and
+`rah` and calculate the R-squared value for this model:
+
+    ## # A tibble: 5 x 2
+    ##   term               estimate
+    ##   <chr>                 <dbl>
+    ## 1 (Intercept)           39.0 
+    ## 2 victory_win_wonYes    -6.25
+    ## 3 opponentsYes          -5.56
+    ## 4 nonsenseYes           10.6 
+    ## 5 rahYes                 6.80
+
+    ## [1] 615.9821
+
+    ## [1] 0.06228747
+
+Based on the output, the full linear model is `rank-hat` = 39.0 - 6.25
+\* `victory_win_wonYes` - 5.56 \* `opponentsYes` + 10.6 \*
+`nonsenseYes`+ 6.80 \* `rahYes`. The R-squared value is 0.0622875;
+therefore, approximately 6.2287474% of the variability in rank can be
+accounted for by the model. Given this R-squared value, the model is
+very weak and is not a great predictor of a college football team’s
+ranking.
+
+The intercept tells us that for a college with “No” responses for
+`victory_win_won`, `opponents`, `nonsense`, and `rah`, the expected
+ranking of the school’s football team is 39.0. The slope coefficient
+associated with `victory_win_wonYes` tells us that if a fight song
+includes the words “victory”, “win”, or “won”, the ranking of the
+football team is expected, on average, to decrease by 6.25, holding all
+else constant. The slope coefficient associated with `opponentsYes`
+tells us that if a fight song mentions the college’s opponent, the
+ranking of the football team is expected, on average, to decrease by
+5.56, holding all else constant. The slope coefficient associated with
+`nonsenseYes` tells us that if a fight song includes any nonsense words,
+the ranking of the football team is expected, on average, to increase by
+10.6, holding all else constant. The slope coefficient associated with
+`rahYes` tells us that if a fight song includes the word “rah”, the
+ranking of the football team is expected, on average, to increase by
+6.80, holding all else constant.
+
+To confirm that there is no better model, we will use the `step()`
+function and backwards selection with AIC as the selection criterion:
+
+    ## # A tibble: 1 x 2
+    ##   term        estimate
+    ##   <chr>          <dbl>
+    ## 1 (Intercept)     37.6
+
+    ## [1] 612.1624
+
+Since backwards selection removed `victory_win_won`, `opponents`,
+`nonsense`, and `rah` from our model, we should conclude that these four
+variables are poor predictors for the ranking of a college football
+team.
+
+However, we must consider one last element before concluding that
+`victory_win_won`, `opponents`, `nonsense`, and `rah` are poor
+predictors of `rank`: whether the requirements for linear regression are
+satisfied. Amongst other things, a linear model mandates a continuous
+numerical response variable. However, `rank` does not fulfill this
+criterion since it is a counting (discrete) numerical response variable.
+Thus, we conclude that this method of analysis involving linear
+regression is invalid and there is no guarantee that the explanatory
+variables are poor predictors of the response variable.
+
+### Conclusion from Research Question 2
+
+Circling back to our research question of whether the characteristics of
+college fight songs can help predict the historic success of their
+football teams, we hypothesized that colleges whose fight songs included
+the words “victory”, “win”, or “won”, mentioned oponents, and included
+nonsense words would have higher ranked football teams. From our
+hypothesis tests, we found that none of these fight song characteristics
+resulted in statistically significant differences in college football
+ranking. Our linear regression model also supported this result:
+`victory_win_won`, `opponents`, and `nonsense` are not helpful
+indicators of
+rank.
+
 ## Additional Analysis: Looking at Characteristics in Fight Songs in Northern and Southern Athletic Conferences
 
 For the last part of our analysis, we are interested in examining
