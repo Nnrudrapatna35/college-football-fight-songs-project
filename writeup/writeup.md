@@ -4,6 +4,8 @@ Songs
 Power Ninja Data Turtles
 12/13/19
 
+### Introduction
+
 ### Statistical Methods Used
 
 For our data analysis, we used a combination of hypothesis tests and a
@@ -349,7 +351,7 @@ variables are poor predictors of the response variable.
 Circling back to our research question of whether a fight song’s tempo
 and duration can help predict the content of a college fight song, as
 measured by the number of clichés, we hypothesized that the number of
-clichés would be less for songs with slower tempos (smalle `bpm`) and
+clichés would be less for songs with slower tempos (smaller `bpm`) and
 probably shorter durations (smaller `sec_duration`). We thought that
 longer songs would contain more clichés because there is more time to
 fill the lyrics with clichés. We thought that faster tempos, since they

@@ -19,6 +19,10 @@ fight_songs <- fight_songs %>%
   select(-X21)
 ```
 
+### Introduction
+
+
+
 ### Statistical Methods Used
 
 For our data analysis, we used a combination of hypothesis tests and a variety of plots (from the `ggplot` package) in order to visualize and interpret each question. 
@@ -345,7 +349,7 @@ However, we must consider one last element before concluding that `bpm` and `sec
 
 ### Conclusion from Research Question 1
 
-Circling back to our research question of whether a fight song's tempo and duration can help predict the content of a college fight song, as measured by the number of clichés, we hypothesized that the number of clichés would be less for songs with slower tempos (smalle `bpm`) and probably shorter durations (smaller `sec_duration`). We thought that longer songs would contain more clichés because there is more time to fill the lyrics with clichés. We thought that faster tempos, since they are generally related to higher energies, would have included more clichés.
+Circling back to our research question of whether a fight song's tempo and duration can help predict the content of a college fight song, as measured by the number of clichés, we hypothesized that the number of clichés would be less for songs with slower tempos (smaller `bpm`) and probably shorter durations (smaller `sec_duration`). We thought that longer songs would contain more clichés because there is more time to fill the lyrics with clichés. We thought that faster tempos, since they are generally related to higher energies, would have included more clichés.
 
 From our exploratory data analysis, we noticed that there was a natural grouping in fight songs such that all fight songs could be classified as having a slow or fast tempo. With this information and with the results from exploring the duration variable, we decided to classify all fight songs into four categories: "short and fast," "short and slow," "long and fast," and "long and slow."
 
@@ -368,9 +372,10 @@ Starting with `victory_win_won`, which designates whether a fight song says "vic
 ```{r visualize-victory-win-won}
 ggplot(fight_songs, mapping = aes(x = "", fill = victory_win_won)) +
   geom_bar(position = "fill") +
-  labs(title = "Distribution of whether fight songs include 'victory', 'win', or 'won'",
-       fill = "Whether Fight Song Includes\n'victory', 'win', or 'won'", 
-       x = "victory_win_won", y = "Proportion of College Fight Songs")
+  labs(title = "Distribution of Whether Fight Songs Include 'victory', 'win', or 'won'",
+       fill = "Whether Fight Song Includes 'victory', 'win', or 'won'", 
+       x = "victory_win_won",
+       y = "Proportion of College Fight Songs")
 ```
 
 Next, we will explore `opponents`, which designates whether a song mentions an opponent, by creating a bar graph:
@@ -379,8 +384,9 @@ Next, we will explore `opponents`, which designates whether a song mentions an o
 ggplot(fight_songs, mapping = aes(x = "", fill = opponents)) +
   geom_bar(position = "fill") +
   labs(title = "Distribution of whether fight songs mention opponents",
-       fill = "Whether Fight Song\nMentions Opponents", 
-       x = "opponents", y = "Number of College Football Teams")
+       fill = "Whether Fight Song Mentions Opponents", 
+       x = "opponents",
+       y = "Number of College Football Teams")
 ```
 
 Now, we will examine `nonsense`, which designates whether a song includes any nonsense words/phrases, by creating a bar graph:
@@ -388,9 +394,10 @@ Now, we will examine `nonsense`, which designates whether a song includes any no
 ```{r visualize_nonsense}
 ggplot(fight_songs, mapping = aes(x = "", fill = nonsense)) +
   geom_bar(position = "fill") +
-  labs(title = "Distribution of whether fight songs include nonsense",
-       fill = "Whether Fight Song Includes\nNonsense Words", 
-       x = "nonsense", y = "Number of College Football Teams")
+  labs(title = "Distribution of Whether Fight Songs Include Nonsense",
+       fill = "Whether Fight Song Includes Nonsense Words", 
+       x = "Nonsense",
+       y = "Number of College Football Teams")
 ```
 
 Next, we will explore `rah`, which designates whether a fight song says the word "rah", by creating a bar graph:
@@ -398,9 +405,10 @@ Next, we will explore `rah`, which designates whether a fight song says the word
 ```{r visualize-rah}
 ggplot(fight_songs, mapping = aes(x = "", fill = rah)) +
   geom_bar(position = "fill") +
-  labs(title = "Distribution of whether fight songs include 'rah'",
-       fill = "Whether Fight Song\nIncludes 'rah'",
-       x = "rah", y = "Number of College Football Teams")
+  labs(title = "Distribution of Whether Fight Songs Include 'rah'",
+       fill = "Whether Fight Song Includes 'rah'",
+       x = "Rah",
+       y = "Number of College Football Teams")
 ```
 
 Finally, we will look at `rank`, which corresponds to the team's AP college football ranking. We will create a histogram and calculate the appropriate summary statistics (Q1, median, Q3, min, max, and IQR):
@@ -429,7 +437,7 @@ While we have framed `rank` as a numerical variable, it is actually categorical.
 fight_songs <- fight_songs %>%
   mutate(rank_level = case_when(
     rank <= 25 ~ "high",
-    rank >25 ~ "low"
+    rank > 25 ~ "low"
   ))
 ```
 
@@ -437,8 +445,9 @@ fight_songs <- fight_songs %>%
 ggplot(fight_songs, mapping = aes(x = rank_level, y = rank)) +
   geom_boxplot() +
   labs(title = "Distribution of College Football Rankings",
-       subtitle = "By Rank Level",
-       x = "Rank Level", y = "Rank")
+       subtitle = "By Level",
+       x = "Level",
+       y = "Rank")
 ```
 
 ```{r count-rank-level}
@@ -455,16 +464,17 @@ First, we will calculate and visualize the difference in proportions of "yes" re
 ```{r visualize_rank_level_victory_win_won, warning = FALSE}
 ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = victory_win_won)) +
   geom_histogram(stat = "count", position = "fill") +
-  labs(title = "Effect of rank on whether fight song contains 'victory', 'win', or 'won'", 
-       x = "Rank Level", y = "Proportion", 
-       fill = "Whether Song Contains\n'Victory', 'Win', or 'Won'")
+  labs(title = "Effect of Rank on Whether Fight Song Contains 'victory', 'win', or 'won'", 
+       x = "Level",
+       y = "Proportion", 
+       fill = "Whether Song Contains 'Victory', 'Win', or 'Won'")
 ```
 
 ```{r prop-rank-level-victory-win-won}
 fight_songs %>%
   count(victory_win_won, rank_level) %>%
   group_by(rank_level) %>%
-  mutate(rel_freq=n/sum(n)) %>%
+  mutate(rel_freq = n / sum(n)) %>%
   select(-n)
 ```
 
@@ -477,7 +487,7 @@ The alternative hypothesis is that there is a difference in the proportion of co
 Now, we will run a hypothesis test, calculate the p-value, and interpret the results in order to determine whether there is a statistically significant difference in the proportion of colleges that include the words "victory", "win", or "won" in their fight songs based on high versus low rank:
 
 ```{r rank-victory-win-won-hyp-test}
-obs_diff_victory_win_won <- -.115 # From above code chunk
+obs_diff_victory_win_won <- -0.115 # From above code chunk
 
 set.seed(11101962)
 null_dist_victory_win_won <- fight_songs %>%
@@ -487,14 +497,16 @@ null_dist_victory_win_won <- fight_songs %>%
   calculate(stat = "diff in props", 
             order = c("high", "low"))
 
-get_p_value(null_dist_victory_win_won, obs_stat = obs_diff_victory_win_won, direction = "two_sided")
+get_p_value(null_dist_victory_win_won,
+            obs_stat = obs_diff_victory_win_won,
+            direction = "two_sided")
 
 visualise(null_dist_victory_win_won) + 
-  labs(title = "Null distribution for proportion of fight songs that 
-       include 'victory', 'win', or 'won'",
-       x = "Sample proportion",
+  labs(title = "Null Distribution for Proportion of Fight Songs that Include 'victory', 'win', or 'won'",
+       x = "Sample Proportion",
        y = "Count") +
-  shade_p_value(obs_stat = obs_diff_victory_win_won, direction = "two_sided")
+  shade_p_value(obs_stat = obs_diff_victory_win_won,
+                direction = "two_sided")
 ```
 
 Since the p-value, 0.262, is greater than our significance level of 0.05, we fail to reject the null hypothesis in favor of the alternative hypothesis. In other words, the data do not provide convincing evidence of a difference in the proportion of colleges that include the words "victory", "win", or "won" in their fight songs based on high versus low rank. Thus, our original hypothesis was incorrect.
@@ -506,16 +518,17 @@ First, we will calculate and visualize the difference in proportions of "yes" re
 ```{r visualize-rank-opponents, warning = FALSE}
 ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = opponents)) +
   geom_histogram(stat = "count", position = "fill") +
-  labs(title = "Effect of rank on whether fight song mentions opponents", 
-       x = "Rank Level", y = "Proportion", 
-       fill = "Whether Song\nMentions Opponents")
+  labs(title = "Effect of Rank on Whether Fight Song Mentions Opponents", 
+       x = "Rank Level",
+       y = "Proportion", 
+       fill = "Whether Song Mentions Opponents")
 ```
 
 ```{r prop-rank-opponents}
 fight_songs %>%
   count(opponents, rank_level) %>%
   group_by(rank_level) %>%
-  mutate(rel_freq=n/sum(n)) %>%
+  mutate(rel_freq = n / sum(n)) %>%
   select(-n)
 ```
 
@@ -538,14 +551,17 @@ null_dist_opponents <- fight_songs %>%
   calculate(stat = "diff in props", 
             order = c("high", "low"))
 
-get_p_value(null_dist_opponents, obs_stat = obs_diff_opponents, direction = "two_sided")
+get_p_value(null_dist_opponents,
+            obs_stat = obs_diff_opponents,
+            direction = "two_sided")
 
 visualise(null_dist_opponents) + 
-  labs(title = "Null distribution for proportion of fight songs 
-       that mention opponents",
-       x = "Sample proportion",
+  labs(title = "Null Distribution for Proportion of Fight Songs 
+       that Mention Opponents",
+       x = "Sample Proportion",
        y = "Count") +
-  shade_p_value(obs_stat = obs_diff_opponents, direction = "two_sided")
+  shade_p_value(obs_stat = obs_diff_opponents,
+                direction = "two_sided")
 ```
 
 Since the p-value, 0.958, is greater than our alpha level of 0.05, we fail to reject the null hypothesis in favor of the alternative hypothesis. In other words, the data do not provide convincing evidence of a difference in the proportion of colleges that mention opponents in their fight songs based on high versus low rank. Thus, our original hypothesis was incorrect.
@@ -557,16 +573,16 @@ First, we will calculate and visualize the difference in proportions of "yes" re
 ```{r visualize-rank-nonsense, warning = FALSE}
 ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = nonsense)) +
   geom_histogram(stat = "count", position = "fill") +
-  labs(title = "Effect of rank on whether fight song contains nonsense words", 
-       x = "Rank Level", y = "Proportion", 
-       fill = "Whether Song Contains\nNonsense Words")
+  labs(title = "Effect of Rank on Whether Fight Song Contains Nonsense Words",        x = "Level",
+       y = "Proportion", 
+       fill = "Whether Song Contains Nonsense Words")
 ```
 
 ```{r prop-rank-nonsense}
 fight_songs %>%
   count(nonsense, rank_level) %>%
   group_by(rank_level) %>%
-  mutate(rel_freq=n/sum(n)) %>%
+  mutate(rel_freq = n / sum(n)) %>%
   select(-n)
 ```
 
@@ -579,7 +595,7 @@ The alternative hypothesis is that there is a difference in the proportion of co
 Now, we will run a hypothesis test, calculate the p-value, and interpret the results in order to determine whether there is a statistically significant difference in the proportion of colleges that include nonsense words in their fight songs based on high versus low rank:
 
 ```{r rank-nonsense-hyp-test}
-obs_diff_nonsense <- -.12 # From above code chunk
+obs_diff_nonsense <- -0.12 # From above code chunk
 
 set.seed(11101962)
 null_dist_nonsense <- fight_songs %>%
@@ -589,14 +605,17 @@ null_dist_nonsense <- fight_songs %>%
   calculate(stat = "diff in props", 
             order = c("high", "low"))
 
-get_p_value(null_dist_nonsense, obs_stat = obs_diff_nonsense, direction = "two_sided")
+get_p_value(null_dist_nonsense,
+            obs_stat = obs_diff_nonsense,
+            direction = "two_sided")
 
 visualise(null_dist_nonsense) + 
-  labs(title = "Null distribution for proportion of fight songs that 
-       include nonsense words",
-       x = "Sample proportion",
+  labs(title = "Null Distribution for Proportion of Fight Songs that 
+       Include Nonsense Words",
+       x = "Sample Proportion",
        y = "Count") +
-  shade_p_value(obs_stat = obs_diff_nonsense, direction = "two_sided")
+  shade_p_value(obs_stat = obs_diff_nonsense,
+                direction = "two_sided")
 ```
 
 Since the p-value, 0.38, is greater than our significance level of 0.05, we fail to reject the null hypothesis in favor of the alternative hypothesis. In other words, the data do not provide convincing evidence of a difference in the proportion of colleges that include nonsense words in their fight songs based on high versus low rank. Thus, our original hypothesis was incorrect.
@@ -608,16 +627,17 @@ First, we will calculate and visualize the difference in proportions of "yes" re
 ```{r visualize-rank-rah, warning = FALSE}
 ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = rah)) +
   geom_histogram(stat = "count", position = "fill") +
-  labs(title = "Effect of rank on whether fight song contains 'rah'", 
-       x = "Rank Level", y = "Proportion", 
-       fill = "Whether Song\nContains 'Rah'")
+  labs(title = "Effect of Rank on Whether Fight Song Contains 'rah'", 
+       x = "Rank Level",
+       y = "Proportion", 
+       fill = "Whether Song Contains 'Rah'")
 ```
 
 ```{r prop-rank-rah}
 fight_songs %>%
   count(rah, rank_level) %>%
   group_by(rank_level) %>%
-  mutate(rel_freq=n/sum(n)) %>%
+  mutate(rel_freq = n / sum(n)) %>%
   select(-n)
 ```
 
@@ -640,14 +660,16 @@ null_dist_rah <- fight_songs %>%
   calculate(stat = "diff in props", 
             order = c("high", "low"))
 
-get_p_value(null_dist_rah, obs_stat = obs_diff_rah, direction = "two_sided")
+get_p_value(null_dist_rah,
+            obs_stat = obs_diff_rah,
+            direction = "two_sided")
 
 visualise(null_dist_rah) + 
-  labs(title = "Null distribution for proportion 
-       of fight songs that include 'rah'",
-       x = "Sample proportion",
+  labs(title = "Null Distribution for Proportion of Fight Songs that Include 'rah'",
+       x = "Sample Proportion",
        y = "Count") +
-  shade_p_value(obs_stat = obs_diff_rah, direction = "two_sided")
+  shade_p_value(obs_stat = obs_diff_rah,
+                direction = "two_sided")
 ```
 
 Since the p-value, 0.752, is greater than our significance level of 0.05, we fail to reject the null hypothesis in favor of the alternative hypothesis. In other words, the data do not provide convincing evidence of a difference in the proportion of colleges that include the word “rah” in their fight songs based on high versus low rank. Thus, our original hypothesis was correct.
@@ -717,7 +739,7 @@ We will look at our first variable, `victory_win_won` to see whether there exist
 fight_songs %>%
   count(region, victory_win_won) %>%
   group_by(region) %>%
-  mutate(prop_victory_win_won_yes = n/sum(n))
+  mutate(prop_victory_win_won_yes = n / sum(n))
 ```
 
 Based on the output, 70.4% of schools in northern conferences have the words "victory," "win," or "won" in their fight songs. On the other hand, only 57.9% of schools in southern conferences have the words "victory," "win," or "won" in their fight songs. We would like to see if this result is statistically significant and what the true difference in proportions is. We have to use simulation-based hypothesis testing because we are looking for the difference in proportions.
@@ -732,16 +754,19 @@ null_dist_north_south_victory <- fight_songs %>%
   specify(response = victory_win_won, explanatory = region, success = "Yes") %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in props", order = c("north", "south"))
+  calculate(stat = "diff in props",
+            order = c("north", "south"))
 
-get_p_value(null_dist_north_south_victory, obs_stat = obs_diff_props_n_s_victory, direction = "two_sided")
+get_p_value(null_dist_north_south_victory,
+            obs_stat = obs_diff_props_n_s_victory,
+            direction = "two_sided")
 
 visualise(null_dist_north_south_victory) + 
   labs(title = "Null Distribution for Difference in Proportions of Fight Songs that Include 'Victory', 'Win', or 'Won'",
-       subtitle = "For Fight Songs that Include 'Victory', 'Win', or 'Won'",
        x = "Sample Difference in Proportions",
        y = "Count") +
-  shade_p_value(obs_stat = obs_diff_props_n_s_victory, direction = "two_sided")
+  shade_p_value(obs_stat = obs_diff_props_n_s_victory,
+                direction = "two_sided")
 ```
 
 Based on our p-value of 0.418, which is greater than our significance level of 0.05, we fail to reject the null hypothesis. There is insufficient evidence that there is a difference in the proportion of fight songs that include "victory," "win," or "won" for southern and northern conferences.
@@ -752,7 +777,7 @@ Next, we will look at our second variable, `men`, which refers to whether a figh
 fight_songs %>%
   count(region, men) %>%
   group_by(region) %>%
-  mutate(prop_men = n/sum(n))
+  mutate(prop_men = n / sum(n))
 ```
 
 Based on the output, 44.4% of schools in northern conferences mention male groups in their fight songs. On the other hand, only 31.6% of schools in southern conferences mention male groups in their fight songs. We would like to see if this result is statistically significant and what the true difference in proportions is. We have to use simulation-based hypothesis testing because we are looking for the difference in proportions.
@@ -776,7 +801,8 @@ visualise(null_dist_north_south_men) +
        subtitle = "For Fight Songs that Mention Male Groups (N-S)",
        x = "Sample Difference in Proportions",
        y = "Count") +
-  shade_p_value(obs_stat = obs_diff_props_n_s_men, direction = "two_sided")
+  shade_p_value(obs_stat = obs_diff_props_n_s_men,
+                direction = "two_sided")
 ```
 
 Based on our p-value of 0.454, which is greater than our significance level of 0.05, we fail to reject the null hypothesis. There is insufficient evidence that there is a difference in the proportion of fight songs that mention male groups for southern and northern conferences.
@@ -787,7 +813,7 @@ Finally, we will look at our last variable, `nonsense`, which refers to whether 
 fight_songs %>%
   count(region, nonsense) %>%
   group_by(region) %>%
-  mutate(prop_nonsense = n/sum(n))
+  mutate(prop_nonsense = n / sum(n))
 ```
 
 Based on the output, 14.8% of schools in northern conferences use nonsense syllables in their fight songs. On the other hand, 15.8% of schools in southern conferences use nonsense syllables in their fight songs. We would like to see if this result is statistically significant and what the true difference in proportions is. We have to use simulation-based hypothesis testing because we are looking for the difference in proportions.
@@ -802,16 +828,19 @@ null_dist_north_south_nonsense <- fight_songs %>%
   specify(response = nonsense, explanatory = region, success = "Yes") %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in props", order = c("north", "south"))
+  calculate(stat = "diff in props",
+            order = c("north", "south"))
 
-get_p_value(null_dist_north_south_nonsense, obs_stat = obs_diff_props_n_s_nonsense, direction = "both")
+get_p_value(null_dist_north_south_nonsense,
+            obs_stat = obs_diff_props_n_s_nonsense, direction = "both")
 
 visualise(null_dist_north_south_nonsense) + 
   labs(title = "Null Distribution for Difference in Proportions",
        subtitle = "For Fight Songs with Nonsense Syllables (N-S)",
        x = "Sample Difference in Proportions",
        y = "Count") +
-  shade_p_value(obs_stat = obs_diff_props_n_s_nonsense, direction = "two_sided")
+  shade_p_value(obs_stat = obs_diff_props_n_s_nonsense,
+                direction = "two_sided")
 ```
 
 Based on our p-value of 0.648, which is greater than our significance level of 0.05, we fail to reject the null hypothesis. There is insufficient evidence that there is a difference in the proportion of fight songs that use nonsense syllables for southern and northern conferences.
