@@ -1073,12 +1073,12 @@ conferences.
 
 ### Conclusion from Additional Analysis
 
-We hypothesized that characteristics of fight songs would very depending
+We hypothesized that characteristics of fight songs would vary depending
 on whether a fight song is from a team in a southern vs. northern
 athletic conference. We decided to look at the variables
-`victory_win_won`, `men`, and `nonsense` because we thought that out of
-all of the variables in our data set that these three might vary based
-on geographical location.
+`victory_win_won`, `men`, and `nonsense` because we thought that, out of
+all of the variables in our dataset, these three might vary based on
+geographical location.
 
 However, based on the hypothesis testing above, it turns out that the
 variables `victory_win_won` (p = 0.418), `men` (p = 0.454), and
@@ -1091,3 +1091,26 @@ believe that college fight songs are truly independent and random from
 one another.
 
 ### Overall Conclusions
+
+RQ1
+
+RQ2
+
+AA
+
+If we were to redo this project, we would definitely think heavily about
+appending observations to our `fight-songs` dataset. Currently, the
+dataset only included 65 college football teams; however, in future
+analyses, we would use web scraping to gain information about at least
+200 teams in the United States. This could dramatically improve our
+analysis because, with more observations in consideration, certain
+statistical methods which we were forced to reject, including hypothesis
+testing for the slope coefficients, might become valid (variance may be
+constant). Furthermore, we would definitely consider the possibility of
+a confounding variable more seriously in future analyses because, based
+on the overall conclusions, there are two main possibilities: either
+there truly is no significant relationship between the explanatory and
+response variables (in which case, adding more observations will not
+change the conclusion), or there is a hidden significant relationship
+between the explanatory and response variables (in which case, adding
+more observations may affect the conclusion)\!
