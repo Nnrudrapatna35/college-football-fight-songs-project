@@ -6,7 +6,102 @@ Power Ninja Data Turtles
 
 ### Introduction
 
-### Statistical Methods Used
+In our research project, we will be analyzing the fight songs of various
+college football teams to discover whether a song’s tempo or duration
+can tell us anything about the content of the song and whether a team’s
+fight song is indicative of their college football program’s success.
+More specifically, we will be examining the fight songs of all 65 teams
+located across the Power 5 sports conferences (Big 10, Big 12, ACC,
+Pac-12 and SEC) plus Notre Dame (Independent conference). Hence, our
+dataset, which is fittingly titled `fight-songs`, includes 65
+observations. Each observation in the set represents a distinct Power 5
+college football team (or Notre Dame). For each team (observation), the
+original dataset featured 23 variables. However, we include 19 of these
+variables, plus one of our own, for a total of 20 in the `fight-songs`
+dataset. The variables primarily contain information regarding the
+school’s fight song, as well as a couple of characteristics of the
+college football teams themselves (i.e. which conference they belong
+to).
+
+The variables most pertinent to our analysis are: `conference`, `year`,
+`bpm`, `sec_duration`, `victory_win_won`, `men`, `rah`, `nonsense`,
+`opponents`, `trope_count`, and finally `rank`.
+
+The data was collected by looking at the lyrics of each song (as
+published by each individual college), metadata about each fight song on
+Spotify, history about each song (as stated by the college), and
+information about each school’s conference, which is easily accessible
+on the Internet. We added the `rank` variable to the dataset using
+Microsoft Excel, and we found this information from the Associated
+Press’s historic rankings of every college football team in the
+country, which was released last year.
+
+As as note, some schools may have more than one fight song, and some of
+the songs sanctioned as “official” by their schools are not the ones
+that fans most commonly chant. The songs that seemed best-known and
+best-loved were chosen as the “official” fight song (which characterizes
+our observations). Additionally, fivethirtyeight has tailored the lyrics
+of certain fight songs to those sung most regularly and published by the
+school. Thus, some verses will not appear (and hence will not be
+considered in our analysis).
+
+First, we would like to determine whether a team’s tempo (measured in
+beats per minute) has anything to do with the number of clichés (tropes)
+that a song has. We will do this by creating a scatterplot and fitting a
+linear model:
+
+![](writeup_files/figure-gfm/scatterplot-bpm-tropes-1.png)<!-- -->
+
+There seems to be a weak, negative linear relationship between tempo and
+number of clichés. Let’s find the linear model associated with this
+scatterplot:
+
+    ## # A tibble: 2 x 2
+    ##   term        estimate
+    ##   <chr>          <dbl>
+    ## 1 (Intercept)  4.59   
+    ## 2 bpm         -0.00759
+
+Based on the output, the linear model that predicts number of tropes
+based on tempo is: `trope_count-hat` = 4.59 - 0.00759 \* `bpm`. The
+intercept tells us that if a song has 0 bpm (nonsensical), it is
+expected to have 4.59 clichés (tropes), on average. The slope tells us
+that for an increase in 1 bpm, the expected number of clichés is
+predicted, on average, to decrease by 0.00759. The R-squared value of
+this model is 0.0225985, meaning that approximately 2.2598527 percent of
+the variability in clichés is accounted for by the linear model. This
+means that the linear model is relatively weak since, the closer the R
+squared value is to 1 (or 100% variability), the more accurate the model
+is.
+
+Now, let’s see whether `trope_count` is related as to the `rank`
+(success) of a team. We will do this by creating another scatterplot and
+fitting a model:
+
+![](writeup_files/figure-gfm/scatterplot-tropes-rank-1.png)<!-- -->
+
+There seems to be a weak positive linear relationship between number of
+clichés in a fight song and the historical ranking of a college football
+team. Let’s find the linear model associated with this scatterplot:
+
+    ## # A tibble: 2 x 2
+    ##   term        estimate
+    ##   <chr>          <dbl>
+    ## 1 (Intercept)   35.6  
+    ## 2 trope_count    0.545
+
+Based on the output, the linear model that predicts rank based on number
+of clichés is: `rank-hat` = 35.6 + 0.545 \* `trope_count`. The intercept
+tells us that if a song has 0 clichés, it is expected to have a ranking
+of 35.6, on average. The slope tells us that for an increase in 1
+cliché, the historical college football team ranking is predicted, on
+average, to increase by 0.545 points. The R-squared value of this model
+is 0.0012119, meaning that approximately 0.1211865 percent of the
+variability in ranks is accounted for by the linear model. This means
+that the linear model is extremely weak since, the closer the R squared
+value is to 1 (or 100% variability), the more accurate the model is.
+
+### Description of Statistical Methods
 
 For our data analysis, we used a combination of hypothesis tests and a
 variety of plots (from the `ggplot` package) in order to visualize and
@@ -16,9 +111,10 @@ We used hypothesis tests because finding the p-value for each instance
 allowed us to conclude whether or not the data provided convincing
 evidence of a trend, such as the relationship between the tempo and
 content of songs. Our hypothesis tests were conducted using simulation
-instead of the CLT. The CLT was not a valid option, as none of the
-subsets of the data set had at least 30 observations and the majority of
-our tests are for independence (difference between two groups).
+instead of the Central Limit Theorem (CLT). The CLT was not a valid
+option, as none of the subsets of the data set had at least 30
+observations and the majority of our tests are for independence
+(difference between two groups).
 
 Visualizing the relationships between the explanatory and response
 variables with plots made it easy for viewers to understand how the
@@ -489,7 +585,7 @@ First, we will calculate and visualize the difference in proportions of
 “yes” responses to `victory_win_won` based on
 `rank_level`.
 
-![](writeup_files/figure-gfm/visualize_rank_level_victory_win_won-1.png)<!-- -->
+![](writeup_files/figure-gfm/visualize-rank-level-victory-win-won-1.png)<!-- -->
 
     ## # A tibble: 4 x 3
     ## # Groups:   rank_level [2]
@@ -969,3 +1065,5 @@ include the words “victory”, “win”, or “won”, mention male
 individuals/groups, or use nonsense words/phrases. The data leads us to
 believe that college fight songs are truly independent and random from
 one another.
+
+### Overall Conclusions
