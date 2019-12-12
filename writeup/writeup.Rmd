@@ -805,7 +805,20 @@ fight_songs %>%
   mutate(prop_victory_win_won_yes = n / sum(n))
 ```
 
-Based on the output, 70.4% of schools in northern conferences have the words "victory," "win," or "won" in their fight songs. On the other hand, only 57.9% of schools in southern conferences have the words "victory," "win," or "won" in their fight songs. We would like to see if this result is statistically significant and what the true difference in proportions is. We have to use simulation-based hypothesis testing because we are looking for the difference in proportions.
+Based on the output, 70.4% of schools in northern conferences have the words "victory," "win," or "won" in their fight songs. On the other hand, only 57.9% of schools in southern conferences have the words "victory," "win," or "won" in their fight songs. Below, we will visualize these percentages in a segmented bar chart.
+
+```{r victory_win_won-north-vs-south}
+ggplot(data = fight_songs, mapping = aes(x = region, fill = victory_win_won)) +
+  geom_histogram(stat = "count", position = "fill") +
+  labs(title = "Proportion of Fight Songs That Mention Victory, Win or Won",
+       subtitle = "between northern and southern schools",
+       x = "Level",
+       y = "Proportion", 
+       fill = "Whether Song Mentions Victory/win/won")
+```
+
+
+We would like to see if this result is statistically significant and what the true difference in proportions is. We have to use simulation-based hypothesis testing because we are looking for the difference in proportions.
 
 First, we will run a hypothesis test, calculate the p-value, and interpret the results in order to determine whether there is a statistically significant difference in the proportion of fight songs that say "victory," "win," or "won" for schools in northern vs. southern conferences. Our null hypothesis is that there is no difference in the proportion of schools that say "victory," "win," or "won" in their fight songs for southern and northern conferences, H0: p(southern) = p(northern). Our alternative hypothesis is that there is a difference in the proportion of schools that say "victory," "win," or "won" in their fight songs for southern and northern conferences, Ha: p(southern) ≠ p(northern). We will use a significance level of 0.05.
 
@@ -844,7 +857,20 @@ fight_songs %>%
   mutate(prop_men = n / sum(n))
 ```
 
-Based on the output, 44.4% of schools in northern conferences mention male groups in their fight songs. On the other hand, only 31.6% of schools in southern conferences mention male groups in their fight songs. We would like to see if this result is statistically significant and what the true difference in proportions is. We have to use simulation-based hypothesis testing because we are looking for the difference in proportions.
+Based on the output, 44.4% of schools in northern conferences mention male groups in their fight songs. On the other hand, only 31.6% of schools in southern conferences mention male groups in their fight songs. Below, we will visualize these percentages in a segmented bar chart.
+
+```{r men-north-vs-south}
+ggplot(data = fight_songs, mapping = aes(x = region, fill = men)) +
+  geom_histogram(stat = "count", position = "fill") +
+  labs(title = "Proportion of Fight Songs That Mention Men",
+       subtitle = "between northern and southern schools",
+       x = "Level",
+       y = "Proportion", 
+       fill = "Whether Song Mentions Men")
+```
+
+
+We would like to see if this result is statistically significant and what the true difference in proportions is. We have to use simulation-based hypothesis testing because we are looking for the difference in proportions.
 
 First, we will run a hypothesis test, calculate the p-value, and interpret the results in order to determine whether there is a statistically significant difference in the proportion of fight songs that mention male groups for schools in northern vs. southern conferences. Our null hypothesis is that there is no difference in the proportion of schools that mention men in their fight songs for southern and northern conferences, H0: p(southern) = p(northern). Our alternative hypothesis is that there is a difference in the proportion of schools that mention men in their fight songs for southern and northern conferences, Ha: p(southern) ≠ p(northern). We will use a significance level of 0.05.
 
@@ -880,7 +906,19 @@ fight_songs %>%
   mutate(prop_nonsense = n / sum(n))
 ```
 
-Based on the output, 14.8% of schools in northern conferences use nonsense syllables in their fight songs. On the other hand, 15.8% of schools in southern conferences use nonsense syllables in their fight songs. We would like to see if this result is statistically significant and what the true difference in proportions is. We have to use simulation-based hypothesis testing because we are looking for the difference in proportions.
+Based on the output, 14.8% of schools in northern conferences use nonsense syllables in their fight songs. On the other hand, 15.8% of schools in southern conferences use nonsense syllables in their fight songs. Below, we will visualize these percentages in a segmented bar chart.
+
+```{r nonsense-north-vs-south}
+ggplot(data = fight_songs, mapping = aes(x = region, fill = nonsense)) +
+  geom_histogram(stat = "count", position = "fill") +
+  labs(title = "Proportion of Fight Songs That Mention Nonsense",
+       subtitle = "between northern and southern schools",
+       x = "Level",
+       y = "Proportion", 
+       fill = "Whether Song Mentions Nonsense")
+```
+
+We would like to see if this result is statistically significant and what the true difference in proportions is. We have to use simulation-based hypothesis testing because we are looking for the difference in proportions.
 
 First, we will run a hypothesis test, calculate the p-value, and interpret the results in order to determine whether there is a statistically significant difference in the proportion of fight songs that use nonsense syllables for schools in northern vs. southern conferences. Our null hypothesis is that there is no difference in the proportion of schools that use nonsense syllables in their fight songs for southern and northern conferences, H0: p(southern) = p(northern). Our alternative hypothesis is that there is a difference in the proportion of schools that mention men in their fight songs for southern and northern conferences, Ha: p(southern) ≠ p(northern). We will use a significance level of 0.05.
 

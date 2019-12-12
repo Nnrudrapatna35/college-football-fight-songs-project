@@ -945,10 +945,18 @@ southern conferences. First, we will find what the two proportions are.
 Based on the output, 70.4% of schools in northern conferences have the
 words “victory,” “win,” or “won” in their fight songs. On the other
 hand, only 57.9% of schools in southern conferences have the words
-“victory,” “win,” or “won” in their fight songs. We would like to see
-if this result is statistically significant and what the true difference
-in proportions is. We have to use simulation-based hypothesis testing
-because we are looking for the difference in proportions.
+“victory,” “win,” or “won” in their fight songs. Below, we will
+visualize these percentages in a segmented bar
+chart.
+
+    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+
+![](writeup_files/figure-gfm/victory_win_won-north-vs-south-1.png)<!-- -->
+
+We would like to see if this result is statistically significant and
+what the true difference in proportions is. We have to use
+simulation-based hypothesis testing because we are looking for the
+difference in proportions.
 
 First, we will run a hypothesis test, calculate the p-value, and
 interpret the results in order to determine whether there is a
@@ -993,8 +1001,15 @@ conferences. First, we will find what the two proportions are:
 Based on the output, 44.4% of schools in northern conferences mention
 male groups in their fight songs. On the other hand, only 31.6% of
 schools in southern conferences mention male groups in their fight
-songs. We would like to see if this result is statistically significant
-and what the true difference in proportions is. We have to use
+songs. Below, we will visualize these percentages in a segmented bar
+chart.
+
+    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+
+![](writeup_files/figure-gfm/men-north-vs-south-1.png)<!-- -->
+
+We would like to see if this result is statistically significant and
+what the true difference in proportions is. We have to use
 simulation-based hypothesis testing because we are looking for the
 difference in proportions.
 
@@ -1041,8 +1056,15 @@ southern conferences. First, we will find what the two proportions are:
 Based on the output, 14.8% of schools in northern conferences use
 nonsense syllables in their fight songs. On the other hand, 15.8% of
 schools in southern conferences use nonsense syllables in their fight
-songs. We would like to see if this result is statistically significant
-and what the true difference in proportions is. We have to use
+songs. Below, we will visualize these percentages in a segmented bar
+chart.
+
+    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+
+![](writeup_files/figure-gfm/nonsense-north-vs-south-1.png)<!-- -->
+
+We would like to see if this result is statistically significant and
+what the true difference in proportions is. We have to use
 simulation-based hypothesis testing because we are looking for the
 difference in proportions.
 
