@@ -5,11 +5,11 @@ date: "12/13/19"
 output: github_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
 
-```{r load-data-and-packages, message = FALSE, warning = FALSE}
+```{r load-data-and-packages}
 library(tidyverse)
 library(infer)
 library(broom)
@@ -179,7 +179,7 @@ ggplot(fight_songs, mapping = aes(x = sec_duration, y = bpm)) +
   geom_vline(xintercept = 67, linetype = "dashed", color = "orange") +
   theme_minimal() +
   labs(title = "Classification of College Fight Songs", 
-       subtitle = "By tempo and duration",
+       subtitle = "by tempo and duration",
        x = "Duration (sec)",
        y = "Tempo (bpm)",
        color = "Number of Tropes") +
@@ -216,7 +216,7 @@ ggplot(fight_songs, mapping = aes(x = classify, y = trope_count)) +
   geom_violin(draw_quantiles = c(0.25, 0.50, 0.75)) +
   geom_jitter() +
   labs(title = "Number of Clichés",
-       subtitle = "By Song Classification",
+       subtitle = "by Song Classification",
        x = "Song Classification",
        y = "Number of Clichés")
 
@@ -246,7 +246,7 @@ get_p_value(null_slow_long,
 
 visualize(null_slow_long) + 
   labs(title = "Null Distribution for Median Number of Tropes",
-       subtitle = "For Slow and Long Fight Songs",
+       subtitle = "for Slow and Long Fight Songs",
        x = "Sample Median Number of Tropes",
        y = "Count") +
   shade_p_value(obs_stat = obs_median,
@@ -276,7 +276,7 @@ get_p_value(null_slow_short,
 
 visualize(null_slow_short) + 
   labs(title = "Null Distribution for Standard Deviation of Tropes",
-       subtitle = "For Slow and Short Fight Songs",
+       subtitle = "for Slow and Short Fight Songs",
        x = "Sample Standard Deviation of Tropes",
        y = "Count") +
   shade_p_value(obs_sd,
@@ -322,7 +322,7 @@ get_p_value(null_dist_bpm_slope,
 
 visualize(null_dist_bpm_slope) + 
   labs(title = "Null Distribution for Tempo Slope Coefficient",
-       subtitle = "In Full Linear Model For Trope Count",
+       subtitle = "in Full Linear Model For Trope Count",
        x = "Sample bpm Slope Coefficients",
        y = "Count") +
   shade_p_value(obs_beta_bpm,
@@ -350,7 +350,7 @@ get_p_value(null_dist_sec_duration_slope,
 
 visualize(null_dist_sec_duration_slope) + 
   labs(title = "Null Distribution for Song Duration Slope Coefficient",
-       subtitle = "In Full Linear Model For Trope Count",
+       subtitle = "in Full Linear Model For Trope Count",
        x = "Sample Song Duration Slope Coefficients",
        y = "Count") +
   shade_p_value(obs_beta_sec_duration,
@@ -370,7 +370,7 @@ m_full_aug <- augment(m_full)
 ggplot(data = m_full_aug, aes(x = 1:nrow(m_full_aug), y = .resid)) +
   geom_point() +
   labs(title = "Residual Plot by Index",
-       subtitle = "In The Order of Data Collection",
+       subtitle = "in The Order of Data Collection",
        x = "Index",
        y = "Residual")
 ```
@@ -438,9 +438,9 @@ Starting with `victory_win_won`, which designates whether a fight song says "vic
 ```{r visualize-victory-win-won}
 ggplot(fight_songs, mapping = aes(x = "", fill = victory_win_won)) +
   geom_bar(position = "fill") +
-  labs(title = "Distribution of Whether Fight Songs Include 'victory', 'win', or 'won'",
-       fill = "Whether Fight Song Includes 'victory', 'win', or 'won'", 
-       x = "victory_win_won",
+  labs(title = "Distribution of Whether Fight Songs Include Victory, Win, or Won",
+       fill = "Whether Fight Song Includes Victory/Win/Won", 
+       x = "Victory_Win_Won",
        y = "Proportion of College Fight Songs")
 ```
 
@@ -461,7 +461,7 @@ Now, we will examine `nonsense`, which designates whether a song includes any no
 ggplot(fight_songs, mapping = aes(x = "", fill = nonsense)) +
   geom_bar(position = "fill") +
   labs(title = "Distribution of Whether Fight Songs Include Nonsense",
-       fill = "Whether Fight Song Includes Nonsense Words", 
+       fill = "Whether Fight Song Includes Nonsense Syllables", 
        x = "Nonsense",
        y = "Number of College Football Teams")
 ```
@@ -471,8 +471,8 @@ Next, we will explore `rah`, which designates whether a fight song says the word
 ```{r visualize-rah}
 ggplot(fight_songs, mapping = aes(x = "", fill = rah)) +
   geom_bar(position = "fill") +
-  labs(title = "Distribution of Whether Fight Songs Include 'rah'",
-       fill = "Whether Fight Song Includes 'rah'",
+  labs(title = "Distribution of Whether Fight Songs Include Rah",
+       fill = "Whether Fight Song Includes Rah",
        x = "Rah",
        y = "Number of College Football Teams")
 ```
@@ -502,8 +502,8 @@ While we have framed `rank` as a numerical variable, it is actually categorical.
 ```{r create-rank-level}
 fight_songs <- fight_songs %>%
   mutate(rank_level = case_when(
-    rank <= 25 ~ "high",
-    rank > 25 ~ "low"
+    rank <= 25 ~ "High",
+    rank > 25 ~ "Low"
   ))
 ```
 
@@ -511,7 +511,7 @@ fight_songs <- fight_songs %>%
 ggplot(fight_songs, mapping = aes(x = rank_level, y = rank)) +
   geom_boxplot() +
   labs(title = "Distribution of College Football Rankings",
-       subtitle = "By Level",
+       subtitle = "by Level",
        x = "Level",
        y = "Rank")
 ```
@@ -527,13 +527,13 @@ Now, we will return to our research question by examining whether the rank of a 
 
 First, we will calculate and visualize the difference in proportions of "yes" responses to `victory_win_won` based on `rank_level`.
 
-```{r visualize-rank-level-victory-win-won, warning = FALSE}
+```{r visualize-rank-level-victory-win-won}
 ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = victory_win_won)) +
   geom_histogram(stat = "count", position = "fill") +
-  labs(title = "Effect of Rank on Whether Fight Song Contains 'victory', 'win', or 'won'", 
+  labs(title = "Effect of Rank on Whether Fight Song Contains Victory, Win, or Won", 
        x = "Level",
        y = "Proportion", 
-       fill = "Whether Song Contains 'Victory', 'Win', or 'Won'")
+       fill = "Whether Song Contains Victory/Win/Won")
 ```
 
 ```{r prop-rank-level-victory-win-won}
@@ -561,14 +561,15 @@ null_dist_victory_win_won <- fight_songs %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in props", 
-            order = c("high", "low"))
+            order = c("High", "Low"))
 
 get_p_value(null_dist_victory_win_won,
             obs_stat = obs_diff_victory_win_won,
             direction = "two_sided")
 
 visualize(null_dist_victory_win_won) + 
-  labs(title = "Null Distribution for Proportion of Fight Songs that Include 'victory', 'win', or 'won'",
+  labs(title = "Null Distribution for Proportion of Fight Songs", 
+       subtitle = "that Include Victory, Win, or Won",
        x = "Sample Proportion",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_victory_win_won,
@@ -581,7 +582,7 @@ We also hypothesize that a statistically significant relationship exists between
 
 First, we will calculate and visualize the difference in proportions of "yes" responses to `opponents` based on `rank_level`:
 
-```{r visualize-rank-opponents, warning = FALSE}
+```{r visualize-rank-opponents}
 ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = opponents)) +
   geom_histogram(stat = "count", position = "fill") +
   labs(title = "Effect of Rank on Whether Fight Song Mentions Opponents", 
@@ -615,15 +616,15 @@ null_dist_opponents <- fight_songs %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in props", 
-            order = c("high", "low"))
+            order = c("High", "Low"))
 
 get_p_value(null_dist_opponents,
             obs_stat = obs_diff_opponents,
             direction = "two_sided")
 
 visualize(null_dist_opponents) + 
-  labs(title = "Null Distribution for Proportion of Fight Songs 
-       that Mention Opponents",
+  labs(title = "Null Distribution for Proportion of Fight Songs", 
+       subtitle = "that Mention Opponents",
        x = "Sample Proportion",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_opponents,
@@ -636,12 +637,13 @@ Moreover, we hypothesize that a statistically significant relationship exists be
 
 First, we will calculate and visualize the difference in proportions of "yes" responses to `nonsense` based on `rank_level`:
 
-```{r visualize-rank-nonsense, warning = FALSE}
+```{r visualize-rank-nonsense}
 ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = nonsense)) +
   geom_histogram(stat = "count", position = "fill") +
-  labs(title = "Effect of Rank on Whether Fight Song Contains Nonsense Words",        x = "Level",
+  labs(title = "Effect of Rank on Whether Fight Song Contains Nonsense",
+       x = "Level",
        y = "Proportion", 
-       fill = "Whether Song Contains Nonsense Words")
+       fill = "Whether Song Contains Nonsense Syllables")
 ```
 
 ```{r prop-rank-nonsense}
@@ -669,15 +671,15 @@ null_dist_nonsense <- fight_songs %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in props", 
-            order = c("high", "low"))
+            order = c("High", "Low"))
 
 get_p_value(null_dist_nonsense,
             obs_stat = obs_diff_nonsense,
             direction = "two_sided")
 
 visualize(null_dist_nonsense) + 
-  labs(title = "Null Distribution for Proportion of Fight Songs that 
-       Include Nonsense Words",
+  labs(title = "Null Distribution for Proportion of Fight Songs", 
+       subtitle = "that Include Nonsense Syllables",
        x = "Sample Proportion",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_nonsense,
@@ -690,13 +692,13 @@ Finally, we hypothesize that there is no statistically significant relationship 
 
 First, we will calculate and visualize the difference in proportions of "yes" responses to `rah` based on `rank_level`.
 
-```{r visualize-rank-rah, warning = FALSE}
+```{r visualize-rank-rah}
 ggplot(data = fight_songs, mapping = aes(x = rank_level, fill = rah)) +
   geom_histogram(stat = "count", position = "fill") +
-  labs(title = "Effect of Rank on Whether Fight Song Contains 'rah'", 
+  labs(title = "Effect of Rank on Whether Fight Song Contains Rah", 
        x = "Level",
        y = "Proportion", 
-       fill = "Whether Song Contains 'rah'")
+       fill = "Whether Song Contains Rah")
 ```
 
 ```{r prop-rank-rah}
@@ -724,7 +726,7 @@ null_dist_rah <- fight_songs %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in props", 
-            order = c("high", "low"))
+            order = c("High", "Low"))
 
 get_p_value(null_dist_rah,
             obs_stat = obs_diff_rah,
@@ -732,7 +734,7 @@ get_p_value(null_dist_rah,
 
 visualize(null_dist_rah) + 
   labs(title = "Null Distribution for Proportion of Fight Songs",
-       subtitle = "that Include 'rah'",
+       subtitle = "that Include Rah",
        x = "Sample Proportion",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_rah,
@@ -822,7 +824,7 @@ ggplot(data = fight_songs, mapping = aes(x = region, fill = victory_win_won)) +
        subtitle = "between northern and southern schools",
        x = "Level",
        y = "Proportion", 
-       fill = "Whether Song Mentions Victory/win/won")
+       fill = "Whether Song Mentions Victory/Win/Won")
 ```
 
 
@@ -847,7 +849,7 @@ get_p_value(null_dist_north_south_victory,
 
 visualize(null_dist_north_south_victory) + 
   labs(title = "Null Distribution for Difference in Proportions of Fight Songs",
-       subtitle = "that Include 'victory', 'win', or 'won'",
+       subtitle = "that Include Victory, Win, or Won",
        x = "Sample Difference in Proportions",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_props_n_s_victory,
@@ -895,8 +897,8 @@ null_dist_north_south_men <- fight_songs %>%
 get_p_value(null_dist_north_south_men, obs_stat = obs_diff_props_n_s_men, direction = "two_sided")
 
 visualize(null_dist_north_south_men) + 
-  labs(title = "Null Distribution for Difference in Proportions",
-       subtitle = "For Fight Songs that Mention Male Groups (N-S)",
+  labs(title = "Null Distribution for Difference in Proportions of Fight Songs",
+       subtitle = "that Mention Males (N-S)",
        x = "Sample Difference in Proportions",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_props_n_s_men,
@@ -919,11 +921,11 @@ Based on the output, 14.8% of schools in northern conferences use nonsense sylla
 ```{r nonsense-north-vs-south}
 ggplot(data = fight_songs, mapping = aes(x = region, fill = nonsense)) +
   geom_histogram(stat = "count", position = "fill") +
-  labs(title = "Proportion of Fight Songs That Mention Nonsense",
+  labs(title = "Proportion of Fight Songs That Include Nonsense",
        subtitle = "between northern and southern schools",
        x = "Level",
        y = "Proportion", 
-       fill = "Whether Song Mentions Nonsense")
+       fill = "Whether Song Uses Nonsense Syllables")
 ```
 
 We would like to see if this result is statistically significant and what the true difference in proportions is. We have to use simulation-based hypothesis testing because we are looking for the difference in proportions.
@@ -945,8 +947,8 @@ get_p_value(null_dist_north_south_nonsense,
             obs_stat = obs_diff_props_n_s_nonsense, direction = "both")
 
 visualize(null_dist_north_south_nonsense) + 
-  labs(title = "Null Distribution for Difference in Proportions",
-       subtitle = "For Fight Songs with Nonsense Syllables (N-S)",
+  labs(title = "Null Distribution for Difference in Proportions of Fight Songs",
+       subtitle = "with Nonsense Syllables (N-S)",
        x = "Sample Difference in Proportions",
        y = "Count") +
   shade_p_value(obs_stat = obs_diff_props_n_s_nonsense,

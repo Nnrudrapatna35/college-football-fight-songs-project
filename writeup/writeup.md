@@ -591,8 +591,8 @@ will visualize `rank_level` using a boxplot.
     ## # A tibble: 2 x 2
     ##   rank_level     n
     ##   <chr>      <int>
-    ## 1 high          25
-    ## 2 low           40
+    ## 1 High          25
+    ## 2 Low           40
 
 Based on the boxplots, we can see that the lower ranking teams have a
 larger spread and include more outliers. There are also fewer high
@@ -620,10 +620,10 @@ First, we will calculate and visualize the difference in proportions of
     ## # Groups:   rank_level [2]
     ##   victory_win_won rank_level rel_freq
     ##   <chr>           <chr>         <dbl>
-    ## 1 No              high          0.44 
-    ## 2 No              low           0.325
-    ## 3 Yes             high          0.56 
-    ## 4 Yes             low           0.675
+    ## 1 No              High          0.44 
+    ## 2 No              Low           0.325
+    ## 3 Yes             High          0.56 
+    ## 4 Yes             Low           0.675
 
 Based on the output, 56% of high ranked teams and 67.5% of low ranked
 teams include the words “victory”, “win”, or “won” in their fight songs.
@@ -677,10 +677,10 @@ First, we will calculate and visualize the difference in proportions of
     ## # Groups:   rank_level [2]
     ##   opponents rank_level rel_freq
     ##   <chr>     <chr>         <dbl>
-    ## 1 No        high          0.8  
-    ## 2 No        low           0.825
-    ## 3 Yes       high          0.2  
-    ## 4 Yes       low           0.175
+    ## 1 No        High          0.8  
+    ## 2 No        Low           0.825
+    ## 3 Yes       High          0.2  
+    ## 4 Yes       Low           0.175
 
 Based on the output, 20% of high ranked teams and 17.5% of low ranked
 teams mention opponents in their fight songs. This is an observed
@@ -732,10 +732,10 @@ First, we will calculate and visualize the difference in proportions of
     ## # Groups:   rank_level [2]
     ##   nonsense rank_level rel_freq
     ##   <chr>    <chr>         <dbl>
-    ## 1 No       high           0.92
-    ## 2 No       low            0.8 
-    ## 3 Yes      high           0.08
-    ## 4 Yes      low            0.2
+    ## 1 No       High           0.92
+    ## 2 No       Low            0.8 
+    ## 3 Yes      High           0.08
+    ## 4 Yes      Low            0.2
 
 Based on the output, 8% of high ranked teams and 20% of low ranked teams
 include nonsense words in their fight songs. This is an observed
@@ -782,10 +782,10 @@ First, we will calculate and visualize the difference in proportions of
     ## # Groups:   rank_level [2]
     ##   rah   rank_level rel_freq
     ##   <chr> <chr>         <dbl>
-    ## 1 No    high           0.76
-    ## 2 No    low            0.7 
-    ## 3 Yes   high           0.24
-    ## 4 Yes   low            0.3
+    ## 1 No    High           0.76
+    ## 2 No    Low            0.7 
+    ## 3 Yes   High           0.24
+    ## 4 Yes   Low            0.3
 
 Based on the output, 24% of high ranked teams and 30% of low ranked
 teams include the word “rah” in their fight songs. This is an observed
@@ -979,8 +979,6 @@ hand, only 57.9% of schools in southern conferences have the words
 visualize these percentages in a segmented bar
 chart.
 
-    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
-
 ![](writeup_files/figure-gfm/victory_win_won-north-vs-south-1.png)<!-- -->
 
 We would like to see if this result is statistically significant and
@@ -1034,8 +1032,6 @@ schools in southern conferences mention male groups in their fight
 songs. Below, we will visualize these percentages in a segmented bar
 chart.
 
-    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
-
 ![](writeup_files/figure-gfm/men-north-vs-south-1.png)<!-- -->
 
 We would like to see if this result is statistically significant and
@@ -1088,8 +1084,6 @@ nonsense syllables in their fight songs. On the other hand, 15.8% of
 schools in southern conferences use nonsense syllables in their fight
 songs. Below, we will visualize these percentages in a segmented bar
 chart.
-
-    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
 
 ![](writeup_files/figure-gfm/nonsense-north-vs-south-1.png)<!-- -->
 
