@@ -1138,11 +1138,27 @@ one another.
 
 ### Overall Conclusions
 
-RQ1
-
-RQ2
-
-AA
+The research questions we analyzed in this project were: (1) how the
+tempo and duration of college football fight songs affect the number of
+tropes?; (2) how the specific attributes of fights songs correlate with
+the historical rankings of college football programs in the United
+States? With hypothesis testing as our primary tool, we determined tempo
+and duration are NOT useful in predicting the content of college fight
+songs (number of tropes). Moreover, we determined that the presence of
+nonsense syllables, references to male groups/individuals, references to
+opponents, and victory/win/won are not related to the historical success
+of college football teams. Of course, our analysis (and hence resulting
+conclusions) has serious limitations due to the composition of the
+dataset. Our dataset only included 65 teams, so, when we elected to
+divide the teams into region-dependent or tempo and duration-based
+categories, the Central Limit Theorem no longer proved valid (at least
+30 observations necessary). This compelled us to use simulation-based
+hypothesis testing with relatively small sample sizes. Another
+consequence of the small number of observations was invalidating
+hypothesis testing for slopes. Determinining whether the slope
+coefficients from our linear models were truly significant would be
+particularly useful in our analysis; however, one of the conditions of
+inference for regression–constant variance–was violated.
 
 If we were to redo this project, we would definitely think heavily about
 appending observations to our `fight-songs` dataset. Currently, the
