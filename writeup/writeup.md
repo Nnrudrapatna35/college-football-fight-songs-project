@@ -9,19 +9,18 @@ Power Ninja Data Turtles
 In our research project, we will be analyzing the fight songs of various
 college football teams to discover whether a song’s tempo or duration
 can tell us anything about the content of the song and whether a team’s
-fight song is indicative of their college football program’s success.
-More specifically, we will be examining the fight songs of all 65 teams
-located across the Power 5 sports conferences (Big 10, Big 12, ACC,
-Pac-12 and SEC) plus Notre Dame (Independent conference). Hence, our
-dataset, which is fittingly titled `fight-songs`, includes 65
-observations. Each observation in the set represents a distinct Power 5
-college football team (or Notre Dame). For each team (observation), the
-original dataset featured 23 variables. However, we include 19 of these
-variables, plus one of our own, for a total of 20 in the `fight-songs`
-dataset. The variables primarily contain information regarding the
-school’s fight song, as well as a couple of characteristics of the
-college football teams themselves (i.e. which conference they belong
-to).
+fight song is indicative of its college football program’s success. More
+specifically, we will be examining the fight songs of all 64 teams
+located across the Power Five sports conferences (Big 10, Big 12, ACC,
+Pac-12 and SEC) plus Notre Dame (Independent). Hence, our dataset, which
+is fittingly titled `fight-songs`, includes 65 observations. Each
+observation in the set represents a distinct Power Five college football
+team (or Notre Dame). For each team (observation), the original dataset
+featured 23 variables. However, we include 19 of these variables, plus
+one of our own, for a total of 20 in the `fight-songs` dataset. The
+variables primarily contain information regarding the school’s fight
+song, as well as a couple of characteristics of the college football
+teams themselves (i.e. which conference they belong to).
 
 The variables most pertinent to our analysis are: `conference`, `year`,
 `bpm`, `sec_duration`, `victory_win_won`, `men`, `rah`, `nonsense`,
@@ -36,24 +35,25 @@ Microsoft Excel, and we found this information from the Associated
 Press’s historic rankings of every college football team in the
 country, which was released last year.
 
-As as note, some schools may have more than one fight song, and some of
+As as note, some schools may have more than one fight song and some of
 the songs sanctioned as “official” by their schools are not the ones
 that fans most commonly chant. The songs that seemed best-known and
 best-loved were chosen as the “official” fight song (which characterizes
-our observations). Additionally, fivethirtyeight has tailored the lyrics
-of certain fight songs to those sung most regularly and published by the
-school. Thus, some verses will not appear (and hence will not be
+our observations). Additionally, `fivethirtyeight` has tailored the
+lyrics of certain fight songs to those sung most regularly and published
+by the school. Thus, some verses will not appear (and hence will not be
 considered in our analysis).
 
-First, we would like to determine whether a team’s tempo (measured in
-beats per minute) has anything to do with the number of clichés (tropes)
-that a song has. We will do this by creating a scatterplot and fitting a
-linear model:
+First, to preface our main analysis, we would like to determine whether
+a team’s tempo (measured in beats per minute) has anything to do with
+the number of clichés (tropes) that a song has. We will do this by
+creating a scatterplot and fitting a linear model:
 
 ![](writeup_files/figure-gfm/scatterplot-bpm-tropes-1.png)<!-- -->
 
-There seems to be a weak, negative linear relationship between tempo and
-number of clichés. Let’s find the linear model associated with this
+There appears to be a weak, negative linear relationship between the
+tempo and number of clichés in a college football fight song. To confirm
+this trend, let’s find the linear model associated with this
 scatterplot:
 
     ## # A tibble: 2 x 2
@@ -67,22 +67,24 @@ based on tempo is: `trope_count-hat` = 4.59 - 0.00759 \* `bpm`. The
 intercept tells us that if a song has 0 bpm (nonsensical), it is
 expected to have 4.59 clichés (tropes), on average. The slope tells us
 that for an increase in 1 bpm, the expected number of clichés is
-predicted, on average, to decrease by 0.00759. The R-squared value of
-this model is 0.0225985, meaning that approximately 2.2598527 percent of
-the variability in clichés is accounted for by the linear model. This
-means that the linear model is relatively weak since, the closer the R
-squared value is to 1 (or 100% variability), the more accurate the model
-is.
+predicted, on average, to decrease by 0.00759 (aligns with weak,
+negative linear relationship displayed in scatterplot above). The
+R-squared value of this model is 0.0225985, meaning that approximately
+2.2598527 percent of the variability in clichés is accounted for by the
+linear model. This means that the linear model is relatively weak since,
+the closer the R squared value is to 1 (or 100% variability), the more
+accurate the model is.
 
-Now, let’s see whether `trope_count` is related as to the `rank`
+Now, let’s see whether `trope_count` is associated with the `rank`
 (success) of a team. We will do this by creating another scatterplot and
 fitting a model:
 
 ![](writeup_files/figure-gfm/scatterplot-tropes-rank-1.png)<!-- -->
 
-There seems to be a weak positive linear relationship between number of
-clichés in a fight song and the historical ranking of a college football
-team. Let’s find the linear model associated with this scatterplot:
+There appears to be a weak, positive linear relationship between number
+of clichés in a fight song and the historical ranking of a college
+football team. To confirm this trend, let’s find the linear model
+associated with this scatterplot:
 
     ## # A tibble: 2 x 2
     ##   term        estimate
@@ -95,11 +97,13 @@ of clichés is: `rank-hat` = 35.6 + 0.545 \* `trope_count`. The intercept
 tells us that if a song has 0 clichés, it is expected to have a ranking
 of 35.6, on average. The slope tells us that for an increase in 1
 cliché, the historical college football team ranking is predicted, on
-average, to increase by 0.545 points. The R-squared value of this model
-is 0.0012119, meaning that approximately 0.1211865 percent of the
-variability in ranks is accounted for by the linear model. This means
-that the linear model is extremely weak since, the closer the R squared
-value is to 1 (or 100% variability), the more accurate the model is.
+average, to increase by 0.545 points (aligns with the weak, positive
+linear relationship displayed in scatterplot above). The R-squared value
+of this model is 0.0012119, meaning that approximately 0.1211865 percent
+of the variability in ranks is accounted for by the linear model. This
+means that the linear model is extremely weak since, the closer the R
+squared value is to 1 (or 100% variability), the more accurate the model
+is.
 
 After observing these initial findings, we have determined the two
 research questions we will discuss in greater detail. Our first research
@@ -110,18 +114,19 @@ which counts the number of clichés in a fight song (since we define a
 cliché as whether a song contains the word “fight”, the word “victory”,
 the word “won”, the word “win”, the word “rah”, nonsense syllables, or
 an opponent name), to form connections between a song’s duration and
-tempo and its content. The predictor variables we are interested in are:
-`bpm` and `sec_duration`. We aim to describe the relationship, if any
-exists, between the two numerical predictor (X) variables and the
-numerical response (Y) variable, `trope_count`. Our second research
-question is: how do characteristics of the fight songs of college
-football teams correspond to their respective historical levels of
-success (rankings)? We will utilize the `rank` variable to form
-connections between the performances of college football teams and their
-respective fight songs. The predictor variables we are interested in
-are: `victory_win_won`, `opponents`, `nonsense`, and `rah`. We aim to
-describe the relationship, if any exists, between these four categorical
-predictor (X) variables and the numerical response (Y) variable, `rank`.
+tempo and its content. Thus, we aim to describe the relationship, if any
+exists, between the numerical predictor (X) variables, `bpm` and
+`sec_duration` and the numerical response (Y) variable, `trope_count`.
+
+Our second research question is: how do characteristics of the fight
+songs of college football teams correspond to their respective
+historical levels of success (rankings)? We will utilize the `rank`
+variable to form connections between the performances of college
+football teams and their respective fight songs. We aim to describe the
+relationship, if any exists, between the categorical predictor (X)
+variables, `victory_win_won`, `opponents`, `nonsense`, and `rah`, and
+the numerical response (Y) variable, `rank`.
+
 Finally, we will compare the characteristics of fight songs in northern
 and southern athletic conferences in the `Additional Analysis` section.
 
