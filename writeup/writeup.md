@@ -502,8 +502,8 @@ the population median of 4 (p = 0.038). However, the small spread of the
 distribution of “slow and short” songs proved not to be different from
 the population standard deviation of 1.67 (p = 0.685).
 
-Finally, we looked at the linear model between `bpm` and `sec_duration`,
-the explanatory variables, and `trope_count` to see whether `bpm` and
+We then looked at the linear model between `bpm` and `sec_duration`, the
+explanatory variables, and `trope_count` to see whether `bpm` and
 `sec_duration` were, indeed, good predictors of the number of tropes in
 a college fight song. The original model had an R-squared value of
 0.022608, which indicated that the model was very weak. After conducting
@@ -519,7 +519,7 @@ not credible.
 Finally, we used backwards selection using AIC as the criterion to see
 if there was a particularly better linear model. However, backwards
 selection removed both of our explanatory variables, `bpm` and
-`sec_duration`, which indicated to use that these two variables are not
+`sec_duration`, which indicated to us that these two variables are not
 valid predictors for the number of tropes in a college fight song.
 Therefore, the answer to our research question is that neither tempo nor
 duration can predict the content of a college fight song. The only thing
@@ -892,13 +892,38 @@ Circling back to our research question of whether the characteristics of
 college fight songs can help predict the historic success of their
 football teams, we hypothesized that colleges whose fight songs included
 the words “victory”, “win”, or “won”, mentioned oponents, and included
-nonsense words would have higher ranked football teams. From our
-hypothesis tests, we found that none of these fight song characteristics
-resulted in statistically significant differences in college football
-ranking. Our linear regression model also supported this result:
-`victory_win_won`, `opponents`, and `nonsense` are not helpful
-indicators of
-rank.
+nonsense words would have higher ranked football teams. We thought that
+higher ranked teams would include the words “victory”, “win”, and “won”
+as symbolic elements of their dominance, mention opponents due to the
+development of emotionally-charged rivalries, and yell nonsense words in
+order to distract the players on opposing college football teams.
+Additionally, we hypothesized that there was no relationship between
+whether a college’s fight song included the word “rah” and their
+football team’s success because “rah” is such a common word in fight
+songs.
+
+We decided to create a new variable called `rank_level` in order to
+split the football teams into high and low rankings. After conducting
+four hypothesis tests, it turned out that none of these fight song
+characteristics resulted in statistically significant differences in
+college football ranking. The p-values from the hypothesis tests were
+0.262, 0.958, 0.38, and 0.752, indicating that there was no
+statistically significant difference in `victory_win_won`, `opponents`,
+`nonsense`, and `rah` based on `rank_level`.
+
+Finally, we looked at the linear model between `victory_win_won`,
+`opponents`, `nonsense`, and `rah`, the explanatory variables, and
+`rank` to see whether these characteristics of fight songs were, indeed,
+good predictors of a college football team’s success. This model had an
+R-squared value of 0.0623, which indicated that it was very weak. We
+then decided to use backwards selectection with AIC as the criterion to
+see if there was a better linear model. However, backwards selection
+removed all four of our explanatory variables, which indicated to us
+that these characteristics are not valid predictors for a college
+football team’s rank. Therefore, the answer to our research question is
+that `victory_win_won`, `opponents`, `nonsense`, nor `rah` can predict
+the success of a college football
+team.
 
 ## Additional Analysis: Looking at Characteristics in Fight Songs in Northern and Southern Athletic Conferences
 
