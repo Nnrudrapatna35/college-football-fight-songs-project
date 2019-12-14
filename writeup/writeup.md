@@ -29,12 +29,12 @@ or a team’s historic AP ranking).
 
 The variables most pertinent to our analysis are: `conference` (school
 football conference), `bpm` (beats per minute), `sec_duration` (duration
-of song in seconds), `victory_win_won` (whether a song says “victory,”
-“win,” or “won”), `men` (whether a song mentions male groups), `rah`
-(whether a song include “rah”), `nonsense` (whether a song includes
-nonsense syllables, such as “Hooperay”), `opponents` (whether a fight
-song mentions its opponent), `trope_count` (total number of tropes), and
-finally `rank`.
+of fight song in seconds), `victory_win_won` (whether a song says
+“victory,” “win,” or “won”), `men` (whether a song mentions male
+groups), `rah` (whether a song include “rah”), `nonsense` (whether a
+song includes nonsense syllables, such as “Hooperay”), `opponents`
+(whether a song mentions its opponent), `trope_count` (total number of
+tropes), and finally `rank`.
 
 The data was collected by looking at the lyrics of each song (as
 published by each individual college), metadata about each fight song on
