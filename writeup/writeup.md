@@ -98,14 +98,12 @@ content of songs. Our hypothesis tests were conducted using simulation
 instead of the Central Limit Theorem (CLT). The CLT was not a valid
 option, as none of the subsets of the dataset had at least 30
 observations and the majority of our tests are for independence
-(difference between two groups). Since our dataset and its subsets did
-not have a lot of observations relative to other “big data” projects,
-simulation was the best alternative for hypothesis testing after the
-CLT.
+(difference between two groups). As a result, simulation was the best
+alternative for hypothesis testing.
 
 Visualizing the relationships between the explanatory and response
 variables with plots made it easy for viewers to understand how the
-level or occurrence of certain variables changed based on differing
+level or frequency of certain variables changed based on differing
 factors between songs. We tried to use unique but clearly structured and
 labeled plot formats that would display information in a visually
 appealing way without confusing the
