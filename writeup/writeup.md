@@ -1160,24 +1160,25 @@ be particularly useful in our analysis; however, one of the conditions
 of inference for regression–constant variance–was violated.
 
 If we were to redo this project, we would definitely think heavily about
-appending observations to our `fight-songs` dataset. Currently, the
-dataset originally included fight songs from 65 college football teams;
-however, in future analyses, we would use web scraping to gain
-information about all 130 Division I college football teams in the
-United States. This could dramatically improve our analysis because,
-with more observations in consideration, certain statistical methods
-which we were forced to reject, including hypothesis testing for the
-slope coefficients, might become valid (variance may be constant).
+adding observations to our `fight-songs` dataset. Currently, the dataset
+originally included fight songs from 65 college football teams; however,
+in future analyses, we would use web scraping to gain information about
+all 130 Division I college football teams in the United States. This
+could dramatically improve our analysis because, with more observations
+in consideration, certain statistical methods which we were forced to
+reject, including hypothesis testing for the slope coefficients, might
+become valid (variance may be constant).
 
 Moreover, as we briefly mentioned earlier, the dataset compiled on
 Spotify by `fivethirtyeight` does not include certain verses from
 traditional fight songs. Rather, our analysis concentrated on the
 official versions of these songs, published by the respective colleges.
-This is another limiting factor because the trope count for each song is
-therefore not entirely accurate: some of the verses which were removed
-undoubtedly contained references to male groups, or nonsense syllables,
-etc. Thus, not only did we examine a sample size of fight songs, but we
-also only considered abbreviated song lyrics.
+Therefore, the trope count for each song is not entirely accurate as
+some of the missing lyrics undoubtedly contained references to male
+groups or opponents, nonsense syllables, “victory”/“win”/“won”, “rah”,
+etc. (presenting another limiting factor). Thus, not only did we examine
+a small sample population of fight songs, but we also only considered
+abbreviated song lyrics.
 
 Furthermore, we would definitely consider the possibility of a
 confounding variable more seriously in future analyses because, based on
