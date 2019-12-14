@@ -395,7 +395,7 @@ Our second research question is:
 
 Before delving deeper into the analysis, we will first look at the distributions of the four explanatory variables, `victory_win_won`, `opponents`, `nonsense`, and `rah`, and our response variable, `rank`.
 
-Starting with `victory_win_won`, which designates whether a fight song says "victory", "win", or "won", we will create a bar graph for the distribution:
+Starting with `victory_win_won`, which designates whether a fight song says "victory", "win", or "won", we will create a segmented bar plot for the distribution:
 
 ```{r visualize-victory-win-won}
 ggplot(fight_songs, mapping = aes(x = "", fill = victory_win_won)) +
@@ -406,7 +406,16 @@ ggplot(fight_songs, mapping = aes(x = "", fill = victory_win_won)) +
        y = "Proportion of College Fight Songs")
 ```
 
-Next, we will explore `opponents`, which designates whether a song mentions an opponent, by creating a bar graph:
+```{r prop-victory-win-won}
+fight_songs %>%
+  count(victory_win_won)%>%
+  mutate(rel_freq = n / sum(n)) %>%
+  select(-n)
+```
+
+Based on the output displayed above, approximately 63.1% of college fight songs include "victory"/"win"/"won", whereas 36.9% do not. 
+
+Next, we will explore `opponents`, which designates whether a song mentions an opponent, by creating a segmented bar plot:
 
 ```{r visualize-opponents}
 ggplot(fight_songs, mapping = aes(x = "", fill = opponents)) +
@@ -417,7 +426,16 @@ ggplot(fight_songs, mapping = aes(x = "", fill = opponents)) +
        y = "Number of College Football Teams")
 ```
 
-Now, we will examine `nonsense`, which designates whether a song includes any nonsense words/phrases, by creating a bar graph:
+```{r prop-opponents}
+fight_songs %>%
+  count(opponents)%>%
+  mutate(rel_freq = n / sum(n)) %>%
+  select(-n)
+```
+
+Based on the output displayed above, approximately 81.5% of college fight songs do not mention opponents, whereas 18.5% do. 
+
+Now, we will examine `nonsense`, which designates whether a song includes any nonsense words/phrases, by creating a segmented bar plot:
 
 ```{r visualize_nonsense}
 ggplot(fight_songs, mapping = aes(x = "", fill = nonsense)) +
@@ -428,7 +446,16 @@ ggplot(fight_songs, mapping = aes(x = "", fill = nonsense)) +
        y = "Number of College Football Teams")
 ```
 
-Next, we will explore `rah`, which designates whether a fight song says the word "rah", by creating a bar graph:
+```{r prop-nonsense}
+fight_songs %>%
+  count(nonsense) %>%
+  mutate(rel_freq = n / sum(n)) %>%
+  select(-n)
+```
+
+Based on the output displayed above, approximately 84.6% of college fight songs do not contain nonsense syllables, whereas 15.4% do. 
+
+Next, we will explore `rah`, which designates whether a fight song says the word "rah", by creating a segmented bar plot:
 
 ```{r visualize-rah}
 ggplot(fight_songs, mapping = aes(x = "", fill = rah)) +
@@ -438,6 +465,15 @@ ggplot(fight_songs, mapping = aes(x = "", fill = rah)) +
        x = "Rah",
        y = "Number of College Football Teams")
 ```
+
+```{r prop-rah}
+fight_songs %>%
+  count(rah) %>%
+  mutate(rel_freq = n / sum(n)) %>%
+  select(-n)
+```
+
+Based on the output displayed above, approximately 72.3% of college fight songs do not mention "rah", whereas 27.7% do. 
 
 Finally, we will look at `rank`, which corresponds to the team's AP college football ranking. We will create a histogram and calculate the appropriate summary statistics (Q1, median, Q3, min, max, and IQR):
 
@@ -483,7 +519,7 @@ fight_songs %>%
   count(rank_level)
 ```
 
-Based on the boxplots, we can see that the lower ranking teams have a larger spread and include more outliers. There are also fewer high ranking teams than low ranking teams: 25 teams in the dataset are considered high ranking while 40 are considered low ranking.
+Based on the boxplots, we can see that the lower ranking teams have a larger spread and include more outliers. There are also fewer high ranking teams than low ranking teams: 25 teams in the dataset are considered high-ranked while 40 are considered low-ranked.
 
 Now, we will return to our research question by examining whether the rank of a college football team varies based on the content of the school's fight song. We hypothesize that a statistically significant relationship exists between `victory_win_won` and `rank_level` because it is reasonable to asssume historically successful college football teams would incorporate symbolic elements of their dominance into their iconic fight songs. In this case, we believe the words "victory", "win", and "won" are symbolic elements of dominance, giving us reason to believe higher-ranked teams are more likely to have their fights songs include these words. 
 
@@ -777,7 +813,7 @@ fight_songs %>%
   mutate(prop_victory_win_won_yes = n / sum(n))
 ```
 
-Based on the output, 70.4% of schools in northern conferences have the words "victory," "win," or "won" in their fight songs. On the other hand, only 57.9% of schools in southern conferences have the words "victory," "win," or "won" in their fight songs. Below, we will visualize these percentages in a segmented bar chart.
+Based on the output, 70.4% of schools in northern conferences have the words "victory," "win," or "won" in their fight songs. On the other hand, only 57.9% of schools in southern conferences have the words "victory," "win," or "won" in their fight songs. Below, we will visualize these percentages in a segmented bar plot.
 
 ```{r victory_win_won-north-vs-south}
 ggplot(data = fight_songs, mapping = aes(x = region, fill = victory_win_won)) +
@@ -788,7 +824,6 @@ ggplot(data = fight_songs, mapping = aes(x = region, fill = victory_win_won)) +
        y = "Proportion", 
        fill = "Whether Song Mentions Victory/Win/Won")
 ```
-
 
 We would like to see if this result is statistically significant and what the true difference in proportions is. We have to use simulation-based hypothesis testing because we are looking for the difference in proportions.
 

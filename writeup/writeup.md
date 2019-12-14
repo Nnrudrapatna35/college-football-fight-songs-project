@@ -498,25 +498,61 @@ distributions of the four explanatory variables, `victory_win_won`,
 `opponents`, `nonsense`, and `rah`, and our response variable, `rank`.
 
 Starting with `victory_win_won`, which designates whether a fight song
-says “victory”, “win”, or “won”, we will create a bar graph for the
-distribution:
+says “victory”, “win”, or “won”, we will create a segmented bar plot for
+the distribution:
 
 ![](writeup_files/figure-gfm/visualize-victory-win-won-1.png)<!-- -->
 
+    ## # A tibble: 2 x 2
+    ##   victory_win_won rel_freq
+    ##   <chr>              <dbl>
+    ## 1 No                 0.369
+    ## 2 Yes                0.631
+
+Based on the output displayed above, approximately 63.1% of college
+fight songs include “victory”/“win”/“won”, whereas 36.9% do not.
+
 Next, we will explore `opponents`, which designates whether a song
-mentions an opponent, by creating a bar graph:
+mentions an opponent, by creating a segmented bar plot:
 
 ![](writeup_files/figure-gfm/visualize-opponents-1.png)<!-- -->
 
+    ## # A tibble: 2 x 2
+    ##   opponents rel_freq
+    ##   <chr>        <dbl>
+    ## 1 No           0.815
+    ## 2 Yes          0.185
+
+Based on the output displayed above, approximately 81.5% of college
+fight songs do not mention opponents, whereas 18.5% do.
+
 Now, we will examine `nonsense`, which designates whether a song
-includes any nonsense words/phrases, by creating a bar graph:
+includes any nonsense words/phrases, by creating a segmented bar plot:
 
 ![](writeup_files/figure-gfm/visualize_nonsense-1.png)<!-- -->
 
+    ## # A tibble: 2 x 2
+    ##   nonsense rel_freq
+    ##   <chr>       <dbl>
+    ## 1 No          0.846
+    ## 2 Yes         0.154
+
+Based on the output displayed above, approximately 84.6% of college
+fight songs do not contain nonsense syllables, whereas 15.4% do.
+
 Next, we will explore `rah`, which designates whether a fight song says
-the word “rah”, by creating a bar graph:
+the word “rah”, by creating a segmented bar plot:
 
 ![](writeup_files/figure-gfm/visualize-rah-1.png)<!-- -->
+
+    ## # A tibble: 2 x 2
+    ##   rah   rel_freq
+    ##   <chr>    <dbl>
+    ## 1 No       0.723
+    ## 2 Yes      0.277
+
+Based on the output displayed above, approximately 72.3% of college
+fight songs do not mention “rah”, whereas 27.7% do.
 
 Finally, we will look at `rank`, which corresponds to the team’s AP
 college football ranking. We will create a histogram and calculate the
@@ -555,7 +591,7 @@ will visualize `rank_level` using a boxplot.
 Based on the boxplots, we can see that the lower ranking teams have a
 larger spread and include more outliers. There are also fewer high
 ranking teams than low ranking teams: 25 teams in the dataset are
-considered high ranking while 40 are considered low ranking.
+considered high-ranked while 40 are considered low-ranked.
 
 Now, we will return to our research question by examining whether the
 rank of a college football team varies based on the content of the
@@ -935,7 +971,7 @@ words “victory,” “win,” or “won” in their fight songs. On the other
 hand, only 57.9% of schools in southern conferences have the words
 “victory,” “win,” or “won” in their fight songs. Below, we will
 visualize these percentages in a segmented bar
-chart.
+plot.
 
 ![](writeup_files/figure-gfm/victory_win_won-north-vs-south-1.png)<!-- -->
 
