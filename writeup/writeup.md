@@ -385,10 +385,9 @@ distributed, centered at 0; (4) residuals should have constant variance.
 
 First, we can assume that the observations (fight songs) are independent
 because college fight songs are unique to every team and written by
-different authors.
-
-Next, we will verify our assumption (confirm independence of
-observations) by plotting the residuals in the order of data collection:
+different authors. We will verify our assumption (confirm independence
+of observations) by plotting the residuals in the order of data
+collection:
 
 ![](writeup_files/figure-gfm/testing-condition-1-1.png)<!-- -->
 
@@ -401,10 +400,13 @@ constant variance:
 
 ![](writeup_files/figure-gfm/testing-conditions-2-and-4-1.png)<!-- -->
 
-Clearly, condition 4 (constant variance) is violated. Therefore,
-inference for regression is invalid. This means our conclusion that
-there is insufficient evidence to suggest the slope coefficients for
-`bpm` and `sec_duration` are different than 0 is also not credible.
+Clearly, condition 4 (constant variance) is violated. As one moves from
+left to right, the middle section gets more narrow, as seen by the two
+points. Also, it appears that the points are on a negative slant. Both
+of these factors violate constant variance. Therefore, inference for
+regression is invalid. This means our conclusion that there is
+insufficient evidence to suggest the slope coefficients for `bpm` and
+`sec_duration` are different than 0 is also not credible.
 
 To confirm that there is no better linear model, we will use the
 `step()` function and backwards selection with AIC as the selection
@@ -1157,7 +1159,7 @@ the file. Another consequence of the small number of observations was
 invalidating hypothesis testing for slopes. Determinining whether the
 slope coefficients from our linear models were truly significant would
 be particularly useful in our analysis; however, one of the conditions
-of inference for regression–constant variance–was violated.
+of inference for regression – constant variance – was violated.
 
 If we were to redo this project, we would definitely think heavily about
 adding observations to our `fight-songs` dataset. Currently, the dataset
@@ -1169,16 +1171,16 @@ in consideration, certain statistical methods which we were forced to
 reject, including hypothesis testing for the slope coefficients, might
 become valid (variance may be constant).
 
-Moreover, as we briefly mentioned earlier, the dataset compiled on
-Spotify by `fivethirtyeight` does not include certain verses from
-traditional fight songs. Rather, our analysis concentrated on the
-official versions of these songs, published by the respective colleges.
-Therefore, the trope count for each song is not entirely accurate as
-some of the missing lyrics undoubtedly contained references to male
-groups or opponents, nonsense syllables, “victory”/“win”/“won”, “rah”,
-etc. (presenting another limiting factor). Thus, not only did we examine
-a small sample population of fight songs, but we also only considered
-abbreviated song lyrics.
+Moreover, as we briefly mentioned earlier, the dataset compiled by
+`fivethirtyeight` does not include certain verses from traditional fight
+songs. Rather, our analysis concentrated on the official versions of
+these songs, published by the respective colleges. Therefore, the trope
+count for each song is not entirely accurate as some of the missing
+lyrics undoubtedly contained references to male groups or opponents,
+nonsense syllables, “victory”/“win”/“won”, “rah”, etc. (presenting
+another limiting factor). Thus, not only did we examine a small sample
+population of fight songs, but we also only considered abbreviated song
+lyrics.
 
 Furthermore, we would definitely consider the possibility of a
 confounding variable more seriously in future analyses because, based on
