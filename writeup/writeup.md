@@ -9,22 +9,32 @@ Power Ninja Data Turtles
 In our research project, we will be analyzing the fight songs of various
 college football teams to discover whether a song’s tempo or duration
 can tell us anything about the content of the song and whether a team’s
-fight song is indicative of its college football program’s success. More
-specifically, we will be examining the fight songs of all 64 teams
+fight song is indicative of its college football program’s success. As
+students at one of the most historically spirited and athletically
+sucessful colleges in the US, we were interested in analyzing the
+connection between school spirit and athletic performance.
+
+More specifically, we will be examining the fight songs of all 64 teams
 located across the Power Five sports conferences (Big 10, Big 12, ACC,
 Pac-12 and SEC) plus Notre Dame (Independent). Hence, our dataset, which
 is fittingly titled `fight-songs`, includes 65 observations. Each
 observation in the set represents a distinct Power Five college football
 team (or Notre Dame). For each team (observation), the original dataset
-featured 23 variables. However, we include 19 of these variables, plus
-one of our own, for a total of 20 in the `fight-songs` dataset. The
-variables primarily contain information regarding the school’s fight
-song, as well as a couple of characteristics of the college football
-teams themselves (i.e. which conference they belong to).
+featured 23 variables. However, we include 19 of these original
+variables, plus one of our own, for a total of 20 in the `fight-songs`
+dataset. The variables primarily contain information regarding the
+school’s fight song, as well as a couple of characteristics of the
+college football teams themselves (i.e. which conference they belong to
+or a team’s historic AP ranking).
 
-The variables most pertinent to our analysis are: `conference`, `year`,
-`bpm`, `sec_duration`, `victory_win_won`, `men`, `rah`, `nonsense`,
-`opponents`, `trope_count`, and finally `rank`.
+The variables most pertinent to our analysis are: `conference` (school
+football conference), `bpm` (beats per minute), `sec_duration` (duration
+of song in seconds), `victory_win_won` (whether a song says “victory,”
+“win,” or “won”), `men` (whether a song mentions male groups), `rah`
+(whether a song include “rah”), `nonsense` (whether a song includes
+nonsense syllables, such as “Hooperay”), `opponents` (whether a fight
+song mentions its opponent), `trope_count` (total number of tropes), and
+finally `rank`.
 
 The data was collected by looking at the lyrics of each song (as
 published by each individual college), metadata about each fight song on
@@ -44,77 +54,22 @@ lyrics of certain fight songs to those sung most regularly and published
 by the school. Thus, some verses will not appear (and hence will not be
 considered in our analysis).
 
-First, to preface our main analysis, we would like to determine whether
-a team’s tempo (measured in beats per minute) has anything to do with
-the number of clichés (tropes) that a song has. We will do this by
-creating a scatterplot and fitting a linear model:
+We were interested in looking at the content of college fight songs and
+the relationship between fight songs and their respective football
+team’s performance. After evaluating the variables in the dataset, we
+thought it was logical that a song’s content might be influenced by its
+tempo and duration. Moreover, the different attributes of fight songs
+might be linked to a team’s ranking.
 
-![](writeup_files/figure-gfm/scatterplot-bpm-tropes-1.png)<!-- -->
-
-There appears to be a weak, negative linear relationship between the
-tempo and number of clichés in a college football fight song. To confirm
-this trend, let’s find the linear model associated with this
-scatterplot:
-
-    ## # A tibble: 2 x 2
-    ##   term        estimate
-    ##   <chr>          <dbl>
-    ## 1 (Intercept)  4.59   
-    ## 2 bpm         -0.00759
-
-Based on the output, the linear model that predicts number of tropes
-based on tempo is: `trope_count-hat` = 4.59 - 0.00759 \* `bpm`. The
-intercept tells us that if a song has 0 bpm (nonsensical), it is
-expected to have 4.59 clichés (tropes), on average. The slope tells us
-that for an increase in 1 bpm, the expected number of clichés is
-predicted, on average, to decrease by 0.00759 (aligns with weak,
-negative linear relationship displayed in scatterplot above). The
-R-squared value of this model is 0.0225985, meaning that approximately
-2.2598527 percent of the variability in clichés is accounted for by the
-linear model. This means that the linear model is relatively weak since,
-the closer the R squared value is to 1 (or 100% variability), the more
-accurate the model is.
-
-Now, let’s see whether `trope_count` is associated with the `rank`
-(success) of a team. We will do this by creating another scatterplot and
-fitting a model:
-
-![](writeup_files/figure-gfm/scatterplot-tropes-rank-1.png)<!-- -->
-
-There appears to be a weak, positive linear relationship between number
-of clichés in a fight song and the historical ranking of a college
-football team. To confirm this trend, let’s find the linear model
-associated with this scatterplot:
-
-    ## # A tibble: 2 x 2
-    ##   term        estimate
-    ##   <chr>          <dbl>
-    ## 1 (Intercept)   35.6  
-    ## 2 trope_count    0.545
-
-Based on the output, the linear model that predicts rank based on number
-of clichés is: `rank-hat` = 35.6 + 0.545 \* `trope_count`. The intercept
-tells us that if a song has 0 clichés, it is expected to have a ranking
-of 35.6, on average. The slope tells us that for an increase in 1
-cliché, the historical college football team ranking is predicted, on
-average, to increase by 0.545 points (aligns with the weak, positive
-linear relationship displayed in scatterplot above). The R-squared value
-of this model is 0.0012119, meaning that approximately 0.1211865 percent
-of the variability in ranks is accounted for by the linear model. This
-means that the linear model is extremely weak since, the closer the R
-squared value is to 1 (or 100% variability), the more accurate the model
-is.
-
-After observing these initial findings, we have determined the two
-research questions we will discuss in greater detail. Our first research
-question is: how does the tempo and duration of a college football
-team’s fight song predict the content of the song, specifically the
-number of clichés/tropes? We will utilize the `trope_count` variable,
-which counts the number of clichés in a fight song (since we define a
-cliché as whether a song contains the word “fight”, the word “victory”,
-the word “won”, the word “win”, the word “rah”, nonsense syllables, or
-an opponent name), to form connections between a song’s duration and
-tempo and its content. Thus, we aim to describe the relationship, if any
+This leads us to our two main research questions. First, how does the
+tempo and duration of a college football team’s fight song predict the
+content of the song, specifically the number of clichés/tropes? We will
+utilize the `trope_count` variable, which counts the number of clichés
+in a fight song (since we define a cliché as whether a song contains the
+word “fight”, the word “victory”, the word “won”, the word “win”, the
+word “rah”, nonsense syllables, its spelling, male groups, or an
+opponent name), to form connections between a song’s duration and tempo
+and its content. Thus, we aim to describe the relationship, if any
 exists, between the numerical predictor (X) variables, `bpm` and
 `sec_duration` and the numerical response (Y) variable, `trope_count`.
 
@@ -141,9 +96,12 @@ allowed us to conclude whether or not the data provided convincing
 evidence of a trend, such as the relationship between the tempo and
 content of songs. Our hypothesis tests were conducted using simulation
 instead of the Central Limit Theorem (CLT). The CLT was not a valid
-option, as none of the subsets of the data set had at least 30
+option, as none of the subsets of the dataset had at least 30
 observations and the majority of our tests are for independence
-(difference between two groups).
+(difference between two groups). Since our dataset and its subsets did
+not have a lot of observations relative to other “big data” projects,
+simulation was the best alternative for hypothesis testing after the
+CLT.
 
 Visualizing the relationships between the explanatory and response
 variables with plots made it easy for viewers to understand how the
@@ -214,9 +172,9 @@ these songs are significantly longer than the others. The center of the
 distribution occurs at around 67 seconds, and the IQR of the
 distribution is 27 seconds, which is relatively narrow, indicating that
 fight songs do not have dramatically different lengths. Like we did with
-`bpm`, let’s add a new variable, `length`, which is “short” if a song is
-less than or equal to the median of 67 seconds and “long” if a song is
-greater than the median of 67 seconds.
+`bpm`, we will add a new variable, `length`, which is “short” if a song
+is less than or equal to the median of 67 seconds and “long” if a song
+is greater than the median of 67 seconds.
 
 Now that we have a better understanding of our two explanatory
 variables, we want to add a new variable, `classify`, which combines
@@ -434,7 +392,7 @@ observations) by plotting the residuals in the order of data collection:
 
 ![](writeup_files/figure-gfm/testing-condition-1-1.png)<!-- -->
 
-Next, let’s examine the normality of residuals:
+Next, we will examine the normality of residuals:
 
 ![](writeup_files/figure-gfm/testing-condition-3-1.png)<!-- -->
 
@@ -496,7 +454,7 @@ distribution of the number of tropes, we noticed two things. First,
 “slow and short” songs had a smaller variation in the number of
 tropes. From here, we decided to conduct a hypothesis test to confirm or
 deny whether what we observed in the violin plots was statistically
-significant. It turned out that “slow and long” songs in our data set
+significant. It turned out that “slow and long” songs in our dataset
 did, in fact, have median number of tropes that was different than the
 the population median of 4 (p = 0.038). However, the small spread of the
 distribution of “slow and short” songs proved not to be different from
@@ -596,7 +554,7 @@ will visualize `rank_level` using a boxplot.
 
 Based on the boxplots, we can see that the lower ranking teams have a
 larger spread and include more outliers. There are also fewer high
-ranking teams than low ranking teams: 25 teams in the data set are
+ranking teams than low ranking teams: 25 teams in the dataset are
 considered high ranking while 40 are considered low ranking.
 
 Now, we will return to our research question by examining whether the
