@@ -2,6 +2,7 @@ Rah\! Fight\! Win\!: Analyzing the Nonsensical Nature of College Fight
 Songs
 ================
 Power Ninja Data Turtles: Nagaprasad Rudrapatna, Gautam Sirdeshmukh, Anna Mollard, and Calleigh Smith
+
 12/13/19
 
 ### Introduction
